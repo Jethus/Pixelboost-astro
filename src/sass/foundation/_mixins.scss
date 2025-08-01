@@ -1,0 +1,200 @@
+@use "vars" as *;
+@use "sass:color";
+@use "sass:list";
+@use "sass:math";
+@use "sass:map";
+@use "sass:string";
+
+@mixin fade-in() {
+  opacity: 0;
+  transform: translateY(2rem);
+  &.visible {
+    animation: fade-in 1s ease forwards;
+  }
+}
+
+// Flexbox
+@mixin flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@mixin flex-group-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+@mixin flex-group-col {
+  @include flex-group-row;
+  flex-direction: column;
+}
+
+// Grid
+@mixin grid-group {
+  display: grid;
+  gap: 1rem;
+}
+
+@mixin btn-press-effect($colour) {
+  transform: scale(0.95);
+  background-color: color.adjust($colour, $lightness: -5%);
+}
+
+@mixin btn-base {
+  font-size: var(--font-size-md);
+  @include transition-fast(transform, background-color);
+  padding: 0.75rem 2rem;
+  border-radius: 0.25rem;
+  color: $light;
+  background-color: $brand-action;
+  box-shadow: 0 4px 16px $brand-action;
+  text-align: center;
+  z-index: 1;
+
+  &:hover {
+    cursor: pointer;
+    background-color: color.scale($brand-action, $lightness: -10%);
+  }
+
+  &:focus-visible {
+    @include focus-style($dark);
+  }
+}
+
+@mixin btn-primary {
+  @include btn-base;
+  width: 100%;
+}
+
+@mixin btn-secondary {
+  @include btn-base;
+  width: 100%;
+  background-color: $light;
+  border: 2px solid $brand-text;
+  color: $brand-primary;
+  box-shadow: none;
+  &:hover {
+    background-color: color.scale($off-white-bg, $lightness: -10%);
+  }
+}
+// Fluid font variable calculations
+@mixin fluid-font-sizes {
+  @for $i from 1 through list.length($type-steps) {
+    $step: list.nth($type-steps, $i);
+    $power: $i - $type-base-index;
+    $min: $type-base-min * math.pow($type-scale-min, $power);
+    $max: $type-base-max * math.pow($type-scale-max, $power);
+    --font-size-#{$step}: #{clamped($min, $max)};
+  }
+}
+
+// Flexible fluid type for edge cases
+@mixin fluid-type($fl: 0) {
+  // Calculate min/max in px for this "fluid level"
+  $fluid-min: $font-size-min * math.pow($font-ratio-min, $fl);
+  $fluid-max: $font-size-max * math.pow($font-ratio-max, $fl);
+
+  // Growth rate (px per 1px of viewport width)
+  $fluid-preferred: math.div(
+    ($fluid-max - $fluid-min),
+    ($viewport-max - $viewport-min)
+  );
+
+  // Convert px -> rem with `math.div(..., 16)` and wrap the tricky part in calc()
+  font-size: clamp(
+    #{math.div($fluid-min, 16)}rem,
+    calc(
+      #{math.div($fluid-min, 16)}rem +
+        (#{$fluid-preferred} * (100vw - #{$viewport-min}px)) / 16
+    ),
+    #{math.div($fluid-max, 16)}rem
+  );
+}
+
+// Mixins for container responsive design
+@mixin container-query($size) {
+  $query: map.get($breakpoints, $size);
+
+  @supports (container-type: inline-size) {
+    @if $query {
+      @container (min-width: #{$query}) {
+        @content;
+      }
+    } @else {
+      @container (min-width: #{$size}) {
+        @content;
+      }
+    }
+  }
+
+  @supports not (container-type: inline-size) {
+    @if $query {
+      @media only screen and (min-width: #{$query}) {
+        @content;
+      }
+    } @else {
+      @media only screen and (min-width: #{$size}) {
+        @content;
+      }
+    }
+  }
+}
+
+// Font styles
+@mixin header-style {
+  font-family: $header-font;
+  line-height: $line-height-small;
+  font-weight: $black;
+}
+
+@mixin body-style {
+  font-family: $body-font;
+  font-size: 1rem;
+  line-height: $line-height-normal;
+}
+
+// Links
+@mixin link-style($colour) {
+  color: $colour;
+
+  &:hover {
+    color: $brand-action;
+  }
+}
+
+@mixin focus-style($colour) {
+  outline: 3px solid $colour;
+  outline-offset: 6px;
+}
+
+// Transitions
+@mixin transition-fast($properties...) {
+  $transitions: ();
+
+  @each $prop in $properties {
+    $transitions: list.append(
+      $transitions,
+      string.unquote("#{ $prop } 0.12s ease-in-out"),
+      $separator: comma
+    );
+  }
+
+  transition: $transitions;
+}
+
+@mixin transition-slow($properties...) {
+  $transitions: ();
+
+  @each $prop in $properties {
+    $transitions: list.append(
+      $transitions,
+      string.unquote("#{ $prop } 0.3s ease"),
+      $separator: comma
+    );
+  }
+
+  transition: $transitions;
+}

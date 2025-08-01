@@ -1,0 +1,67 @@
+---
+const today = new Date();
+---
+
+<footer>
+  <div class="flex-group-row">
+    <a href="/" class="logo" aria-label="Crescendo Stage">
+      <img
+        loading="lazy"
+        src="/src/assets/svgs/CS-logo.svg"
+        alt="Crescendo Stage"
+        width="100%"
+        height="100px"
+      />
+    </a>
+    <ul class="footer-links">
+      <li><a href="/about">About</a></li>
+      <li><a href="/services">Services</a></li>
+      <li><a href="/contact">Contact Us</a></li>
+      <li><a href="/privacy">Privacy Policy</a></li>
+    </ul>
+  </div>
+  <p>&copy; {today.getFullYear()} Crescendo Stage. All rights reserved.</p>
+  <p>Designed & Coded by <a href="https://pixelboost.ca">Pixelboost</a>.</p>
+</footer>
+<style lang="scss">
+  @use "@styles" as *;
+  footer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding: 2rem 0;
+    background-color: $light;
+    color: $dark;
+    text-align: center;
+    .flex-group-row {
+      gap: 4rem;
+      width: 100%;
+      justify-content: center;
+      margin-bottom: 0.5rem;
+      a {
+        width: auto;
+        height: 100px;
+      }
+    }
+    .footer-links {
+      font-size: var(--font-size-md);
+      text-decoration: underline;
+      list-style: none;
+      padding: 0;
+      text-align: left;
+
+      li {
+        margin-bottom: 0.25rem;
+        a {
+          text-decoration: none;
+          @include transition-fast(color);
+
+          &:hover {
+            color: $brand-action;
+          }
+        }
+      }
+    }
+  }
+</style>

@@ -1,0 +1,14 @@
+@use "../../foundation/index" as *;
+
+#cta {
+  .flex-group-col {
+    align-items: flex-start;
+
+    .flex-text {
+      align-items: flex-start;
+      .title {
+        @include fluid-type(10);
+      }
+    }
+  }
+}

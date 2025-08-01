@@ -1,0 +1,93 @@
+---
+
+---
+
+<section id="hero">
+  <div class="container">
+    <div class="flex-group-col">
+      <h1>
+        Empowering enterprise growth with intelligent <span
+          >digital automation</span
+        >
+      </h1>
+      <p>
+        Streamline your operations by automating repetitive tasks such as data
+        entry, document review, exception handling and reporting.
+      </p>
+      <div class="flex-group-row">
+        <a href="/contact " class="btn-primary">Book a Demo</a>
+        <a href="/services" class="btn-secondary">Learn More</a>
+      </div>
+    </div>
+    <img
+      loading="eager"
+      class="hero-image"
+      src="/src/assets/svgs/hero.svg"
+      width="100%"
+      height="auto"
+    />
+  </div>
+</section>
+
+<style lang="scss">
+  @use "@styles" as *;
+
+  #hero {
+    container-type: inline-size;
+    background: $gradient-bg;
+    .container {
+      display: flex;
+      flex-direction: column;
+      gap: 3rem;
+      justify-content: space-between;
+      padding: 4rem 1rem;
+    }
+    .flex-group-col {
+      padding: 2rem 3rem;
+      h1 {
+        font-size: var(--font-size-xxl);
+        line-height: 1.4;
+        font-weight: $black;
+        color: $brand-primary;
+        span {
+          color: $brand-action;
+        }
+      }
+      p {
+        font-size: var(--font-size-md);
+      }
+      .flex-group-row {
+        display: flex;
+        gap: 1.25rem;
+        width: 100%;
+      }
+    }
+    .hero-image {
+      position: absolute;
+      width: clamp(800px, 70vw, 1200px);
+      height: clamp(860px, 60vh, 1000px);
+      pointer-events: none;
+      user-select: none;
+      translate: 75% -23%;
+    }
+    @include container-query(tablets) {
+      .container {
+        flex-direction: row;
+      }
+      align-items: center;
+      padding: 6rem 4rem;
+
+      .flex-group-col {
+        flex: 0 0 53%;
+        min-width: 770px;
+      }
+      .hero-image {
+      }
+    }
+
+    @include container-query(large-laptop) {
+      .hero-image {
+      }
+    }
+  }
+</style>

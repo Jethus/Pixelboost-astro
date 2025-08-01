@@ -1,0 +1,47 @@
+@use "../foundation/index" as *;
+:root {
+  @include fluid-font-sizes;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body,
+html {
+  @include body-style;
+  margin: 0;
+  padding: 0;
+  color: $brand-text;
+  overflow-x: clip;
+}
+
+body:has(#menu-toggle:checked) {
+  overflow: hidden;
+  height: 100%;
+  width: 100%;
+  position: fixed;
+}
+
+/* Remove tap highlight color on mobile */
+a,
+button,
+input,
+textarea {
+  -webkit-tap-highlight-color: transparent;
+}
+
+.container {
+  max-width: $content-width;
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  margin: auto;
+}
+
+section {
+  padding: 1.5rem 0.75rem;
+  @include container-query(medium) {
+    padding: 2rem 1rem;
+  }
+}

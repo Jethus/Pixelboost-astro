@@ -1,0 +1,74 @@
+---
+import type { CollectionEntry } from "astro:content";
+import { getCollection, render } from "astro:content";
+import ServiceItem from "./ServiceItem.astro";
+
+const serviceEntries = (await getCollection("services"))
+  .sort(
+    (a, b) =>
+      (a.data.order ?? Infinity) - (b.data.order ?? Infinity) ||
+      a.data.heading.localeCompare(b.data.heading)
+  );
+
+const servicesWithContent = await Promise.all(
+  serviceEntries.map(async (service) => {
+    const { Content } = await render(service);
+    return { data: service.data, Content };
+  })
+);
+---
+
+<section id="services" aria-labelledby="services-heading">
+  <div class="container">
+    <h2 id="services-heading">End-to-End services</h2>
+    <p>
+      From intelligent document processing to predictive analytics, our platform
+      streamlines back-office tasks and turns real-time data into bottom-line
+      impact.
+    </p>
+
+    <ul class="services-list" role="list">
+      {
+        servicesWithContent.map((service, i) => (
+          <li role="listitem">
+            <ServiceItem {...service.data} flip={i % 2 === 1}>
+              <service.Content />
+            </ServiceItem>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>
+<style lang="scss">
+  @use "@styles" as *;
+
+  #services {
+    container-type: inline-size;
+    background: $gradient-bg;
+    .container {
+      display: flex;
+      flex-direction: column;
+      gap: 3rem;
+      padding: 4rem 1rem;
+
+      h2 {
+        line-height: 1.4;
+        font-weight: $bold;
+        color: $brand-primary;
+      }
+
+      .services-list {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 2rem;
+        list-style-type: none;
+        padding: 0;
+
+        li {
+          margin-bottom: 2rem;
+        }
+      }
+    }
+  }
+</style>

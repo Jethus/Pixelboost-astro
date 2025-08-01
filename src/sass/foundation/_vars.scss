@@ -1,0 +1,102 @@
+// Variables used across multiple file types
+// Basic utility mixins that cause conflicts
+// Core design tokens
+@use "sass:list";
+@use "sass:math";
+@use "sass:map";
+
+// Helper functions
+
+// Define a map of breakpoints
+$breakpoints: (
+  small-mobile: 360px,
+  large-mobile: 480px,
+  tablets: 768px,
+  small-laptop: 1024px,
+  large-laptop: 1280px,
+  desktop: 1440px,
+);
+
+@function to-rems($px) {
+  $rems: math.div($px, 16px) * 1rem;
+  @return $rems;
+}
+
+@function rnd($number, $places: 0) {
+  $n: 1;
+  @if $places > 0 {
+    @for $i from 1 through $places {
+      $n: $n * 10;
+    }
+  }
+  @return math.div(math.round($number * $n), $n);
+}
+
+$default-min-bp: map.get($breakpoints, "large-mobile");
+$default-max-bp: map.get($breakpoints, "desktop");
+
+@function clamped(
+  $min-px,
+  $max-px,
+  $min-bp: $default-min-bp,
+  $max-bp: $default-max-bp
+) {
+  $slope: math.div($max-px - $min-px, $max-bp - $min-bp);
+  $slope-vw: rnd($slope * 100, 2);
+  $intercept-rems: rnd(to-rems($min-px - $slope * $min-bp), 2);
+  $min-rems: rnd(to-rems($min-px), 2);
+  $max-rems: rnd(to-rems($max-px), 2);
+  @return clamp(
+    #{$min-rems},
+    #{$slope-vw}vw + #{$intercept-rems},
+    #{$max-rems}
+  );
+}
+
+// End helper functions
+
+$brand-primary: #00163a;
+$brand-action: #1263ff;
+$brand-text: #4c5b76;
+$white-bg: #fbfdfe;
+$off-white-bg: #f5faff;
+$gradient-bg: linear-gradient(to bottom left, #fbfdfe 0%, #f5faff 100%);
+$dark: #000;
+$light: #fff;
+
+$type-base-min: 16px;
+$type-base-max: 20px;
+$type-scale-min: 1.25;
+$type-scale-max: 1.333;
+$type-steps: "sm", "base", "md", "lg", "xl", "xxl", "xxxl";
+$type-base-index: list.index($type-steps, "base");
+
+/* 60px - 100px top and bottom */
+$container-padding: clamp(3.75rem, 7.82vw, 6.25rem) 1rem;
+
+// Content width
+$content-width: 1600px;
+
+// Headings font
+$header-font: "Lato", "Arial", sans-serif;
+// Body font
+$body-font: "Noto Sans", "Arial", sans-serif;
+
+// Font weights
+$regular: 400;
+$bold: 700;
+$black: 900;
+
+$line-height: calc(4px + 2ex + 4px);
+// Font adjustments
+$line-height-small: 1.2;
+$line-height-normal: 1.6;
+$letter-spacing-wide: 0.05em;
+
+// .SCSS Fluid Text Scaling
+$font-size-min: 16; // px at $viewport-min
+$font-size-max: 22; // px at $viewport-max
+$font-ratio-min: 1.25; // ratio at smallest
+$font-ratio-max: 1.3333; // ratio at largest
+$viewport-min: 320; // px for min size
+$viewport-max: 1500; // px for max size

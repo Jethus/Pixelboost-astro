@@ -1,0 +1,104 @@
+@use "../foundation/index" as *;
+
+/* Fonts and general styles */
+/* lato-700 - latin */
+@font-face {
+  font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+  font-family: "Lato";
+  font-style: normal;
+  font-weight: 700;
+  src: url("../fonts/lato-v24-latin-700.woff2") format("woff2"); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+/* lato-900 - latin */
+@font-face {
+  font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+  font-family: "Lato";
+  font-style: normal;
+  font-weight: 900;
+  src: url("../fonts/lato-v24-latin-900.woff2") format("woff2"); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+
+/* noto-sans-regular - latin */
+@font-face {
+  font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+  font-family: "Noto Sans";
+  font-style: normal;
+  font-weight: 400;
+  src: url("../fonts/noto-sans-v39-latin-regular.woff2") format("woff2"); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+/* noto-sans-500 - latin */
+@font-face {
+  font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+  font-family: "Noto Sans";
+  font-style: normal;
+  font-weight: 500;
+  src: url("../fonts/noto-sans-v39-latin-500.woff2") format("woff2"); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+
+body,
+p,
+li,
+textarea,
+input,
+select,
+button,
+th,
+td {
+  font-size: var(--font-size-base);
+}
+
+h1,
+.h1 {
+  font-size: var(--font-size-xxl);
+}
+
+h2,
+.h2 {
+  font-size: var(--font-size-xl);
+}
+
+h3,
+.h3 {
+  font-size: var(--font-size-lg);
+}
+
+h4,
+.h4 {
+  font-size: var(--font-size-md);
+}
+
+h5,
+.h5 {
+  font-size: var(--font-size-base);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5 {
+  @include header-style;
+  line-height: $line-height;
+}
+
+a {
+  text-decoration: none;
+}
+
+a:not([class*="btn"]) {
+  @include link-style($brand-primary);
+  @include transition-fast(color);
+  &:hover {
+    color: $brand-action;
+  }
+}
+
+.topper {
+  font-size: var(--font-size-sm);
+  font-weight: $bold;
+  line-height: $line-height-small;
+  text-transform: uppercase;
+  letter-spacing: $letter-spacing-wide;
+  color: $brand-action;
+  display: block;
+}

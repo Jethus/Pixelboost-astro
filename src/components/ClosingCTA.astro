@@ -1,0 +1,34 @@
+---
+
+---
+
+<section id="ClosingCTA">
+  <div class="container">
+    <div class="flex-group-col">
+      <div class="flex-text">
+        <p class="topper">Ready for a change?</p>
+        <h3 class="title">Let's talk</h3>
+      </div>
+      <a class="btn-solid" href="/contact">Drop a message</a>
+    </div>
+  </div>
+</section>
+
+<style lang="scss">
+  @use "@styles" as *;
+
+  #ClosingCTA {
+    background-color: $brand-action;
+
+    .flex-group-col {
+      align-items: flex-start;
+
+      .flex-text {
+        align-items: flex-start;
+        .title {
+          @include fluid-type(10);
+        }
+      }
+    }
+  }
+</style>
