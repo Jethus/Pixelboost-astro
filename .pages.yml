@@ -13,11 +13,6 @@ content:
       - name: description
         label: Description
         type: string
-      - name: tags
-        label: Tags
-        type: list
-        items:
-          type: string
       - name: body
         label: Body
         type: rich-text
