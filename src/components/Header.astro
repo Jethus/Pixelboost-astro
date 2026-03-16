@@ -1,292 +1,92 @@
 ---
-import HeaderLink from "./HeaderLink.astro";
+import { SITE_TITLE } from "../consts";
+import Button from "./ui/Button.astro";
+import logoBlack from "../assets/svgs/logo-black.svg";
 ---
 
-<header>
-  <nav id="nav">
-    <a href="/" class="logo" aria-label="back to home">
-      <img
-        loading="eager"
-        src="/src/assets/svgs/CS-logo.svg"
-        alt="Crescendo Stage"
-        width="auto"
-        height="50px"
-      />
+<header
+  class="sticky top-0 z-50 border-b-3 border-ink bg-surface"
+  id="site-header"
+>
+  <nav
+    class="mx-auto flex max-w-7xl items-center justify-between px-6 py-4"
+    aria-label="Main navigation"
+  >
+    <a href="/" class="flex items-center gap-2 font-display font-bold fs-s">
+      <img src={logoBlack.src} alt={SITE_TITLE} class="h-16 w-auto" />
     </a>
-    <div class="desktop-links">
-      <HeaderLink href="/about">About</HeaderLink>
-      <HeaderLink href="/services">Services</HeaderLink>
-      <HeaderLink id="contact" href="/contact">Contact Us</HeaderLink>
+
+    <div class="hidden items-center gap-8 font-display font-bold md:flex">
+      <a
+        href="/about"
+        class="fs-base transition-colors duration-200 hover:text-primary"
+        >About Us</a
+      >
+      <a
+        href="/services"
+        class="fs-base transition-colors duration-200 hover:text-primary"
+        >Services</a
+      >
+      <Button href="/contact" size="base">Contact Us</Button>
     </div>
 
     <button
       id="nav-toggle"
-      class="hamburger"
-      aria-label="Mobile menu toggle"
-      aria-controls="mobile-nav"
+      class="relative flex h-8 w-10 flex-col items-center justify-center gap-1.5 md:hidden"
+      aria-label="Toggle menu"
       aria-expanded="false"
+      aria-controls="mobile-nav"
     >
-      <span aria-hidden="true"></span>
-      <span aria-hidden="true"></span>
-      <span aria-hidden="true"></span>
-      <span aria-hidden="true"></span>
+      <span
+        class="block h-0.5 w-full rounded bg-ink transition-all duration-300"
+        aria-hidden="true"></span>
+      <span
+        class="block h-0.5 w-full rounded bg-ink transition-all duration-300"
+        aria-hidden="true"></span>
+      <span
+        class="block h-0.5 w-full rounded bg-ink transition-all duration-300"
+        aria-hidden="true"></span>
     </button>
-    <div id="mobile-nav" class="mobile-links" data-visible="false">
-      <HeaderLink href="/about">About</HeaderLink>
-      <HeaderLink href="/services">Services</HeaderLink>
-      <HeaderLink href="/contact">Contact Us</HeaderLink>
-    </div>
   </nav>
+
+  <div
+    id="mobile-nav"
+    class="hidden border-t-3 border-ink bg-surface md:hidden"
+  >
+    <div class="flex flex-col px-6 py-4 font-display font-bold">
+      <a
+        href="/about"
+        class="border-b border-ink/10 py-3 transition-colors duration-200 hover:text-primary"
+        >About Us</a
+      >
+      <a
+        href="/services"
+        class="border-b border-ink/10 py-3 transition-colors duration-200 hover:text-primary"
+        >Services</a
+      >
+      <Button href="/contact" class="mt-4 text-center">Contact Us</Button>
+    </div>
+  </div>
 </header>
 
-<style lang="scss">
-  @use "@styles" as *;
-  @use "sass:color";
-  // header as container
-  header {
-    container-type: inline-size;
-    position: sticky;
-    top: 0;
-    left: 0;
-    right: 0;
-    z-index: 99;
-  }
-  // mobile header, with shrink effect
-  nav {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width: 100%;
-    gap: 15%;
-    padding: 1rem 1.5rem;
-    background: $light;
-    box-shadow: 0 2px 4px rgba($dark, 0.25);
-    transform: scaleX(1) translateY(0);
-    transform-origin: top center;
-    margin-inline: auto;
-    border-radius: 0;
-    transition:
-      transform 0.35s ease,
-      width 0.35s ease,
-      padding 0.35s ease,
-      box-shadow 0.35s ease,
-      border-radius 0.35s ease;
-    &.is-shrunk {
-      transform: scale(0.94) translateY(2rem);
-      width: calc(100% - 2rem);
-      border-radius: 1rem;
-      padding: 0.5rem 1rem;
-      box-shadow: 0 4px 8px rgba($dark, 0.12);
-
-      .logo,
-      .desktop-links,
-      .hamburger,
-      #contact {
-        transform: scale(0.9);
-      }
-      .hamburger {
-        &:hover,
-        &:focus-visible {
-          animation: breathe-sm 2s ease-in-out infinite;
-        }
-      }
-    }
-    .desktop-links {
-      display: none;
-    }
-    .logo,
-    .desktop-links,
-    .hamburger,
-    #contact {
-      transform: scale(1);
-      transition: transform 0.35s ease;
-    }
-  }
-
-  // burger menu style, variables to ensure lines are square
-  $hamburger-width: 48px;
-  $hamburger-height: 32px;
-  $patty-height: 4px;
-  .hamburger {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: flex-start;
-    position: relative;
-    width: $hamburger-width;
-    height: $hamburger-height;
-    border: none;
-    background: transparent;
-    cursor: pointer;
-    transition: transform 0.3s ease;
-    z-index: 99;
-    &:hover,
-    &:focus-visible {
-      animation: breathe-full 2s ease-in-out infinite;
-    }
-    span {
-      display: block;
-      position: absolute;
-      height: $patty-height;
-      width: 100%;
-      background: $brand-primary;
-      border-radius: 8px;
-      @include transition-slow(all);
-      &:nth-child(1) {
-        transform: translateY(
-          calc(($hamburger-height - $patty-height) / 2 * -1)
-        );
-      }
-
-      &:nth-child(2),
-      &:nth-child(3) {
-        transform: translateY(0);
-        width: 75%;
-      }
-
-      &:nth-child(4) {
-        transform: translateY(calc(($hamburger-height - $patty-height) / 2));
-      }
-    }
-
-    &.open span {
-      &:nth-child(1) {
-        transform: translateY(0) translateX(calc($hamburger-width / 2));
-        width: 0%;
-        transform-origin: top center;
-      }
-      &:nth-child(2),
-      &:nth-child(3) {
-        width: 100%;
-      }
-      &:nth-child(2) {
-        transform: rotate(45deg);
-      }
-      &:nth-child(3) {
-        transform: rotate(-45deg);
-      }
-      &:nth-child(4) {
-        transform: translateY(0) translateX(calc($hamburger-width / 2));
-        width: 0%;
-        transform-origin: top center;
-      }
-    }
-  }
-
-  // mobile slide-in drawer
-  .mobile-links {
-    position: fixed;
-    inset-block-start: 0;
-    inset-inline-end: 0;
-    width: 35vw;
-    height: 100vh;
-    padding-top: 6rem;
-    background: #fff;
-    display: flex;
-    flex-direction: column;
-    gap: 0.25rem;
-    transform: translateX(120%);
-    transition:
-      transform 0.35s ease,
-      box-shadow 0.35s ease;
-    box-shadow: none;
-    z-index: 10;
-
-    &[data-visible="true"] {
-      transform: translateX(0);
-      box-shadow: -8px 0 16px rgba($dark, 0.12);
-    }
-
-    a {
-      font-size: var(--font-size-md);
-      font-weight: $bold;
-      width: 100%;
-      text-align: center;
-      padding: 1rem 0;
-      @include transition-fast(background-color);
-      &:hover {
-        background-color: $off-white-bg;
-      }
-    }
-  }
-
-  // Undo the shrink effects when mobile menu is open
-  nav:has([data-visible="true"]) {
-    transform: scale(1) translateY(0);
-    width: 100%;
-    border-radius: 0;
-    padding: 1rem 1.5rem;
-    .logo,
-    .desktop-links,
-    .hamburger,
-    #contact {
-      transform: scale(1);
-    }
-    .hamburger {
-      &:hover,
-      &:focus-visible {
-        animation: breathe-full 2s ease-in-out infinite;
-      }
-    }
-  }
-
-  // tablet style adjustments
-  @include container-query(tablets) {
-    nav {
-      padding: 1.5rem 3rem;
-      &.is-shrunk {
-        transform: scale(0.94) translateY(2rem);
-        width: calc(100% - 4rem);
-        border-radius: 2rem;
-        padding: 1rem 2rem;
-        box-shadow: 0 4px 8px rgba($dark, 0.12);
-      }
-      .desktop-links {
-        display: flex;
-        align-items: center;
-        gap: 2.5rem;
-        font-size: var(--font-size-md);
-        font-weight: bold;
-      }
-      #contact {
-        @include btn-base;
-      }
-      .hamburger,
-      .mobile-links {
-        display: none;
-      }
-    }
-  }
-</style>
-
 <script is:inline>
-  const nav = document.getElementById("nav");
-  const shrink_threshold = 40;
-  const expand_threshold = 20;
-  let isShrunk = false;
-
-  const onScroll = () => {
-    const y = window.scrollY;
-
-    if (!isShrunk && y > shrink_threshold) {
-      nav.classList.add("is-shrunk");
-      isShrunk = true;
-    } else if (isShrunk && y < expand_threshold) {
-      nav.classList.remove("is-shrunk");
-      isShrunk = false;
-    }
-  };
-
-  onScroll();
-  addEventListener("scroll", onScroll, { passive: true });
-
   const toggle = document.getElementById("nav-toggle");
   const mobileMenu = document.getElementById("mobile-nav");
+  const spans = toggle.querySelectorAll("span");
 
   toggle.addEventListener("click", () => {
     const isOpen = toggle.getAttribute("aria-expanded") === "true";
-    toggle.setAttribute("aria-expanded", !isOpen);
-    mobileMenu.dataset.visible = String(!isOpen);
-    toggle.classList.toggle("open", !isOpen);
+    toggle.setAttribute("aria-expanded", String(!isOpen));
+    mobileMenu.classList.toggle("hidden");
+
+    if (!isOpen) {
+      spans[0].style.transform = "rotate(45deg) translate(4px, 4px)";
+      spans[1].style.opacity = "0";
+      spans[2].style.transform = "rotate(-45deg) translate(4px, -4px)";
+    } else {
+      spans[0].style.transform = "";
+      spans[1].style.opacity = "";
+      spans[2].style.transform = "";
+    }
   });
 </script>

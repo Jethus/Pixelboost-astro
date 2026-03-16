@@ -1,93 +1,45 @@
 ---
+import { getEntry } from "astro:content";
+import Button from "./ui/Button.astro";
 
+const heroDoc = await getEntry('landingHero', 'hero');
+if (!heroDoc) throw new Error("Could find hero content");
+const { eyebrow, headline, description, cta1Text, cta1Link, cta2Text, cta2Link } = heroDoc.data;
 ---
 
-<section id="hero">
-  <div class="container">
-    <div class="flex-group-col">
-      <h1>
-        Empowering enterprise growth with intelligent <span
-          >digital automation</span
-        >
-      </h1>
-      <p>
-        Streamline your operations by automating repetitive tasks such as data
-        entry, document review, exception handling and reporting.
+<section class="bg-primary-light border-b-3 border-ink">
+  <div
+    class="mx-auto flex max-w-7xl flex-col items-center gap-10 px-6 py-20 md:flex-row md:gap-16 md:py-28 lg:py-32"
+  >
+    <!-- Text content -->
+    <div class="flex max-w-2xl flex-col items-start gap-6 md:flex-1">
+      <p class="font-display font-bold uppercase tracking-widest text-accent fs-xs">
+        {eyebrow}
       </p>
-      <div class="flex-group-row">
-        <a href="/contact " class="btn-primary">Book a Demo</a>
-        <a href="/services" class="btn-secondary">Learn More</a>
+
+      <h1 class="font-display font-bold leading-tight" set:html={headline}></h1>
+
+      <p class="max-w-lg leading-relaxed text-ink/70" set:html={description}></p>
+
+      <div class="flex flex-wrap gap-4 pt-2">
+        <Button href={cta1Link}>{cta1Text}</Button>
+        <Button href={cta2Link} variant="secondary">{cta2Text}</Button>
       </div>
     </div>
-    <img
-      loading="eager"
-      class="hero-image"
-      src="/src/assets/svgs/hero.svg"
-      width="100%"
-      height="auto"
-    />
+
+    <!-- Decorative grid -->
+    <div
+      class="relative hidden aspect-square w-full max-w-md md:flex md:flex-1 md:items-center md:justify-center"
+    >
+      <div class="grid h-72 w-72 grid-cols-3 grid-rows-3 gap-3 lg:h-80 lg:w-80">
+        <div class="rounded-brutal border-3 border-ink bg-surface shadow-brutal"></div>
+        <div class="col-span-2 rounded-brutal border-3 border-ink bg-primary/20 shadow-brutal"></div>
+        <div class="col-span-2 rounded-brutal border-3 border-ink bg-primary-light shadow-brutal"></div>
+        <div class="rounded-brutal border-3 border-ink bg-primary/40 shadow-brutal"></div>
+        <div class="rounded-brutal border-3 border-ink bg-primary shadow-brutal"></div>
+        <div class="rounded-brutal border-3 border-ink bg-accent/30 shadow-brutal"></div>
+        <div class="rounded-brutal border-3 border-ink bg-ink shadow-brutal"></div>
+      </div>
+    </div>
   </div>
 </section>
-
-<style lang="scss">
-  @use "@styles" as *;
-
-  #hero {
-    container-type: inline-size;
-    background: $gradient-bg;
-    .container {
-      display: flex;
-      flex-direction: column;
-      gap: 3rem;
-      justify-content: space-between;
-      padding: 4rem 1rem;
-    }
-    .flex-group-col {
-      padding: 2rem 3rem;
-      h1 {
-        font-size: var(--font-size-xxl);
-        line-height: 1.4;
-        font-weight: $black;
-        color: $brand-primary;
-        span {
-          color: $brand-action;
-        }
-      }
-      p {
-        font-size: var(--font-size-md);
-      }
-      .flex-group-row {
-        display: flex;
-        gap: 1.25rem;
-        width: 100%;
-      }
-    }
-    .hero-image {
-      position: absolute;
-      width: clamp(800px, 70vw, 1200px);
-      height: clamp(860px, 60vh, 1000px);
-      pointer-events: none;
-      user-select: none;
-      translate: 75% -23%;
-    }
-    @include container-query(tablets) {
-      .container {
-        flex-direction: row;
-      }
-      align-items: center;
-      padding: 6rem 4rem;
-
-      .flex-group-col {
-        flex: 0 0 53%;
-        min-width: 770px;
-      }
-      .hero-image {
-      }
-    }
-
-    @include container-query(large-laptop) {
-      .hero-image {
-      }
-    }
-  }
-</style>

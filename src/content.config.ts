@@ -17,14 +17,108 @@ const blog = defineCollection({
 });
 
 const services = defineCollection({
-  // Load Markdown files in the `src/content/services/` directory.
-
-  schema: ({ image }) =>
+  loader: glob({ pattern: "**/*.md", base: "./src/content/services" }),
+  schema: () =>
     z.object({
-      heading: z.string(),
-      image: image(),
-      order: z.number().optional(),
+      tab: z.string(),
+      label: z.string(),
     }),
 });
 
-export const collections = { blog, services };
+const portfolio = defineCollection({
+  loader: glob({ pattern: "**/*.yaml", base: "./src/content/portfolio" }),
+  schema: ({ image }) =>
+    z.object({
+      tags: z.string(),
+      image: image(),
+    }),
+});
+
+const landingHero = defineCollection({
+  loader: glob({ pattern: "hero.md", base: "src/content/landing" }),
+  schema: z.object({
+    eyebrow: z.string(),
+    headline: z.string(),
+    description: z.string(),
+    cta1Text: z.string(),
+    cta1Link: z.string(),
+    cta2Text: z.string(),
+    cta2Link: z.string(),
+  }),
+});
+
+const landingWhatWeOffer = defineCollection({
+  loader: glob({ pattern: "what-we-offer.md", base: "src/content/landing" }),
+  schema: z.object({
+    eyebrow: z.string(),
+    headline: z.string(),
+  }),
+});
+
+const landingPortfolio = defineCollection({
+  loader: glob({ pattern: "portfolio.md", base: "src/content/landing" }),
+  schema: z.object({
+    eyebrow: z.string(),
+    headline: z.string(),
+  }),
+});
+
+const landingComparison = defineCollection({
+  loader: glob({ pattern: "comparison.md", base: "src/content/landing" }),
+  schema: z.object({
+    eyebrow: z.string(),
+    headline: z.string(),
+    description: z.string(),
+    rows: z.array(
+      z.object({
+        feature: z.string(),
+        diy: z.string(),
+        ours: z.string(),
+      })
+    ),
+  }),
+});
+
+const landingPricing = defineCollection({
+  loader: glob({ pattern: "pricing.md", base: "src/content/landing" }),
+  schema: z.object({
+    eyebrow: z.string(),
+    headline: z.string(),
+    plans: z.array(
+      z.object({
+        variant: z.string(),
+        title: z.string(),
+        price: z.string(),
+        priceNote: z.string(),
+        features: z.array(
+          z.object({
+            text: z.string(),
+            included: z.boolean().default(true),
+          })
+        ),
+      })
+    ),
+  }),
+});
+
+const landingCTA = defineCollection({
+  loader: glob({ pattern: "cta.md", base: "src/content/landing" }),
+  schema: z.object({
+    eyebrow: z.string(),
+    headline: z.string(),
+    buttonText: z.string(),
+    buttonLink: z.string(),
+  }),
+});
+
+export const collections = {
+  blog,
+  services,
+  portfolio,
+  landingHero,
+  landingWhatWeOffer,
+  landingPortfolio,
+  landingComparison,
+  landingPricing,
+  landingCTA,
+};

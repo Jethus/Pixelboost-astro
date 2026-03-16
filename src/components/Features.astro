@@ -1,0 +1,82 @@
+---
+import Tabs from "./ui/Tabs.astro";
+import { getCollection, getEntry, render } from "astro:content";
+
+const offerDoc = await getEntry('landingWhatWeOffer', 'what-we-offer');
+if (!offerDoc) throw new Error("Could not find what-we-offer content");
+const { eyebrow, headline } = offerDoc.data;
+
+const servicesDocs = await getCollection("services");
+const services = await Promise.all(servicesDocs.map(async (doc) => {
+  const { Content } = await render(doc);
+  return {
+    ...doc.data,
+    id: doc.id,
+    Content,
+  };
+}));
+---
+
+<section class="border-b-3 border-ink bg-surface" id="services">
+  <div class="mx-auto max-w-7xl px-6 py-20 md:py-28">
+    <div class="mb-10 text-center">
+      <p class="mb-2 font-display font-bold uppercase tracking-[0.2em] text-accent fs-xs">
+        {eyebrow}
+      </p>
+      <h2 class="font-display font-bold">{headline}</h2>
+    </div>
+
+    <Tabs
+      id="services"
+      tabs={services.map((s) => s.tab)}
+      class="mb-12"
+    />
+
+    {
+      services.map((service, i) => (
+        <div
+          class="service-panel"
+          data-tab-panel-group="services"
+          data-tab-panel-index={i}
+          hidden={i !== 0}
+        >
+          <div class="flex flex-col gap-8 md:flex-row md:items-start md:gap-12">
+            <div class="max-w-lg md:flex-1">
+              <p class="mb-2 font-display font-bold uppercase tracking-[0.2em] text-primary fs-xs">
+                {service.label}
+              </p>
+              <h3 class="mb-4 font-display font-bold leading-snug capitalize">
+                {service.id.replace(/-/g, ' ')}
+              </h3>
+              <div class="prose-content leading-relaxed text-ink/70">
+                <service.Content />
+              </div>
+            </div>
+
+            <div class="flex items-center justify-center md:flex-1">
+              <div class="flex h-48 w-full max-w-sm flex-col gap-2 rounded-brutal border-3 border-ink bg-surface p-4 shadow-brutal">
+                <div class="flex gap-2">
+                  <div class="h-4 w-4 rounded-sm bg-gray-400" />
+                  <div class="h-4 w-12 rounded-sm bg-gray-300" />
+                  <div class="h-4 flex-1" />
+                  <div class="h-4 w-8 rounded-sm bg-gray-300" />
+                </div>
+                <div class="flex-1 rounded-sm bg-primary/80" />
+                <div class="flex gap-2">
+                  <div class="h-3 flex-1 rounded-sm bg-gray-300" />
+                  <div class="h-3 flex-1 rounded-sm bg-gray-200" />
+                </div>
+                <div class="flex gap-2">
+                  <div class="h-3 w-3/4 rounded-sm bg-gray-200" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      ))
+    }
+  </div>
+</section>
+
+  </div>
+</section>

@@ -1,0 +1,44 @@
+---
+/**
+ * Button — Neo-brutalist CTA and secondary button primitive.
+ *
+ * Usage:
+ *   <Button href="/contact">Get in touch</Button>
+ *   <Button href="#work" variant="secondary">See our work</Button>
+ */
+interface Props {
+  href: string;
+  variant?: "primary" | "secondary";
+  class?: string;
+  size?: "base" | "lg";
+}
+
+const {
+  href,
+  variant = "primary",
+  class: className = "",
+  size = "base",
+} = Astro.props;
+
+const sizeClasses = {
+  base: "px-12 py-3.5 text-xl",
+  lg: "px-16 py-4.5 text-xxl",
+};
+
+const variants = {
+  primary: "bg-primary text-surface hover:bg-primary/90",
+  secondary: "bg-transparent text-ink hover:bg-ink hover:text-surface",
+};
+---
+
+<a
+  href={href}
+  class:list={[
+    "inline-flex items-center justify-center rounded-brutal border-3 border-ink font-display font-bold shadow-brutal transition-all duration-200 hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-brutal-hover",
+    sizeClasses[size],
+    variants[variant],
+    className,
+  ]}
+>
+  <slot />
+</a>

@@ -1,0 +1,187 @@
+/* ============================================================
+   global.css — Single source of truth for all styling
+   Tailwind CSS v4 · Pixelboost Starter Template
+   ============================================================ */
+
+@import "tailwindcss";
+
+/* ————————————————————————————————————————————————————————————
+   @font-face — Local self-hosted fonts
+   ———————————————————————————————————————————————————————————— */
+
+/* Atkinson Hyperlegible — display / accent font */
+@font-face {
+  font-family: "Atkinson";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("../fonts/atkinson-regular.woff") format("woff");
+}
+@font-face {
+  font-family: "Atkinson";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("../fonts/atkinson-bold.woff") format("woff");
+}
+
+/* Lato — headings */
+@font-face {
+  font-family: "Lato";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("../fonts/lato-v24-latin-700.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Lato";
+  font-style: normal;
+  font-weight: 900;
+  font-display: swap;
+  src: url("../fonts/lato-v24-latin-900.woff2") format("woff2");
+}
+
+/* Noto Sans — body text */
+@font-face {
+  font-family: "Noto Sans";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("../fonts/noto-sans-v39-latin-regular.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Noto Sans";
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("../fonts/noto-sans-v39-latin-500.woff2") format("woff2");
+}
+
+/* ————————————————————————————————————————————————————————————
+   @theme — Design tokens → Tailwind utility classes
+   ———————————————————————————————————————————————————————————— */
+
+@theme {
+  /* Font families */
+  --font-heading: "Lato", "Arial", sans-serif;
+  --font-body: "Noto Sans", "Arial", sans-serif;
+  --font-display: "Atkinson", sans-serif;
+
+  /* ── Brand palette — oklch ─────────────────────────────────
+     Primary  = logo green (#53c87d)
+     Ink      = deep charcoal with cool undertone (authority)
+     Surface  = warm white (approachable, not sterile)
+     ──────────────────────────────────────────────────────── */
+  --color-primary: oklch(0.72 0.17 155);
+  --color-primary-light: oklch(0.95 0.04 155);
+  --color-accent: oklch(0.75 0.14 75);
+  --color-ink: oklch(0.20 0.02 250);
+  --color-surface: oklch(0.985 0.003 100);
+
+  /* Border radius */
+  --radius-brutal: 12px;
+  --radius-pill: 9999px;
+
+  /* Shadows — offset drop shadows for neo-brutal cards */
+  --shadow-brutal: 4px 4px 0px 0px oklch(0.20 0.02 250);
+  --shadow-brutal-lg: 6px 6px 0px 0px oklch(0.20 0.02 250);
+  --shadow-brutal-hover: 2px 2px 0px 0px oklch(0.20 0.02 250);
+
+  /* Animations */
+  --animate-fade-in: fade-in 0.5s ease-out;
+  --animate-slide-up: slide-up 0.6s ease-out;
+
+  @keyframes fade-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  @keyframes slide-up {
+    from { opacity: 0; transform: translateY(1.5rem); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+}
+
+/* ————————————————————————————————————————————————————————————
+   Fluid Type Scale
+   Source: https://fluid-type.tolin.ski/
+   Min: 14px @ 320vw  →  Max: 20px @ 1500vw
+   Ratio: 1.25 → 1.333 (Major Third → Perfect Fourth)
+   ———————————————————————————————————————————————————————————— */
+
+body, h1, h2, h3, h4, h5, h6, p, li, .fluid, textarea, input, select, button, th, td {
+  --fl: 0;
+  --font-size-min: 14;
+  --font-size-max: 22;
+  --font-ratio-min: 1.25;
+  --font-ratio-max: 1.3333333333333333;
+  --font-width-min: 320;
+  --font-width-max: 1500;
+  --fluid-min: calc(var(--font-size-min) * pow(var(--font-ratio-min), var(--fl, 0)));
+  --fluid-max: calc(var(--font-size-max) * pow(var(--font-ratio-max), var(--fl, 0)));
+  --fluid-preferred: calc((var(--fluid-max) - var(--fluid-min)) / (var(--font-width-max) - var(--font-width-min)));
+  --fluid-type: clamp(
+    (var(--fluid-min) / 16) * 1rem,
+    ((var(--fluid-min) / 16) * 1rem) -
+      (((var(--fluid-preferred) * var(--font-width-min)) / 16) * 1rem) +
+      (var(--fluid-preferred) * var(--variable-unit, 100vi)),
+    (var(--fluid-max) / 16) * 1rem
+  );
+  font-size: var(--fluid-type);
+}
+
+.fluid-text-container {
+  container-type: inline-size;
+  --variable-unit: 100cqi;
+}
+
+h1, .h1 { --fl: 5; }
+h2, .h2 { --fl: 4; }
+h3, .h3 { --fl: 3; }
+h4, .h4 { --fl: 2; }
+h5, .h5 { --fl: 1; }
+h6, .h6 { --fl: 0; }
+p, li, body { --fl: 0; }
+
+/* ————————————————————————————————————————————————————————————
+   Fluid size utilities — use as classes alongside Tailwind
+   ———————————————————————————————————————————————————————————— */
+
+@utility fs-xs   { --fl: -1; }
+@utility fs-base { --fl: 0; }
+@utility fs-s    { --fl: 1; }
+@utility fs-m    { --fl: 2; }
+@utility fs-l    { --fl: 3; }
+@utility fs-xl   { --fl: 4; }
+@utility fs-xxl  { --fl: 5; }
+@utility fs-xxxl { --fl: 6; }
+
+/* ————————————————————————————————————————————————————————————
+   @layer base — Global element defaults
+   ———————————————————————————————————————————————————————————— */
+
+@layer base {
+  body {
+    font-family: var(--font-display);
+    color: var(--color-ink);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display);
+    font-weight: 700;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+  }
+
+  a {
+    text-decoration: none;
+    color: inherit;
+  }
+}
+
+/* Base utility for hiding elements */
+[hidden] {
+  display: none !important;
+}

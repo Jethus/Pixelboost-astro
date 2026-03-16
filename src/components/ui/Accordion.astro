@@ -1,0 +1,39 @@
+---
+/**
+ * Accordion — Neo-brutalist expandable section using native <details>.
+ *
+ * Usage:
+ *   <Accordion title="Hosting Simplified">
+ *     <p>Your hosting is included…</p>
+ *   </Accordion>
+ */
+interface Props {
+  title: string;
+  open?: boolean;
+  class?: string;
+}
+
+const { title, open = false, class: className = "" } = Astro.props;
+---
+
+<details
+  class:list={[
+    "group rounded-brutal border-3 border-ink bg-surface shadow-brutal transition-all duration-200 open:shadow-brutal-hover",
+    className,
+  ]}
+  open={open}
+>
+  <summary
+    class="flex cursor-pointer items-center justify-between px-6 py-5 font-display text-lg font-bold select-none"
+  >
+    <span>{title}</span>
+    <span
+      class="ml-4 flex h-8 w-8 shrink-0 items-center justify-center rounded-full border-2 border-ink text-xl leading-none transition-transform duration-200 group-open:rotate-45"
+    >
+      +
+    </span>
+  </summary>
+  <div class="border-t-2 border-ink/20 px-6 py-5">
+    <slot />
+  </div>
+</details>

@@ -1,34 +1,22 @@
 ---
+import { getEntry } from "astro:content";
+import Button from "./ui/Button.astro";
 
+const ctaDoc = await getEntry('landingCTA', 'cta');
+if (!ctaDoc) throw new Error("Could not find CTA content");
+const { eyebrow, headline, buttonText, buttonLink } = ctaDoc.data;
 ---
 
-<section id="ClosingCTA">
-  <div class="container">
-    <div class="flex-group-col">
-      <div class="flex-text">
-        <p class="topper">Ready for a change?</p>
-        <h3 class="title">Let's talk</h3>
-      </div>
-      <a class="btn-solid" href="/contact">Drop a message</a>
+<section class="border-b-3 border-ink bg-primary-light" id="cta">
+  <div class="mx-auto max-w-7xl px-6 py-20 md:py-28">
+    <div class="flex flex-col items-start gap-6">
+      <p
+        class="font-display font-bold uppercase tracking-[0.2em] text-accent fs-xs"
+      >
+        {eyebrow}
+      </p>
+      <h1 class="font-display font-bold fs-xxxl">{headline}</h1>
+      <Button href={buttonLink} size="lg">{buttonText}</Button>
     </div>
   </div>
 </section>
-
-<style lang="scss">
-  @use "@styles" as *;
-
-  #ClosingCTA {
-    background-color: $brand-action;
-
-    .flex-group-col {
-      align-items: flex-start;
-
-      .flex-text {
-        align-items: flex-start;
-        .title {
-          @include fluid-type(10);
-        }
-      }
-    }
-  }
-</style>
