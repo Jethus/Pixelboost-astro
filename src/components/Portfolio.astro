@@ -2,27 +2,31 @@
 import ClientCard from "./ui/ClientCard.astro";
 import { getCollection, getEntry } from "astro:content";
 
-const portfolioLayout = await getEntry('landingPortfolio', 'portfolio');
-if (!portfolioLayout) throw new Error("Could not find portfolio section content");
+const portfolioLayout = await getEntry("landingPortfolio", "portfolio");
+if (!portfolioLayout)
+  throw new Error("Could not find portfolio section content");
 const { eyebrow, headline } = portfolioLayout.data;
 
 const clientsDocs = await getCollection("portfolio");
 const clients = clientsDocs.map((doc) => ({
-  name: doc.id,
+  name: doc.data.title,
   tags: doc.data.tags,
   image: doc.data.image,
+  outcome: doc.data.outcome,
 }));
 ---
 
 <section class="border-b-3 border-ink bg-primary-light" id="portfolio">
   <div class="mx-auto max-w-7xl px-6 py-20 md:py-28">
     <div class="mb-16 text-center">
-      <p class="mb-2 font-display font-bold uppercase tracking-[0.2em] text-accent fs-xs">
+      <p
+        class="mb-2 font-display font-bold uppercase tracking-[0.2em] text-accent fs-xs"
+      >
         {eyebrow}
       </p>
-      <h2 class="font-display font-bold">
+      <h3 class="font-display font-bold">
         {headline}
-      </h2>
+      </h3>
     </div>
 
     <div class="grid gap-x-12 gap-y-16 md:grid-cols-2">
@@ -32,6 +36,7 @@ const clients = clientsDocs.map((doc) => ({
             image={client.image}
             tags={client.tags}
             name={client.name}
+            outcome={client.outcome}
             class={i % 2 !== 0 ? "md:mt-24" : ""}
           />
         ))

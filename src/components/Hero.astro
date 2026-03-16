@@ -1,25 +1,37 @@
 ---
 import { getEntry } from "astro:content";
 import Button from "./ui/Button.astro";
+import { Image } from "astro:assets";
+import heroImg from "../assets/png/hero.png";
 
-const heroDoc = await getEntry('landingHero', 'hero');
+const heroDoc = await getEntry("landingHero", "hero");
 if (!heroDoc) throw new Error("Could find hero content");
-const { eyebrow, headline, description, cta1Text, cta1Link, cta2Text, cta2Link } = heroDoc.data;
+const {
+  eyebrow,
+  headline,
+  description,
+  cta1Text,
+  cta1Link,
+  cta2Text,
+  cta2Link,
+} = heroDoc.data;
 ---
 
 <section class="bg-primary-light border-b-3 border-ink">
   <div
-    class="mx-auto flex max-w-7xl flex-col items-center gap-10 px-6 py-20 md:flex-row md:gap-16 md:py-28 lg:py-32"
+    class="mx-auto flex max-w-9/10 flex-col items-center gap-10 px-6 py-20 md:flex-row md:gap-16 md:py-28 lg:py-32"
   >
     <!-- Text content -->
     <div class="flex max-w-2xl flex-col items-start gap-6 md:flex-1">
-      <p class="font-display font-bold uppercase tracking-widest text-accent fs-xs">
+      <p
+        class="font-display font-bold uppercase tracking-widest text-accent fs-xs"
+      >
         {eyebrow}
       </p>
 
-      <h1 class="font-display font-bold leading-tight" set:html={headline}></h1>
+      <h1 class="font-display font-bold leading-tight" set:html={headline} />
 
-      <p class="max-w-lg leading-relaxed text-ink/70" set:html={description}></p>
+      <p class="max-w-lg leading-relaxed text-ink/70" set:html={description} />
 
       <div class="flex flex-wrap gap-4 pt-2">
         <Button href={cta1Link}>{cta1Text}</Button>
@@ -27,18 +39,29 @@ const { eyebrow, headline, description, cta1Text, cta1Link, cta2Text, cta2Link }
       </div>
     </div>
 
-    <!-- Decorative grid -->
+    <!-- Mockup Image with Mac Window & Hover Scroll -->
     <div
-      class="relative hidden aspect-square w-full max-w-md md:flex md:flex-1 md:items-center md:justify-center"
+      class="relative hidden w-full md:flex md:flex-col md:flex-1 rounded-brutal border-3 border-ink shadow-brutal overflow-hidden group bg-surface h-128"
     >
-      <div class="grid h-72 w-72 grid-cols-3 grid-rows-3 gap-3 lg:h-80 lg:w-80">
-        <div class="rounded-brutal border-3 border-ink bg-surface shadow-brutal"></div>
-        <div class="col-span-2 rounded-brutal border-3 border-ink bg-primary/20 shadow-brutal"></div>
-        <div class="col-span-2 rounded-brutal border-3 border-ink bg-primary-light shadow-brutal"></div>
-        <div class="rounded-brutal border-3 border-ink bg-primary/40 shadow-brutal"></div>
-        <div class="rounded-brutal border-3 border-ink bg-primary shadow-brutal"></div>
-        <div class="rounded-brutal border-3 border-ink bg-accent/30 shadow-brutal"></div>
-        <div class="rounded-brutal border-3 border-ink bg-ink shadow-brutal"></div>
+      <!-- Mac Window Bar -->
+      <div
+        class="flex items-center gap-2 border-b-3 border-ink bg-primary-light px-4 py-3"
+      >
+        <div class="h-3 w-3 rounded-full border-2 border-ink bg-red-400"></div>
+        <div class="h-3 w-3 rounded-full border-2 border-ink bg-yellow-400">
+        </div>
+        <div class="h-3 w-3 rounded-full border-2 border-ink bg-green-400">
+        </div>
+      </div>
+      <!-- Mockup Viewer -->
+      <div class="relative flex-1 w-full overflow-hidden bg-ink/5">
+        <Image
+          src={heroImg}
+          alt="Pixelboost custom website design mockup"
+          width={800}
+          class="absolute inset-0 w-full h-[300%] max-h-none object-cover object-top transition-all duration-8000ms ease-linear group-hover:object-bottom"
+          priority
+        />
       </div>
     </div>
   </div>

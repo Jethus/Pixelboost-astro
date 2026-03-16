@@ -1,5 +1,7 @@
 ---
-tab: Accessibility
-label: ACCESSIBILITY
+tab: Built-in Accessibility
+label: BUILT-IN-ACCESSIBILITY
+order: 5
 ---
-From screen reader compatibility to keyboard navigation and colour contrast adjustments, we make sure your digital presence meets the latest accessibility standards.
+
+The web should be inclusive for everyone. From screen-reader compatibility to strict color contrast, I code natively accessible websites that meet the latest WCAG standards right out of the box.

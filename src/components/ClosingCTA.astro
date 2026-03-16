@@ -2,21 +2,19 @@
 import { getEntry } from "astro:content";
 import Button from "./ui/Button.astro";
 
-const ctaDoc = await getEntry('landingCTA', 'cta');
+const ctaDoc = await getEntry("landingCTA", "cta");
 if (!ctaDoc) throw new Error("Could not find CTA content");
 const { eyebrow, headline, buttonText, buttonLink } = ctaDoc.data;
 ---
 
-<section class="border-b-3 border-ink bg-primary-light" id="cta">
+<section class="border-b-3 border-ink bg-surface" id="cta">
   <div class="mx-auto max-w-7xl px-6 py-20 md:py-28">
-    <div class="flex flex-col items-start gap-6">
-      <p
-        class="font-display font-bold uppercase tracking-[0.2em] text-accent fs-xs"
-      >
-        {eyebrow}
-      </p>
-      <h1 class="font-display font-bold fs-xxxl">{headline}</h1>
-      <Button href={buttonLink} size="lg">{buttonText}</Button>
-    </div>
+    <p
+      class="font-display font-bold uppercase tracking-[0.2em] text-accent fs-xs"
+    >
+      {eyebrow}
+    </p>
+    <h2 class="font-display font-bold fs-xl">{headline}</h2>
+    <Button href={buttonLink} size="lg">{buttonText}</Button>
   </div>
 </section>

@@ -2,12 +2,12 @@
 import { getEntry } from "astro:content";
 import PricingCard from "./ui/PricingCard.astro";
 
-const pricingDoc = await getEntry('landingPricing', 'pricing');
+const pricingDoc = await getEntry("landingPricing", "pricing");
 if (!pricingDoc) throw new Error("Could not find pricing content");
 const { eyebrow, headline, plans } = pricingDoc.data;
 ---
 
-<section class="border-b-3 border-ink bg-surface" id="pricing">
+<section class="border-b-3 border-ink bg-primary-light" id="pricing">
   <div class="mx-auto max-w-7xl px-6 py-20 md:py-28">
     <div class="mb-12 text-center">
       <p
@@ -18,16 +18,18 @@ const { eyebrow, headline, plans } = pricingDoc.data;
       <h2 class="font-display font-bold">{headline}</h2>
     </div>
 
-    <div class="mx-auto grid max-w-4xl gap-8 md:grid-cols-2">
-      {plans.map(plan => (
-        <PricingCard
-          variant={plan.variant as any}
-          title={plan.title}
-          price={plan.price}
-          priceNote={plan.priceNote}
-          features={plan.features}
-        />
-      ))}
+    <div class="mx-auto grid max-w-5xl gap-8 md:grid-cols-2">
+      {
+        plans.map((plan) => (
+          <PricingCard
+            variant={plan.variant as any}
+            title={plan.title}
+            price={plan.price}
+            priceNote={plan.priceNote}
+            features={plan.features}
+          />
+        ))
+      }
     </div>
   </div>
 </section>

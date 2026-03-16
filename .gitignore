@@ -2,6 +2,9 @@
 dist/
 # generated types
 .astro/
+.vscode/
+
+agents/
 
 # dependencies
 node_modules/
@@ -24,3 +27,4 @@ pnpm-debug.log*
 .idea/
 
 keystatic.config.old
+

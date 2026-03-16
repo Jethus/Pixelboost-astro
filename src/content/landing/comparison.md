@@ -1,24 +1,23 @@
-﻿---
+---
 eyebrow: What we do
 headline: How we compare
 description: >
   At Pixelboost, we pride ourselves on delivering unparalleled value.
   Here's how we stand out compared to other web solutions:
 rows:
-  - feature: Custom Design
-    diy: Limited templates
+  - feature: Brand Impression
+    diy: Generic, overused themes
     ours: Tailored to your brand
-  - feature: Performance
-    diy: Bloated and slow
-    ours: Lightning-fast sites
-  - feature: Security & Maintenance
-    diy: DIY upkeep
-    ours: Fully managed & secure
-  - feature: Accessibility & SEO
-    diy: Manual & basic
-    ours: Built-in optimization
-  - feature: Analytics
-    diy: Limited/no analytics
-    ours: Google Analytics ready
-
+  - feature: Loading Speed
+    diy: Sluggish, heavy loads
+    ours: Lightning-fast static delivery
+  - feature: Hassle-Free Security
+    diy: Vulnerable to exploits & updates
+    ours: Bulletproof, zero-maintenance
+  - feature: Legal Compliance
+    diy: High risk of non-compliance
+    ours: Built-in accessibility standards (WCAG 2.1 AA)
+  - feature: Lead Tracking
+    diy: Frustrating & time-consuming
+    ours: Plug-and-play flexible analytics
 ---

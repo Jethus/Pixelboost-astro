@@ -1,0 +1,60 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Header from "../../components/Header.astro";
+import Footer from "../../components/Footer.astro";
+import ClosingCTA from "../../components/ClosingCTA.astro";
+
+export async function getStaticPaths() {
+  const servicesDocs = await getCollection("services");
+
+  return servicesDocs.map((service) => ({
+    params: { slug: service.id },
+    props: { service },
+  }));
+}
+
+const { service } = Astro.props;
+---
+
+<BaseLayout
+  title={`${service.data.tab}`}
+  description={(service.body ?? "").substring(0, 150)}
+>
+  <Header />
+
+  <main
+    class="min-h-[60vh] flex flex-col items-center justify-center text-center px-6 py-28 md:py-36 bg-surface relative overflow-hidden"
+  >
+    <div class="max-w-3xl relative z-10">
+      <p
+        class="mb-4 font-display font-bold uppercase tracking-[0.2em] text-accent fs-xs"
+      >
+        Service Details
+      </p>
+
+      <h1
+        class="mb-8 font-display font-bold leading-tight uppercase tracking-tighter"
+        style={{ fontSize: "clamp(3rem, 6vw, 5rem)" }}
+      >
+        {service.data.tab}
+      </h1>
+
+      <p class="fs-l text-ink/80 leading-relaxed mb-12">
+        {service.body}
+      </p>
+
+      <div class="flex justify-center">
+        <a
+          href="/#services"
+          class="inline-block border-2 border-ink px-8 py-3 font-display font-bold uppercase tracking-wider text-ink transition-transform hover:-translate-y-1 hover:translate-x-1 hover:shadow-brutal bg-primary-light"
+        >
+          &larr; Back to Services
+        </a>
+      </div>
+    </div>
+  </main>
+
+  <ClosingCTA />
+  <Footer />
+</BaseLayout>

@@ -2,16 +2,18 @@
 import { getEntry } from "astro:content";
 import ComparisonTable from "./ui/ComparisonTable.astro";
 
-const comparisonDoc = await getEntry('landingComparison', 'comparison');
+const comparisonDoc = await getEntry("landingComparison", "comparison");
 if (!comparisonDoc) throw new Error("Could not find comparison content");
 const { eyebrow, headline, description, rows } = comparisonDoc.data;
 ---
 
-<section class="border-b-3 border-ink bg-primary-light" id="compare">
+<section class="border-b-3 border-ink bg-surface" id="compare">
   <div class="mx-auto max-w-7xl px-6 py-20 md:py-28">
     <div class="flex flex-col gap-12 lg:flex-row lg:items-start lg:gap-16">
       <div class="max-w-md lg:sticky lg:top-28">
-        <p class="mb-2 font-display font-bold uppercase tracking-[0.2em] text-accent fs-xs">
+        <p
+          class="mb-2 font-display font-bold uppercase tracking-[0.2em] text-accent fs-xs"
+        >
           {eyebrow}
         </p>
         <h2 class="mb-4 font-display font-bold">{headline}</h2>
@@ -22,8 +24,12 @@ const { eyebrow, headline, description, rows } = comparisonDoc.data;
 
       <div class="flex-1">
         <ComparisonTable
-          columns={["Feature", "DIY Website", "Our Sites"]}
-          rows={rows.map(row => [row.feature, row.diy, row.ours]) as [string, string, string][]}
+          columns={["Feature", "Standard Platforms", "Our Custom Sites"]}
+          rows={rows.map((row) => [row.feature, row.diy, row.ours]) as [
+            string,
+            string,
+            string,
+          ][]}
         />
       </div>
     </div>

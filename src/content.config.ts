@@ -22,15 +22,18 @@ const services = defineCollection({
     z.object({
       tab: z.string(),
       label: z.string(),
+      order: z.number(),
     }),
 });
 
 const portfolio = defineCollection({
-  loader: glob({ pattern: "**/*.yaml", base: "./src/content/portfolio" }),
+  loader: glob({ pattern: "**/*.md", base: "./src/content/portfolio" }),
   schema: ({ image }) =>
     z.object({
+      title: z.string(),
       tags: z.string(),
       image: image(),
+      outcome: z.string().optional(),
     }),
 });
 
