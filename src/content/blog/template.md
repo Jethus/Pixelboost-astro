@@ -33,7 +33,7 @@ _Placeholder text for details:_ Dive deeper into a specific aspect of the H2 top
 - Include [relevant internal links](/link-to-another-relevant-post) to pass link equity and keep users on your site longer.
 - Include [reputable external links](https://example-authoritative-domain.com) to high-authority sources to build trust with search engines.
 
-![Descriptive Alt Text Containing a Keyword](image-url-here.jpg)
+*(Image placeholder)*
 _Caption: A brief description of the image. (Alt text is crucial for image SEO and accessibility)._
 
 ---
