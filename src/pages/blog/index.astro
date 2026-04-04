@@ -1,0 +1,48 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Header from "../../components/Header.astro";
+import Footer from "../../components/Footer.astro";
+import BlogCard from "../../components/ui/BlogCard.astro";
+
+const posts = (await getCollection("blog")).sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
+---
+
+<BaseLayout
+  title="Blog"
+  description="Insights and articles from the Pixelboost team."
+>
+  <Header />
+  <main>
+    <section class="border-b-3 border-ink bg-surface">
+      <div class="mx-auto max-w-7xl px-6 py-20 md:py-28">
+        <p class="mb-2 font-display font-bold uppercase tracking-[0.2em] text-accent fs-xs">
+          Insights
+        </p>
+        <h1 class="font-display font-bold">Our Blog</h1>
+      </div>
+    </section>
+
+    <section class="border-b-3 border-ink bg-primary-light">
+      <div class="mx-auto max-w-7xl px-6 py-20 md:py-28">
+        {posts.length === 0 ? (
+          <p class="text-center text-ink/60">No posts yet. Check back soon.</p>
+        ) : (
+          <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+            {posts.map((post) => (
+              <BlogCard
+                title={post.data.title}
+                description={post.data.description}
+                pubDate={post.data.pubDate}
+                slug={post.id}
+              />
+            ))}
+          </div>
+        )}
+      </div>
+    </section>
+  </main>
+  <Footer />
+</BaseLayout>
