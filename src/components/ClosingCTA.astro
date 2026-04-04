@@ -9,12 +9,14 @@ const { eyebrow, headline, buttonText, buttonLink } = ctaDoc.data;
 
 <section class="border-b-3 border-ink bg-surface" id="cta">
   <div class="mx-auto max-w-7xl px-6 py-20 md:py-28">
-    <p
-      class="font-display font-bold uppercase tracking-[0.2em] text-accent fs-xs"
-    >
-      {eyebrow}
-    </p>
-    <h2 class="font-display font-bold fs-xl">{headline}</h2>
-    <Button href={buttonLink} size="lg">{buttonText}</Button>
+    <div class="flex max-w-3xl flex-col gap-6">
+      <p class="font-display font-bold uppercase tracking-[0.2em] text-accent fs-xs">
+        {eyebrow}
+      </p>
+      <h2 class="font-display font-bold">{headline}</h2>
+      <div>
+        <Button href={buttonLink} size="lg">{buttonText}</Button>
+      </div>
+    </div>
   </div>
 </section>
