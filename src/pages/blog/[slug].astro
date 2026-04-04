@@ -1,0 +1,153 @@
+---
+import { getCollection, render } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Header from "../../components/Header.astro";
+import Footer from "../../components/Footer.astro";
+
+export async function getStaticPaths() {
+  const posts = await getCollection("blog");
+  return posts.map((post) => ({
+    params: { slug: post.id },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+
+const formattedDate = post.data.pubDate.toLocaleDateString("en-CA", {
+  year: "numeric",
+  month: "long",
+  day: "numeric",
+});
+---
+
+<BaseLayout title={post.data.title} description={post.data.description}>
+  <Header />
+  <main>
+    <section class="border-b-3 border-ink bg-primary-light">
+      <div class="mx-auto max-w-7xl px-6 py-20 md:py-28">
+        <p class="mb-4 font-display font-bold uppercase tracking-[0.2em] text-accent fs-xs">
+          {formattedDate}
+        </p>
+        <h1 class="mb-6 max-w-3xl font-display font-bold leading-tight">
+          {post.data.title}
+        </h1>
+        <p class="max-w-2xl leading-relaxed text-ink/70">
+          {post.data.description}
+        </p>
+      </div>
+    </section>
+
+    <section class="border-b-3 border-ink bg-surface">
+      <div class="mx-auto max-w-prose px-6 py-20">
+        <article class="post-body">
+          <Content />
+        </article>
+        <div class="mt-16">
+          <a
+            href="/blog"
+            class="inline-block rounded-brutal border-3 border-ink bg-primary-light px-8 py-3 font-display font-bold uppercase tracking-wider text-ink transition-all duration-200 hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-brutal"
+          >
+            &larr; Back to Blog
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+  <Footer />
+</BaseLayout>
+
+<style>
+  /* Basic prose styles for rendered markdown — no typography plugin needed */
+  .post-body :global(h1),
+  .post-body :global(h2),
+  .post-body :global(h3),
+  .post-body :global(h4) {
+    margin-top: 2rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .post-body :global(p) {
+    margin-bottom: 1.25rem;
+    line-height: 1.75;
+  }
+
+  .post-body :global(ul),
+  .post-body :global(ol) {
+    margin-bottom: 1.25rem;
+    padding-left: 1.5rem;
+  }
+
+  .post-body :global(li) {
+    margin-bottom: 0.35rem;
+  }
+
+  .post-body :global(ul) {
+    list-style-type: disc;
+  }
+
+  .post-body :global(ol) {
+    list-style-type: decimal;
+  }
+
+  .post-body :global(blockquote) {
+    border-left: 3px solid var(--color-primary);
+    padding-left: 1rem;
+    margin: 1.5rem 0;
+    color: oklch(0.35 0.02 250);
+  }
+
+  .post-body :global(code) {
+    background: var(--color-primary-light);
+    border: 1px solid var(--color-ink);
+    border-radius: 4px;
+    padding: 0.1em 0.4em;
+    font-size: 0.9em;
+  }
+
+  .post-body :global(pre) {
+    background: var(--color-ink);
+    color: var(--color-surface);
+    border-radius: var(--radius-brutal);
+    padding: 1.25rem;
+    overflow-x: auto;
+    margin-bottom: 1.25rem;
+  }
+
+  .post-body :global(pre code) {
+    background: none;
+    border: none;
+    padding: 0;
+    font-size: 0.875em;
+  }
+
+  .post-body :global(a) {
+    color: var(--color-primary-dark);
+    text-decoration: underline;
+  }
+
+  .post-body :global(table) {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 1.25rem;
+  }
+
+  .post-body :global(th),
+  .post-body :global(td) {
+    border: 2px solid var(--color-ink);
+    padding: 0.5rem 0.75rem;
+    text-align: left;
+  }
+
+  .post-body :global(th) {
+    background: var(--color-primary-light);
+    font-weight: 700;
+  }
+
+  .post-body :global(hr) {
+    border: none;
+    border-top: 3px solid var(--color-ink);
+    margin: 2rem 0;
+  }
+</style>
