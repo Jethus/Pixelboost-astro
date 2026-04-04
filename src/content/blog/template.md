@@ -1,10 +1,7 @@
 ---
 title: "Primary Keyword-Rich Title Here (Optimal length: 50-60 characters)"
 description: "A compelling meta description summarizing the post. Include the primary keyword naturally. Keep it between 150-160 characters to avoid truncation in search results."
-slug: "/your-primary-keyword-slug"
-author: "Author Name"
-date: "YYYY-MM-DD"
-tags: [SEO, Primary Category, Secondary Category]
+pubDate: "2024-01-01"
 ---
 
 # Your Main H1 Title (Make it Catchy and Include Primary Keyword)
