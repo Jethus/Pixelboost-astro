@@ -1,102 +1,101 @@
 ---
-import { SITE_TITLE } from "../consts";
-import Button from "./ui/Button.astro";
 import logoBlack from "../assets/svgs/logo-black.svg";
 ---
 
-<header
-  class="sticky top-0 z-50 border-b-3 border-ink bg-surface"
-  id="site-header"
->
+<header style="position: sticky; top: 28px; z-index: 50; margin-bottom: 0;">
   <nav
-    class="mx-auto flex max-w-7xl items-center justify-between px-6 py-4"
+    style="display: flex; justify-content: space-between; align-items: center; background: var(--color-paper); border-radius: 9999px; padding: 10px 14px 10px 22px; box-shadow: var(--shadow-nav); max-width: 1200px; margin: 0 auto;"
     aria-label="Main navigation"
   >
-    <a href="/" class="flex items-center gap-2 font-display font-bold fs-s">
-      <img src={logoBlack.src} alt={SITE_TITLE} class="h-16 w-auto" />
+    <!-- Logo -->
+    <a href="/" style="display: flex; align-items: center;">
+      <img src={logoBlack.src} alt="Pixelboost" style="height: 40px; width: auto;" />
     </a>
 
-    <div class="hidden items-center gap-8 font-display font-bold md:flex">
+    <!-- Desktop links -->
+    <div id="nav-links" style="display: flex; gap: 28px; align-items: center; font-weight: 500; font-size: 14.5px;">
+      <a href="#problem" style="color: inherit; transition: color 0.15s;" class="nav-link">Why it matters</a>
+      <a href="#audit"   style="color: inherit; transition: color 0.15s;" class="nav-link">Free audit</a>
+      <a href="#work"    style="color: inherit; transition: color 0.15s;" class="nav-link">Work</a>
+      <a href="/blog"    style="color: inherit; transition: color 0.15s;" class="nav-link">Blog</a>
+      <a href="#pricing" style="color: inherit; transition: color 0.15s;" class="nav-link">Pricing</a>
+      <a href="#faq"     style="color: inherit; transition: color 0.15s;" class="nav-link">FAQ</a>
       <a
-        href="/about"
-        class="fs-base transition-colors duration-200 hover:text-primary"
-        >About Us</a
-      >
-      <a
-        href="/services"
-        class="fs-base transition-colors duration-200 hover:text-primary"
-        >Services</a
-      >
-      <a
-        href="/blog"
-        class="fs-base transition-colors duration-200 hover:text-primary"
-        >Blog</a
-      >
-      <Button href="/contact" size="base">Contact Us</Button>
+        href="#audit"
+        style="display: inline-flex; align-items: center; gap: 8px; background: var(--color-ink); color: var(--color-paper); border: 0; border-radius: 9999px; padding: 10px 18px; font-weight: 600; font-size: 14px; text-decoration: none; transition: transform 0.15s, box-shadow 0.15s;"
+        class="nav-cta"
+      >Score my site →</a>
     </div>
 
+    <!-- Mobile hamburger -->
     <button
       id="nav-toggle"
-      class="relative flex h-8 w-10 flex-col items-center justify-center gap-1.5 md:hidden"
+      style="display: none; flex-direction: column; align-items: center; justify-content: center; gap: 5px; width: 40px; height: 32px; background: none; border: none; cursor: pointer;"
       aria-label="Toggle menu"
       aria-expanded="false"
       aria-controls="mobile-nav"
     >
-      <span
-        class="block h-0.5 w-full rounded bg-ink transition-all duration-300"
-        aria-hidden="true"></span>
-      <span
-        class="block h-0.5 w-full rounded bg-ink transition-all duration-300"
-        aria-hidden="true"></span>
-      <span
-        class="block h-0.5 w-full rounded bg-ink transition-all duration-300"
-        aria-hidden="true"></span>
+      <span style="display: block; height: 2px; width: 100%; border-radius: 2px; background: var(--color-ink); transition: all 0.3s;" aria-hidden="true"></span>
+      <span style="display: block; height: 2px; width: 100%; border-radius: 2px; background: var(--color-ink); transition: all 0.3s;" aria-hidden="true"></span>
+      <span style="display: block; height: 2px; width: 100%; border-radius: 2px; background: var(--color-ink); transition: all 0.3s;" aria-hidden="true"></span>
     </button>
   </nav>
 
+  <!-- Mobile menu -->
   <div
     id="mobile-nav"
-    class="hidden border-t-3 border-ink bg-surface md:hidden"
+    style="display: none; background: var(--color-paper); border-radius: 20px; margin-top: 8px; padding: 16px 24px; max-width: 1200px; margin-left: auto; margin-right: auto;"
   >
-    <div class="flex flex-col px-6 py-4 font-display font-bold">
-      <a
-        href="/about"
-        class="border-b border-ink/10 py-3 transition-colors duration-200 hover:text-primary"
-        >About Us</a
-      >
-      <a
-        href="/services"
-        class="border-b border-ink/10 py-3 transition-colors duration-200 hover:text-primary"
-        >Services</a
-      >
-      <a
-        href="/blog"
-        class="border-b border-ink/10 py-3 transition-colors duration-200 hover:text-primary"
-        >Blog</a
-      >
-      <Button href="/contact" class="mt-4 text-center">Contact Us</Button>
+    <div style="display: flex; flex-direction: column; gap: 4px; font-weight: 500; font-size: 15px;">
+      <a href="#problem" style="padding: 10px 0; border-bottom: 1px solid var(--color-line); color: inherit;">Why it matters</a>
+      <a href="#audit"   style="padding: 10px 0; border-bottom: 1px solid var(--color-line); color: inherit;">Free audit</a>
+      <a href="#work"    style="padding: 10px 0; border-bottom: 1px solid var(--color-line); color: inherit;">Work</a>
+      <a href="/blog"    style="padding: 10px 0; border-bottom: 1px solid var(--color-line); color: inherit;">Blog</a>
+      <a href="#pricing" style="padding: 10px 0; border-bottom: 1px solid var(--color-line); color: inherit;">Pricing</a>
+      <a href="#faq"     style="padding: 10px 0; color: inherit;">FAQ</a>
+      <a href="#audit" style="margin-top: 12px; display: block; text-align: center; background: var(--color-ink); color: var(--color-paper); border-radius: 9999px; padding: 12px 20px; font-weight: 600;">Score my site →</a>
     </div>
   </div>
 </header>
 
+<style>
+  .nav-link:hover { color: var(--color-mint-600); }
+  .nav-cta:hover { transform: translateY(-1px); box-shadow: var(--shadow-btn); }
+
+  @media (max-width: 768px) {
+    #nav-links { display: none !important; }
+    #nav-toggle { display: flex !important; }
+  }
+</style>
+
 <script is:inline>
-  const toggle = document.getElementById("nav-toggle");
-  const mobileMenu = document.getElementById("mobile-nav");
-  const spans = toggle.querySelectorAll("span");
+  const toggle = document.getElementById('nav-toggle');
+  const mobileMenu = document.getElementById('mobile-nav');
+  const spans = toggle.querySelectorAll('span');
 
-  toggle.addEventListener("click", () => {
-    const isOpen = toggle.getAttribute("aria-expanded") === "true";
-    toggle.setAttribute("aria-expanded", String(!isOpen));
-    mobileMenu.classList.toggle("hidden");
-
+  toggle.addEventListener('click', () => {
+    const isOpen = toggle.getAttribute('aria-expanded') === 'true';
+    toggle.setAttribute('aria-expanded', String(!isOpen));
+    mobileMenu.style.display = isOpen ? 'none' : 'block';
     if (!isOpen) {
-      spans[0].style.transform = "rotate(45deg) translate(4px, 4px)";
-      spans[1].style.opacity = "0";
-      spans[2].style.transform = "rotate(-45deg) translate(4px, -4px)";
+      spans[0].style.transform = 'rotate(45deg) translate(4px, 4px)';
+      spans[1].style.opacity = '0';
+      spans[2].style.transform = 'rotate(-45deg) translate(4px, -4px)';
     } else {
-      spans[0].style.transform = "";
-      spans[1].style.opacity = "";
-      spans[2].style.transform = "";
+      spans[0].style.transform = '';
+      spans[1].style.opacity = '';
+      spans[2].style.transform = '';
     }
+  });
+
+  // Close mobile nav when any anchor link is clicked
+  mobileMenu.querySelectorAll('a').forEach(a => {
+    a.addEventListener('click', () => {
+      mobileMenu.style.display = 'none';
+      toggle.setAttribute('aria-expanded', 'false');
+      spans[0].style.transform = '';
+      spans[1].style.opacity = '';
+      spans[2].style.transform = '';
+    });
   });
 </script>
