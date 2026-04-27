@@ -1,146 +1,98 @@
 /* ============================================================
-   global.css — Single source of truth for all styling
-   Tailwind CSS v4 · Pixelboost Starter Template
+   global.css — Pixelboost v2
+   Tailwind CSS v4 · Plus Jakarta Sans · Mint palette
    ============================================================ */
 
 @import "tailwindcss";
 
 /* ————————————————————————————————————————————————————————————
-   @theme — Design tokens → Tailwind utility classes
+   @theme — Design tokens
    ———————————————————————————————————————————————————————————— */
 
 @theme {
-  /* Font families */
-  --font-heading: var(--font-lato), "Roboto", sans-serif;
-  --font-body: var(--font-noto-sans), "Roboto", sans-serif;
+  /* Font */
+  --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
 
-  /* ── Brand palette — oklch ─────────────────────────────────
-     Primary  = logo green (#53c87d)
-     Ink      = deep charcoal with cool undertone (authority)
-     Surface  = warm white (approachable, not sterile)
-     ──────────────────────────────────────────────────────── */
-  --color-primary: oklch(0.72 0.17 155);
-  --color-primary-light: oklch(0.95 0.04 155);
-  --color-primary-dark: oklch(0.25 0.06 155);
-  --color-accent: oklch(0.8 0.15 80);
-  --color-ink: oklch(0.2 0.02 250);
-  --color-surface: oklch(0.985 0.003 100);
+  /* Neutrals */
+  --color-paper:   #F8F5EE;
+  --color-paper-2: #EFEADC;
+  --color-ink:     #0F1A14;
+  --color-ink-700: #2A3A32;
+  --color-ink-500: #556057;
+  --color-ink-400: #8A968F;
+  --color-line:    #E4E0D4;
+  --color-line-2:  #D5D0C0;
 
-  /* Border radius */
-  --radius-brutal: 12px;
-  --radius-pill: 9999px;
+  /* Mint brand */
+  --color-mint-50:  #EAF7EF;
+  --color-mint-100: #D6EFDF;
+  --color-mint-200: #B0E0C1;
+  --color-mint-300: #89CF9F;
+  --color-mint-500: #3CCB8A;
+  --color-mint-600: #1F9C6A;
+  --color-mint-700: #137048;
 
-  /* Shadows — offset drop shadows for neo-brutal cards */
-  --shadow-brutal: 4px 4px 0px 0px oklch(0.2 0.02 250);
-  --shadow-brutal-lg: 6px 6px 0px 0px oklch(0.2 0.02 250);
-  --shadow-brutal-hover: 2px 2px 0px 0px oklch(0.2 0.02 250);
+  /* Support */
+  --color-peach:  #F4B891;
+  --color-red:    #C94F3B;
+  --color-yellow: #E8B33A;
 
-  /* Animations */
-  --animate-fade-in: fade-in 0.5s ease-out;
-  --animate-slide-up: slide-up 0.6s ease-out;
+  /* Radii */
+  --radius-section: 28px;
+  --radius-card:    20px;
+  --radius-icon:    10px;
+  --radius-pill:    9999px;
 
-  @keyframes fade-in {
-    from {
-      opacity: 0;
-    }
-    to {
-      opacity: 1;
-    }
-  }
-
-  @keyframes slide-up {
-    from {
-      opacity: 0;
-      transform: translateY(1.5rem);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
+  /* Shadows */
+  --shadow-nav:  0 2px 0 rgba(15,26,20,0.04);
+  --shadow-btn:  0 6px 18px -8px rgba(15,26,20,0.35);
+  --shadow-card: 0 20px 60px -20px rgba(0,0,0,0.35);
 }
 
 /* ————————————————————————————————————————————————————————————
-   Fluid Type Scale
-   Source: https://fluid-type.tolin.ski/
+   Fluid Type Scale — unchanged mechanism, updated base sizes
    Min: 14px @ 320vw  →  Max: 20px @ 1500vw
-   Ratio: 1.25 → 1.333 (Major Third → Perfect Fourth)
    ———————————————————————————————————————————————————————————— */
 
 @layer base {
-  /* Define the formula globally so any element dynamically computes it with its local --fl */
   *, ::before, ::after {
     --fl: 0;
     --font-size-min: 14;
-    --font-size-max: 22;
+    --font-size-max: 20;
     --font-ratio-min: 1.25;
     --font-ratio-max: 1.3333333333333333;
     --font-width-min: 320;
     --font-width-max: 1500;
-    --fluid-min: calc(
-      var(--font-size-min) * pow(var(--font-ratio-min), var(--fl, 0))
-    );
-    --fluid-max: calc(
-      var(--font-size-max) * pow(var(--font-ratio-max), var(--fl, 0))
-    );
-    --fluid-preferred: calc(
-      (var(--fluid-max) - var(--fluid-min)) /
-        (var(--font-width-max) - var(--font-width-min))
-    );
+    --fluid-min: calc(var(--font-size-min) * pow(var(--font-ratio-min), var(--fl, 0)));
+    --fluid-max: calc(var(--font-size-max) * pow(var(--font-ratio-max), var(--fl, 0)));
+    --fluid-preferred: calc((var(--fluid-max) - var(--fluid-min)) / (var(--font-width-max) - var(--font-width-min)));
     --fluid-type: clamp(
       (var(--fluid-min) / 16) * 1rem,
-      ((var(--fluid-min) / 16) * 1rem) -
-        (((var(--fluid-preferred) * var(--font-width-min)) / 16) * 1rem) +
-        (var(--fluid-preferred) * var(--variable-unit, 100vi)),
+      ((var(--fluid-min) / 16) * 1rem) - (((var(--fluid-preferred) * var(--font-width-min)) / 16) * 1rem) + (var(--fluid-preferred) * var(--variable-unit, 100vi)),
       (var(--fluid-max) / 16) * 1rem
     );
   }
 
-  /* Automatically applying the fluid font-size to base text elements */
   body, h1, h2, h3, h4, h5, h6, p, li, textarea, input, select, button, th, td {
     font-size: var(--fluid-type);
   }
 
-  /* This makes containers, with container queries use a cqi unit instead of vi */
   .fluid-text-container {
     container-type: inline-size;
     --variable-unit: 100cqi;
   }
-  h1,
-  .h1 {
-    --fl: 5;
-  }
-  h2,
-  .h2 {
-    --fl: 4;
-  }
-  h3,
-  .h3 {
-    --fl: 3;
-  }
-  h4,
-  .h4 {
-    --fl: 2;
-  }
-  h5,
-  .h5 {
-    --fl: 1;
-  }
-  h6,
-  .h6 {
-    --fl: 0;
-  }
-  p,
-  li,
-  body {
-    --fl: 0;
-  }
+
+  h1, .h1 { --fl: 5; }
+  h2, .h2 { --fl: 4; }
+  h3, .h3 { --fl: 3; }
+  h4, .h4 { --fl: 2; }
+  h5, .h5 { --fl: 1; }
+  h6, .h6 { --fl: 0; }
+  p, li, body { --fl: 0; }
 }
 
 /* ————————————————————————————————————————————————————————————
-   Fluid size utilities — use as classes alongside Tailwind
-   We use @utility so Tailwind automatically generates responsive variants (like md:fs-xl).
-   Each utility also sets font-size so it works on any tag (span, strong, div, etc).
+   Fluid size utilities
    ———————————————————————————————————————————————————————————— */
 
 @utility fs-xs   { --fl: -1; font-size: var(--fluid-type); }
@@ -153,26 +105,42 @@
 @utility fs-xxxl { --fl: 6;  font-size: var(--fluid-type); }
 
 /* ————————————————————————————————————————————————————————————
-   @layer base — Global element defaults
+   Base element defaults
    ———————————————————————————————————————————————————————————— */
 
 @layer base {
+  html {
+    scroll-behavior: smooth;
+    background: var(--color-mint-100);
+  }
+
   body {
-    font-family: var(--font-body);
+    font-family: var(--font-sans);
     color: var(--color-ink);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    line-height: 1.5;
   }
 
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6 {
-    font-family: var(--font-heading);
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-sans);
+    line-height: 1.1;
+  }
+
+  h1 {
+    font-weight: 800;
+    letter-spacing: -0.035em;
+    text-wrap: balance;
+  }
+
+  h2 {
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    text-wrap: balance;
+  }
+
+  h3 {
     font-weight: 700;
-    line-height: 1.15;
     letter-spacing: -0.02em;
   }
 
@@ -180,9 +148,13 @@
     text-decoration: none;
     color: inherit;
   }
+
+  /* .high — the mint-600 emphasis span used in h1/h2 */
+  .high {
+    color: var(--color-mint-600);
+  }
 }
 
-/* Base utility for hiding elements */
 [hidden] {
   display: none !important;
 }
