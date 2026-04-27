@@ -2,7 +2,6 @@
 import "../styles/global.css";
 import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
 import type { ImageMetadata } from "astro";
-import { Font } from "astro:assets";
 
 interface Props {
   title: string;
@@ -16,41 +15,33 @@ const pageTitle = title === SITE_TITLE ? title : `${title} | ${SITE_TITLE}`;
 ---
 
 <!doctype html>
-<html lang="en" class="scroll-smooth">
+<html lang="en">
   <head>
-    <!-- Global Metadata -->
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="sitemap" href="/sitemap-index.xml" />
-    <!-- RSS feed will be re-added when blog is set up -->
     <meta name="generator" content={Astro.generator} />
 
-    <!-- Font generation and preloading via Astro 6 API -->
-    <Font cssVariable="--font-lato" preload />
-    <Font cssVariable="--font-noto-sans" preload />
+    <!-- Plus Jakarta Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
 
-    <!-- Canonical URL -->
     <link rel="canonical" href={canonicalURL} />
 
-    <!-- Primary Meta Tags -->
     <title>{pageTitle}</title>
     <meta name="title" content={pageTitle} />
     <meta name="description" content={description} />
 
-    <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
     <meta property="og:url" content={Astro.url} />
     <meta property="og:title" content={pageTitle} />
     <meta property="og:description" content={description} />
-    {
-      image && (
-        <meta property="og:image" content={new URL(image.src, Astro.url)} />
-      )
-    }
+    {image && <meta property="og:image" content={new URL(image.src, Astro.url)} />}
   </head>
 
-  <body class="min-h-screen bg-surface font-body text-ink antialiased">
+  <body class="min-h-screen">
     <slot />
   </body>
 </html>
