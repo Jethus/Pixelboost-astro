@@ -29,7 +29,7 @@ const standard = plans.find(p => p.variant === 'lump')!;
     <div class="price-card featured">
       <span class="badge">Most chosen</span>
       <h3 class="plan-name">{featured.title}</h3>
-      <p class="plan-blurb">Custom site + ongoing care, all-in.</p>
+      <p class="plan-blurb">{featured.descriptor}</p>
       <div class="plan-price">{featured.price}<small>{featured.priceNote}</small></div>
       <ul class="plan-features">
         {featured.features.map(f => <li>{f.text}</li>)}
@@ -39,7 +39,7 @@ const standard = plans.find(p => p.variant === 'lump')!;
 
     <div class="price-card">
       <h3 class="plan-name">{standard.title}</h3>
-      <p class="plan-blurb">One-time build, you take it from there.</p>
+      <p class="plan-blurb">{standard.descriptor}</p>
       <div class="plan-price">{standard.price}<small>{standard.priceNote}</small></div>
       <ul class="plan-features">
         {standard.features.map(f => <li>{f.text}</li>)}
