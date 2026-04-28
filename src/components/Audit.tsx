@@ -91,7 +91,7 @@ export default function Audit() {
         color: 'var(--color-paper)',
         borderRadius: 'var(--radius-section)',
         maxWidth: '1200px',
-        margin: '16px auto 0',
+        margin: '24px auto 0',
         padding: 'clamp(56px, 7vw, 96px) clamp(28px, 5vw, 72px)',
       }}
     >
