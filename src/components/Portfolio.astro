@@ -1,5 +1,6 @@
 ---
 import { getCollection } from "astro:content";
+import { Image } from "astro:assets";
 
 const clientsDocs = await getCollection("portfolio");
 
@@ -26,6 +27,7 @@ const trendingUp = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" 
     {clientsDocs.map(client => (
       <div class="work-card">
         <div class="vis-block">
+          <Image src={client.data.image} alt={client.data.title} class="vis-img" width={600} height={375} />
           <span class="vis-tag">{client.data.tags}</span>
         </div>
 
@@ -96,13 +98,26 @@ const trendingUp = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" 
   .vis-block {
     aspect-ratio: 16/10; border-radius: 12px; background: var(--color-ink);
     position: relative; overflow: hidden;
-    background-image: repeating-linear-gradient(135deg, rgba(147,222,170,0.1) 0 12px, transparent 12px 24px);
+  }
+
+  .vis-img {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    object-fit: cover; object-position: center;
+    display: block;
+  }
+
+  .vis-block::after {
+    content: ''; position: absolute; inset: 0;
+    background: linear-gradient(to top, rgba(15,26,20,0.55) 0%, transparent 50%);
+    border-radius: 12px;
   }
 
   .vis-tag {
-    position: absolute; left: 14px; bottom: 12px; z-index: 1;
-    color: var(--color-mint-200); font-size: 11px; font-weight: 600;
+    position: absolute; left: 14px; bottom: 12px; z-index: 2;
+    color: #ffffff; font-size: 11px; font-weight: 600;
     text-transform: uppercase; letter-spacing: 0.08em;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.4);
   }
 
   .ba-table {
