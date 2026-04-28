@@ -1,0 +1,21 @@
+---
+import { getEntry } from "astro:content";
+import AuditIsland from "./Audit.tsx";
+
+const doc = await getEntry("landingAudit", "audit");
+if (!doc) throw new Error("Could not find audit content");
+const { eyebrow, headline, body, footnote, verdictIdle, verdictDone, emailCopy, callCopy, rows } = doc.data;
+---
+
+<AuditIsland
+  client:load
+  eyebrow={eyebrow}
+  headline={headline}
+  body={body}
+  footnote={footnote}
+  verdictIdle={verdictIdle}
+  verdictDone={verdictDone}
+  emailCopy={emailCopy}
+  callCopy={callCopy}
+  rows={rows}
+/>
