@@ -1,36 +1,39 @@
 ---
-eyebrow: Our Pricing
-headline: Choose the plan that works for you
+eyebrow: Pricing
+headline: "Two ways to work together. No surprise invoices."
 plans:
-  - variant: lump
-    title: Lump Sum
-    price: $3000
-    priceNote: +$25 per month hosting
-    features:
-      - text: Lifetime Updates
-        included: false
-      - text: 24/7 Support
-        included: false
-      - text: Unlimited Edits
-        included: false
-      - text: Included Premium Hosting
-        included: false
-      - text: Custom Web Design & Dev
-        included: true
   - variant: monthly
-    title: Monthly
-    price: $200
-    priceNote: per month
+    title: Pixelboost monthly
+    price: "$200"
+    priceNote: "/ month"
     features:
-      - text: Lifetime Updates
+      - text: Custom design + build (3–4 weeks)
         included: true
-      - text: 24/7 Support
+      - text: Hosting, SSL, domain setup
         included: true
-      - text: Unlimited Edits
+      - text: Plausible analytics installed
         included: true
-      - text: Included Premium Hosting
+      - text: Ongoing updates & small changes
         included: true
-      - text: Custom Web Design & Dev
+      - text: Quarterly performance check-ins
         included: true
-
+      - text: Cancel anytime, take your site with you
+        included: true
+  - variant: lump
+    title: Build & hand-off
+    price: "$4,800"
+    priceNote: "flat"
+    features:
+      - text: Same custom design + build
+        included: true
+      - text: Plausible installed and explained
+        included: true
+      - text: Documented and handed off cleanly
+        included: true
+      - text: 30 days of post-launch fixes
+        included: true
+      - text: You own the code and content outright
+        included: true
+      - text: "Optional: add monthly support later"
+        included: true
 ---

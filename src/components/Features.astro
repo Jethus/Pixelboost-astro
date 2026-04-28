@@ -1,55 +1,102 @@
 ---
-import CardGrid from "./ui/CardGrid.astro";
-import { getCollection, getEntry } from "astro:content";
-
-const offerDoc = await getEntry("landingWhatWeOffer", "what-we-offer");
-if (!offerDoc) throw new Error("Could not find what-we-offer content");
-const { eyebrow, headline } = offerDoc.data;
-
-const servicesDocs = await getCollection("services");
-
-/* ── Map each service to a card with an inline SVG icon ───────── */
-const iconMap: Record<string, string> = {
-  "custom-design": `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9.53 16.122a3 3 0 0 0-5.78 1.128 2.25 2.25 0 0 1-2.4 2.245 4.5 4.5 0 0 0 8.4-2.245c0-.399-.078-.78-.22-1.128Zm0 0a15.998 15.998 0 0 0 3.388-1.62m-5.043-.025a15.994 15.994 0 0 1 1.622-3.395m3.42 3.42a15.995 15.995 0 0 0 4.764-4.648l3.876-5.814a1.151 1.151 0 0 0-1.597-1.597L14.146 6.32a15.996 15.996 0 0 0-4.649 4.764m3.42 3.42a6.776 6.776 0 0 0-3.42-3.42" /></svg>`,
-
-  seo: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" /></svg>`,
-
-  accessibility: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 0 0 2.625.372 9.337 9.337 0 0 0 4.121-.952 4.125 4.125 0 0 0-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 0 1 8.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0 1 11.964-3.07M12 6.375a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0Zm8.25 2.25a2.625 2.625 0 1 1-5.25 0 2.625 2.625 0 0 1 5.25 0Z" /></svg>`,
-
-  "speed-performance": `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M17.25 6.75 22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3-4.5 16.5" /></svg>`,
-
-  "fully-responsive": `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M20.25 8.511c.884.284 1.5 1.128 1.5 2.097v4.286c0 1.136-.847 2.1-1.98 2.193-.34.027-.68.052-1.02.072v3.091l-3-3c-1.354 0-2.694-.055-4.02-.163a2.115 2.115 0 0 1-.825-.242m9.345-8.334a2.126 2.126 0 0 0-.476-.095 48.64 48.64 0 0 0-8.048 0c-1.131.094-1.976 1.057-1.976 2.192v4.286c0 .837.46 1.58 1.155 1.951m9.345-8.334V6.637c0-1.621-1.152-3.026-2.76-3.235A48.455 48.455 0 0 0 11.25 3c-2.115 0-4.198.137-6.24.402-1.608.209-2.76 1.614-2.76 3.235v6.226c0 1.621 1.152 3.026 2.76 3.235.577.075 1.157.14 1.74.194V21l4.155-4.155" /></svg>`,
-
-  "canadian-based": `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" /><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" /></svg>`,
-
-  analytics: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 0 1 3 19.875v-6.75ZM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V8.625ZM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V4.125Z" /></svg>`,
-};
-
-/* Fallback icon for any service without a specific mapping */
-const fallbackIcon = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904 9 18.75l-.813-2.846a4.5 4.5 0 0 0-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 0 0 3.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 0 0 3.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 0 0-3.09 3.09ZM18.259 8.715 18 9.75l-.259-1.035a3.375 3.375 0 0 0-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 0 0 2.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 0 0 2.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 0 0-2.456 2.456ZM16.894 20.567 16.5 21.75l-.394-1.183a2.25 2.25 0 0 0-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 0 0 1.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 0 0 1.423 1.423l1.183.394-1.183.394a2.25 2.25 0 0 0-1.423 1.423Z" /></svg>`;
-
-const items = servicesDocs
-  .sort((a, b) => a.data.order - b.data.order)
-  .filter((doc) => doc.id !== "canadian-based")
-  .map((doc) => ({
-    slug: doc.id,
-    title: doc.data.tab,
-    description: (doc.body ?? "").trim(),
-    icon: iconMap[doc.id] ?? fallbackIcon,
-  }));
+const pillars = [
+  {
+    title: 'Fast on mobile.',
+    pitch: 'Your site should load quickly on phones, even on slow connections.',
+    proof: 'I target 95+ Google Lighthouse performance scores on real devices.',
+    icon: `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>`,
+  },
+  {
+    title: 'Accessible by default.',
+    pitch: 'Your site should work for every customer — older folks, mobile users, anyone with a disability.',
+    proof: 'WCAG 2.1 AA, AODA-aligned, tested with axe and real assistive tech.',
+    icon: `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="16" cy="4" r="1"/><path d="m18 19 1-7-5.87.94"/><path d="m5 8 3-3 5.5 1.5"/><path d="M4.24 14.5a5 5 0 0 0 6.88 6"/><path d="M13.76 17.5a5 5 0 0 0-6.88-6"/></svg>`,
+  },
+  {
+    title: 'Tracked with simple analytics.',
+    pitch: "You should know which pages bring in leads — without cookie banners or creepy tracking.",
+    proof: 'Privacy-friendly Plausible analytics. GDPR/PIPEDA-compliant. No banner needed.',
+    icon: `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></svg>`,
+  },
+  {
+    title: 'Maintained after launch.',
+    pitch: "After launch, I'm still your developer. Hours changed, new service, copy fix? Send it.",
+    proof: 'Included in the monthly plan. Same-week turnaround for small changes.',
+    icon: `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>`,
+  },
+];
 ---
 
-<section class="border-b-3 border-ink bg-surface" id="services">
-  <div class="mx-auto max-w-7xl px-6 py-20 md:py-28">
-    <div class="mb-12 text-center">
-      <p
-        class="mb-2 font-display font-bold uppercase tracking-[0.2em] text-accent fs-xs"
-      >
-        {eyebrow}
-      </p>
-      <h2 class="font-display font-bold">{headline}</h2>
-    </div>
+<section
+  style="background: var(--color-paper); border-radius: var(--radius-section); max-width: 1200px; margin: 16px auto 0; padding: clamp(56px, 7vw, 96px) clamp(28px, 5vw, 72px);"
+>
+  <div style="max-width: 780px;">
+    <span class="eyebrow-chip">
+      <span class="eyebrow-dot"></span> What you actually get
+    </span>
+    <h2 style="margin: 0 0 16px 0;">
+      Every site is built on the same <span class="high">four pillars.</span>
+    </h2>
+    <p style="font-size: clamp(16px, 1.35vw, 19px); color: var(--color-ink-500); line-height: 1.5; max-width: 56ch; margin: 0; font-weight: 500;">
+      No template. No subscription you'll forget about. Just a clean site built around what your customers need to do next.
+    </p>
+  </div>
 
-    <CardGrid items={items} />
+  <div class="pillars-grid">
+    {pillars.map(p => (
+      <div class="pillar-card">
+        <div class="icon-tile" set:html={p.icon} />
+        <h3 style="font-size: 19px; font-weight: 700; letter-spacing: -0.02em; line-height: 1.2; margin: 4px 0 0 0;">{p.title}</h3>
+        <p style="font-size: 14.5px; line-height: 1.5; color: var(--color-ink-700); margin: 0;">{p.pitch}</p>
+        <p class="proof-line"><em>Technically:</em> {p.proof}</p>
+      </div>
+    ))}
   </div>
 </section>
+
+<style>
+  .eyebrow-chip {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--color-mint-100); color: var(--color-mint-600);
+    font-weight: 600; font-size: 13px; letter-spacing: 0.04em;
+    padding: 6px 14px; border-radius: 9999px; margin-bottom: 20px;
+  }
+  .eyebrow-dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--color-mint-500); display: inline-block;
+  }
+
+  .pillars-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+    margin-top: 36px;
+  }
+  @media (max-width: 1000px) { .pillars-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 600px)  { .pillars-grid { grid-template-columns: 1fr; } }
+
+  .pillar-card {
+    background: var(--color-paper-2);
+    border-radius: var(--radius-card);
+    padding: 26px;
+    border: 1px solid var(--color-line);
+    display: flex; flex-direction: column; gap: 12px;
+  }
+
+  .icon-tile {
+    width: 40px; height: 40px; border-radius: var(--radius-icon);
+    background: var(--color-mint-100);
+    border: 1px solid var(--color-mint-200);
+    color: var(--color-mint-700);
+    display: grid; place-items: center;
+    flex-shrink: 0;
+  }
+
+  .proof-line {
+    font-size: 12.5px; color: var(--color-ink-500);
+    padding-top: 12px; margin-top: auto;
+    border-top: 1px dashed var(--color-line-2);
+    line-height: 1.5; margin-bottom: 0;
+  }
+  .proof-line em { color: var(--color-ink); font-style: italic; font-weight: 600; }
+</style>

@@ -34,6 +34,14 @@ const portfolio = defineCollection({
       tags: z.string(),
       image: image(),
       outcome: z.string().optional(),
+      location: z.string().optional(),
+      summary: z.string().optional(),
+      stats: z.array(z.object({
+        label:  z.string(),
+        before: z.string(),
+        after:  z.string(),
+      })).optional(),
+      kpi: z.string().optional(),
     }),
 });
 

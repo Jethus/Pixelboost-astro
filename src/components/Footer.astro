@@ -1,134 +1,56 @@
 ---
 import logoWhite from "../assets/svgs/logo-white.svg";
-const today = new Date();
+const year = new Date().getFullYear();
 ---
 
-<footer class="bg-ink text-surface">
-  <div class="mx-auto max-w-7xl px-6 py-16 md:py-20">
-    <!-- Link Grid -->
-    <div class="grid gap-12 md:grid-cols-4">
-      <div class="md:col-span-1">
-        <a href="/" class="inline-block">
-          <img src={logoWhite.src} alt="Pixelboost" class="h-16 w-auto" />
-        </a>
-        <p class="mt-4 max-w-xs leading-relaxed text-surface/60 fs-xs">
-          We're focused on delivering high-speed, secure sites equipped with the
-          insights you need to scale.
-        </p>
-      </div>
-
-      <div>
-        <h4
-          class="mb-4 font-display font-bold uppercase tracking-widest text-accent fs-xs"
-        >
-          Services
-        </h4>
-        <ul class="space-y-2 fs-xs">
-          <li>
-            <a
-              href="/services"
-              class="text-surface/70 transition-colors duration-200 hover:text-surface"
-              >Web Development</a
-            >
-          </li>
-          <li>
-            <a
-              href="/services"
-              class="text-surface/70 transition-colors duration-200 hover:text-surface"
-              >Web Design</a
-            >
-          </li>
-          <li>
-            <a
-              href="/services"
-              class="text-surface/70 transition-colors duration-200 hover:text-surface"
-              >Branding</a
-            >
-          </li>
-          <li>
-            <a
-              href="/services"
-              class="text-surface/70 transition-colors duration-200 hover:text-surface"
-              >Print Design</a
-            >
-          </li>
-          <li>
-            <a
-              href="/services"
-              class="text-surface/70 transition-colors duration-200 hover:text-surface"
-              >SEO</a
-            >
-          </li>
-        </ul>
-      </div>
-
-      <div>
-        <h4
-          class="mb-4 font-display font-bold uppercase tracking-widest text-accent fs-xs"
-        >
-          Agency
-        </h4>
-        <ul class="space-y-2 fs-xs">
-          <li>
-            <a
-              href="/about"
-              class="text-surface/70 transition-colors duration-200 hover:text-surface"
-              >About Us</a
-            >
-          </li>
-          <li>
-            <a
-              href="/blog"
-              class="text-surface/70 transition-colors duration-200 hover:text-surface"
-              >Blog</a
-            >
-          </li>
-          <li>
-            <a
-              href="#portfolio"
-              class="text-surface/70 transition-colors duration-200 hover:text-surface"
-              >Case Studies</a
-            >
-          </li>
-          <li>
-            <a
-              href="/contact"
-              class="text-surface/70 transition-colors duration-200 hover:text-surface"
-              >Contact Us</a
-            >
-          </li>
-        </ul>
-      </div>
-
-      <div>
-        <h4
-          class="mb-4 font-display font-bold uppercase tracking-widest text-accent fs-xs"
-        >
-          Get in Touch
-        </h4>
-        <ul class="space-y-2 fs-xs">
-          <li>
-            <a
-              href="tel:+19057812464"
-              class="text-surface/70 transition-colors duration-200 hover:text-surface"
-              >(905) 781-2464</a
-            >
-          </li>
-          <li>
-            <a
-              href="mailto:hello@pixelboost.ca"
-              class="text-surface/70 transition-colors duration-200 hover:text-surface"
-              >hello@pixelboost.ca</a
-            >
-          </li>
-        </ul>
-      </div>
+<footer
+  style="background: var(--color-paper); max-width: 1200px; margin: 16px auto 0; border-radius: 28px 28px 0 0; padding: 40px clamp(28px, 5vw, 72px) 0; font-size: 14px; color: var(--color-ink-500);"
+>
+  <div class="foot-grid">
+    <div>
+      <a href="/">
+        <img src={logoWhite.src} alt="Pixelboost" style="height: 40px; width: auto; filter: invert(1);" />
+      </a>
+      <p style="margin: 14px 0 0 0; max-width: 40ch; line-height: 1.5; font-size: 14px; color: var(--color-ink-500);">
+        A one-person web studio in Ontario, building fast, accessible custom websites for Canadian small businesses.
+      </p>
     </div>
 
-    <div
-      class="mt-12 border-t border-surface/10 pt-6 text-center text-surface/40 fs-xs"
-    >
-      &copy; {today.getFullYear()} Pixelboost. All rights reserved.
+    <div>
+      <h4 style="margin: 0 0 12px 0; font-size: 13px; font-weight: 700; color: var(--color-ink); letter-spacing: -0.01em;">Pixelboost</h4>
+      <a href="#problem" class="foot-link">Why it matters</a>
+      <a href="#audit"   class="foot-link">Free audit</a>
+      <a href="#work"    class="foot-link">Recent work</a>
+      <a href="#pricing" class="foot-link">Pricing</a>
+      <a href="#faq"     class="foot-link">FAQ</a>
+      <a href="/blog"    class="foot-link">Blog</a>
+    </div>
+
+    <div>
+      <h4 style="margin: 0 0 12px 0; font-size: 13px; font-weight: 700; color: var(--color-ink); letter-spacing: -0.01em;">Get in touch</h4>
+      <a href="mailto:hello@pixelboost.ca" class="foot-link">hello@pixelboost.ca</a>
+      <a href="tel:+19057812464"           class="foot-link">(905) 781-2464</a>
     </div>
   </div>
+
+  <div style="margin-top: 32px; padding: 16px 0 32px; border-top: 1px solid var(--color-line); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; font-size: 12px; color: var(--color-ink-500);">
+    <span>&copy; {year} Pixelboost · Made in Ontario, Canada</span>
+    <span>Built on this site. Lighthouse 100/100/100/100.</span>
+  </div>
 </footer>
+
+<style>
+  .foot-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    gap: 40px;
+  }
+  @media (max-width: 720px) { .foot-grid { grid-template-columns: 1fr; } }
+
+  .foot-link {
+    display: block; color: var(--color-ink-500);
+    text-decoration: none; padding: 4px 0;
+    transition: color 0.15s;
+  }
+  .foot-link:hover { color: var(--color-mint-600); }
+</style>
