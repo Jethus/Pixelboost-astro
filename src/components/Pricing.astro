@@ -1,35 +1,141 @@
 ---
 import { getEntry } from "astro:content";
-import PricingCard from "./ui/PricingCard.astro";
 
 const pricingDoc = await getEntry("landingPricing", "pricing");
 if (!pricingDoc) throw new Error("Could not find pricing content");
-const { eyebrow, headline, plans } = pricingDoc.data;
+const { plans } = pricingDoc.data;
+
+const featured = plans.find(p => p.variant === 'monthly')!;
+const standard = plans.find(p => p.variant === 'lump')!;
 ---
 
-<section class="border-b-3 border-ink bg-primary-light" id="pricing">
-  <div class="mx-auto max-w-7xl px-6 py-20 md:py-28">
-    <div class="mb-12 text-center">
-      <p
-        class="mb-2 font-display font-bold uppercase tracking-[0.2em] text-accent fs-xs"
-      >
-        {eyebrow}
-      </p>
-      <h2 class="font-display font-bold">{headline}</h2>
+<section
+  id="pricing"
+  style="background: var(--color-paper); border-radius: var(--radius-section); max-width: 1200px; margin: 16px auto 0; padding: clamp(56px, 7vw, 96px) clamp(28px, 5vw, 72px);"
+>
+  <div style="max-width: 780px;">
+    <span class="eyebrow-chip">
+      <span class="eyebrow-dot"></span> Honest pricing
+    </span>
+    <h2 style="margin: 0 0 16px 0;">
+      Two ways to work together. <span class="high">No surprise invoices.</span>
+    </h2>
+    <p style="font-size: clamp(16px, 1.35vw, 19px); color: var(--color-ink-500); line-height: 1.5; max-width: 56ch; margin: 0; font-weight: 500;">
+      Pick the monthly plan if you want a partner. Pick the flat rate if you'd rather pay once and own it outright. Both include the same build quality.
+    </p>
+  </div>
+
+  <div class="price-grid">
+    <div class="price-card featured">
+      <span class="badge">Most chosen</span>
+      <h3 class="plan-name">{featured.title}</h3>
+      <p class="plan-blurb">Custom site + ongoing care, all-in.</p>
+      <div class="plan-price">{featured.price}<small>{featured.priceNote}</small></div>
+      <ul class="plan-features">
+        {featured.features.map(f => <li>{f.text}</li>)}
+      </ul>
+      <a href="#audit" class="plan-btn mint">Start with a free audit →</a>
     </div>
 
-    <div class="mx-auto grid max-w-5xl gap-8 md:grid-cols-2">
-      {
-        plans.map((plan) => (
-          <PricingCard
-            variant={plan.variant as any}
-            title={plan.title}
-            price={plan.price}
-            priceNote={plan.priceNote}
-            features={plan.features}
-          />
-        ))
-      }
+    <div class="price-card">
+      <h3 class="plan-name">{standard.title}</h3>
+      <p class="plan-blurb">One-time build, you take it from there.</p>
+      <div class="plan-price">{standard.price}<small>{standard.priceNote}</small></div>
+      <ul class="plan-features">
+        {standard.features.map(f => <li>{f.text}</li>)}
+      </ul>
+      <a href="#audit" class="plan-btn dark">Talk it through →</a>
     </div>
   </div>
+
+  <div class="price-foot">
+    <strong>You own the site.</strong> After 12 months, you can keep me on monthly, switch to a lighter care plan, or take the site with you to another developer. Either way, the code, content, and domain are yours.
+  </div>
 </section>
+
+<style>
+  .eyebrow-chip {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--color-mint-100); color: var(--color-mint-600);
+    font-weight: 600; font-size: 13px; letter-spacing: 0.04em;
+    padding: 6px 14px; border-radius: 9999px; margin-bottom: 20px;
+  }
+  .eyebrow-dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--color-mint-500); display: inline-block;
+  }
+
+  .price-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-top: 36px;
+    align-items: start;
+  }
+  @media (max-width: 820px) { .price-grid { grid-template-columns: 1fr; } }
+
+  .price-card {
+    background: var(--color-paper-2);
+    border-radius: 24px;
+    padding: 32px;
+    border: 1px solid var(--color-line);
+    display: flex; flex-direction: column; gap: 16px;
+  }
+  .price-card.featured {
+    background: var(--color-ink);
+    color: var(--color-paper);
+    border-color: var(--color-ink);
+  }
+
+  .badge {
+    align-self: flex-start;
+    font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+    padding: 5px 10px; border-radius: 9999px;
+    background: var(--color-mint-500); color: var(--color-ink);
+  }
+
+  .plan-name  { font-size: 15px; font-weight: 700; margin: 0; }
+  .plan-blurb { font-size: 14px; margin: 0; color: var(--color-ink-500); }
+  .featured .plan-blurb { color: rgba(248,245,238,0.65); }
+
+  .plan-price {
+    font-size: 48px; font-weight: 800; letter-spacing: -0.035em; line-height: 1; margin: 6px 0;
+  }
+  .plan-price small {
+    font-size: 14px; font-weight: 500; color: var(--color-ink-500);
+  }
+  .featured .plan-price small { color: rgba(248,245,238,0.55); }
+
+  .plan-features {
+    margin: 8px 0 0 0; padding: 0; list-style: none; display: grid; gap: 8px;
+  }
+  .plan-features li {
+    display: flex; gap: 10px; font-size: 14px; color: var(--color-ink-700); line-height: 1.45;
+  }
+  .plan-features li::before { content: "✓"; color: var(--color-mint-600); font-weight: 700; flex-shrink: 0; }
+  .featured .plan-features li { color: rgba(248,245,238,0.85); }
+  .featured .plan-features li::before { color: var(--color-mint-300); }
+
+  .plan-btn {
+    display: flex; justify-content: center; align-items: center;
+    border-radius: 9999px; padding: 13px 20px;
+    font-weight: 600; font-size: 14.5px; text-decoration: none; margin-top: auto;
+    transition: transform 0.15s, box-shadow 0.15s;
+    border: 0;
+  }
+  .plan-btn:hover { transform: translateY(-1px); box-shadow: var(--shadow-btn); }
+  .plan-btn.mint { background: var(--color-mint-500); color: var(--color-ink); }
+  .plan-btn.mint:hover { background: var(--color-mint-600); color: var(--color-paper); }
+  .plan-btn.dark { background: var(--color-ink); color: var(--color-paper); }
+
+  .price-foot {
+    margin-top: 28px;
+    padding: 20px 24px;
+    background: var(--color-mint-100);
+    border: 1px solid var(--color-mint-200);
+    border-radius: 16px;
+    font-size: 14.5px; line-height: 1.55; color: var(--color-ink-700);
+    max-width: 780px;
+  }
+  .price-foot strong { color: var(--color-ink); font-weight: 700; }
+</style>

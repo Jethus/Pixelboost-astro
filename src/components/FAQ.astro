@@ -1,0 +1,90 @@
+---
+const questions = [
+  {
+    q: 'How long does a project take?',
+    a: 'About 3–4 weeks from kickoff for most small-business sites. Larger projects with more pages, custom integrations, or content I have to write run 5–6 weeks. I only take on two projects at a time so timelines are honest.',
+  },
+  {
+    q: "What's included in the $200/month plan?",
+    a: "The full custom build, hosting, domain setup, SSL, analytics installed, and ongoing updates — copy changes, new pages, fixing things, swapping photos. Anything that takes me less than an hour or two is just included. Big new features get quoted separately so there are no surprises.",
+  },
+  {
+    q: 'Am I locked into a contract?',
+    a: "No. The monthly plan is month-to-month, cancel anytime. If you leave, I help you migrate the site to wherever you want — you own the code and the content.",
+  },
+  {
+    q: 'Who owns the website?',
+    a: "You do, on both plans. The code, the design, the content, the domain, the analytics — all yours. I don't hold anything hostage.",
+  },
+  {
+    q: 'What if I already have a site?',
+    a: 'Then we start with a free audit (above). About a third of the time, the right answer is "your site is mostly fine, here are 3 small fixes." If a rebuild does make sense, we go from there.',
+  },
+  {
+    q: 'Do you only work with Ontario businesses?',
+    a: "No, just Canadian. I work with clients across Ontario and the Maritimes mostly, but anywhere in Canada is fine. Time zones matter more than borders.",
+  },
+  {
+    q: 'Why do you keep mentioning "Lighthouse" and "Plausible"?',
+    a: "Lighthouse is Google's free tool that grades website speed, accessibility, and SEO — it's the industry standard, and I use it as honest proof that the site is actually good. Plausible is privacy-friendly analytics: visitor counts and traffic sources without cookie banners or selling data. You'll see the dashboards, not me.",
+  },
+];
+---
+
+<section
+  id="faq"
+  style="background: var(--color-paper-2); border-radius: var(--radius-section); max-width: 1200px; margin: 16px auto 0; padding: clamp(56px, 7vw, 96px) clamp(28px, 5vw, 72px);"
+>
+  <div style="max-width: 760px;">
+    <span class="eyebrow-chip">
+      <span class="eyebrow-dot"></span> FAQ
+    </span>
+    <h2 style="margin: 0 0 0 0;">Reasonable questions, plain answers.</h2>
+  </div>
+
+  <div class="faq-list" style="max-width: 760px; margin-top: 32px;">
+    {questions.map((item, i) => (
+      <details class="faq-item" open={i === 0}>
+        <summary class="faq-q">{item.q}</summary>
+        <div class="faq-a">{item.a}</div>
+      </details>
+    ))}
+  </div>
+</section>
+
+<style>
+  .eyebrow-chip {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--color-mint-100); color: var(--color-mint-600);
+    font-weight: 600; font-size: 13px; letter-spacing: 0.04em;
+    padding: 6px 14px; border-radius: 9999px; margin-bottom: 20px;
+  }
+  .eyebrow-dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--color-mint-500); display: inline-block;
+  }
+
+  .faq-list { border-top: 1px solid var(--color-line); }
+
+  .faq-item { border-bottom: 1px solid var(--color-line); padding: 20px 0; }
+
+  .faq-q {
+    display: flex; justify-content: space-between; align-items: center; gap: 20px;
+    cursor: pointer; font-size: 17px; font-weight: 600; letter-spacing: -0.01em;
+    list-style: none;
+  }
+  .faq-q::-webkit-details-marker { display: none; }
+  .faq-q::after {
+    content: "+"; font-weight: 400; font-size: 22px;
+    color: var(--color-ink-500); flex-shrink: 0;
+    transition: transform 0.2s ease;
+    display: inline-block;
+  }
+  .faq-item[open] .faq-q::after { transform: rotate(45deg); }
+
+  .faq-a {
+    margin-top: 10px;
+    font-size: 15px; color: var(--color-ink-500); line-height: 1.6;
+    max-width: 64ch;
+  }
+</style>
