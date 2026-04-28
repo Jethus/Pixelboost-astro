@@ -10,15 +10,25 @@ interface Scores {
   tracking: number;
 }
 
-const TARGETS: Scores = { perf: 58, a11y: 71, seo: 84, mobile: 49, tracking: 25 };
+export interface AuditRow {
+  key: keyof Scores;
+  label: string;
+  sub: string;
+}
 
-const ROWS: { key: keyof Scores; label: string; sub: string }[] = [
-  { key: 'perf',     label: 'Speed',             sub: 'How fast pages load on mobile' },
-  { key: 'a11y',     label: 'Accessibility',      sub: 'Can everyone actually use it?' },
-  { key: 'seo',      label: 'SEO basics',         sub: 'Can Google find and read it?' },
-  { key: 'mobile',   label: 'Mobile experience',  sub: 'Tap targets, layout, readability' },
-  { key: 'tracking', label: 'Visitor tracking',   sub: 'Privacy-friendly analytics setup' },
-];
+export interface AuditContent {
+  eyebrow: string;
+  headline: string;
+  body: string;
+  footnote: string;
+  verdictIdle: string;
+  verdictDone: string;
+  emailCopy: string;
+  callCopy: string;
+  rows: AuditRow[];
+}
+
+const TARGETS: Scores = { perf: 58, a11y: 71, seo: 84, mobile: 49, tracking: 25 };
 
 function grade(n: number): 'good' | 'mid' | 'bad' {
   return n >= 90 ? 'good' : n >= 65 ? 'mid' : 'bad';
@@ -36,7 +46,17 @@ const BAR_COLOR = {
   bad:  'var(--color-red)',
 };
 
-export default function Audit() {
+export default function Audit({
+  eyebrow,
+  headline,
+  body,
+  footnote,
+  verdictIdle,
+  verdictDone,
+  emailCopy,
+  callCopy,
+  rows,
+}: AuditContent) {
   const [url, setUrl] = useState('');
   const [state, setState] = useState<AuditState>('idle');
   const [scores, setScores] = useState<Scores>({ perf: 0, a11y: 0, seo: 0, mobile: 0, tracking: 0 });
@@ -49,7 +69,7 @@ export default function Audit() {
 
     const tick = (t: number) => {
       const p = Math.min(1, (t - start) / dur);
-      const e = 1 - Math.pow(1 - p, 3); // ease-out cubic
+      const e = 1 - Math.pow(1 - p, 3);
       setScores({
         perf:     Math.round(TARGETS.perf     * e),
         a11y:     Math.round(TARGETS.a11y     * e),
@@ -72,7 +92,6 @@ export default function Audit() {
     e.preventDefault();
     if (!url.trim()) return;
     if (state === 'done') {
-      // Reset for "Run again"
       setScores({ perf: 0, a11y: 0, seo: 0, mobile: 0, tracking: 0 });
       setState('scanning');
     } else {
@@ -106,11 +125,11 @@ export default function Audit() {
             padding: '6px 14px', borderRadius: '9999px', marginBottom: '20px',
           }}>
             <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: 'var(--color-mint-500)', display: 'inline-block' }}></span>
-            Free, no email required
+            {eyebrow}
           </span>
 
           <h2 style={{ color: 'var(--color-paper)', margin: '0 0 16px 0' }}>
-            Get a free <span style={{ color: 'var(--color-mint-600)' }}>website report card.</span>
+            {headline}
           </h2>
 
           <p style={{
@@ -118,7 +137,7 @@ export default function Audit() {
             color: 'rgba(248,245,238,0.75)',
             lineHeight: 1.5, maxWidth: '56ch', margin: '0 0 28px 0', fontWeight: 500,
           }}>
-            I check your site the way Google and real customers experience it: how fast it loads, whether people can use it easily, whether search engines can understand it, and whether you're tracking what visitors do.
+            {body}
           </p>
 
           <form onSubmit={handleSubmit} style={{ display: 'flex', gap: '10px', margin: '20px 0 14px', flexWrap: 'wrap' }}>
@@ -158,7 +177,7 @@ export default function Audit() {
           </form>
 
           <p style={{ fontSize: '12.5px', color: 'rgba(248,245,238,0.55)', fontStyle: 'italic', margin: '0 0 0 2px' }}>
-            <em style={{ color: 'var(--color-mint-300)', fontStyle: 'normal' }}>Technically:</em> I use Google Lighthouse, axe accessibility checks, and a Plausible tracking audit to back the report up. You'll get it whether or not we work together.
+            <em style={{ color: 'var(--color-mint-300)', fontStyle: 'normal' }}>Technically:</em> {footnote}
           </p>
         </div>
 
@@ -189,7 +208,7 @@ export default function Audit() {
 
           {/* Metric rows */}
           <div style={{ padding: '10px 22px' }}>
-            {ROWS.map(row => {
+            {rows.map(row => {
               const val = scores[row.key];
               const g = grade(val);
               return (
@@ -233,13 +252,64 @@ export default function Audit() {
           }}>
             <p style={{ fontSize: '13.5px', fontWeight: 600, margin: 0 }}>
               {state === 'done'
-                ? <>Verdict → <strong style={{ color: 'var(--color-mint-700)' }}>5 fixes could save ~1 in 2 visitors.</strong></>
+                ? <>{verdictDone} <strong style={{ color: 'var(--color-mint-700)' }}>5 fixes could save ~1 in 2 visitors.</strong></>
                 : state === 'scanning'
                   ? 'Scanning your site…'
-                  : <>Verdict → <strong>Enter your URL above to run a real scan.</strong></>
+                  : <>Verdict → <strong>{verdictIdle}</strong></>
               }
             </p>
           </div>
+
+          {/* Email capture — shown after scan */}
+          {state === 'done' && (
+            <div style={{
+              padding: '14px 22px',
+              borderTop: '1px solid var(--color-line)',
+              background: 'var(--color-paper)',
+              display: 'flex', flexDirection: 'column', gap: '10px',
+            }}>
+              <p style={{ fontSize: '13px', color: 'var(--color-ink-700)', margin: 0, lineHeight: 1.5 }}>
+                {emailCopy}
+              </p>
+              <form style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }} onSubmit={e => e.preventDefault()}>
+                <input
+                  type="email"
+                  placeholder="you@yourbusiness.ca"
+                  aria-label="Your email address"
+                  style={{
+                    flex: 1, minWidth: '160px',
+                    fontFamily: 'inherit', fontSize: '14px',
+                    padding: '10px 16px',
+                    background: 'var(--color-paper-2)',
+                    border: '1.5px solid var(--color-line)',
+                    borderRadius: '9999px',
+                    outline: 'none',
+                    color: 'var(--color-ink)',
+                  }}
+                />
+                <button
+                  type="submit"
+                  style={{
+                    display: 'inline-flex', alignItems: 'center',
+                    background: 'var(--color-mint-500)', color: 'var(--color-ink)',
+                    border: 0, borderRadius: '9999px', padding: '10px 18px',
+                    fontWeight: 600, fontSize: '13.5px', fontFamily: 'inherit', cursor: 'pointer',
+                  }}
+                >
+                  Send my report →
+                </button>
+              </form>
+              <a
+                href="/contact"
+                style={{
+                  fontSize: '13px', color: 'var(--color-mint-700)',
+                  fontWeight: 600, textDecoration: 'none',
+                }}
+              >
+                {callCopy}
+              </a>
+            </div>
+          )}
         </div>
 
       </div>
