@@ -20,9 +20,7 @@ const icons = [
     <span class="eyebrow-chip">
       <span class="eyebrow-dot"></span> {eyebrow}
     </span>
-    <h2 style="margin: 0 0 16px 0;">
-      {headline}
-    </h2>
+    <h2 style="margin: 0 0 16px 0;" set:html={headline} />
     <p style="font-size: clamp(16px, 1.35vw, 19px); color: var(--color-ink-500); line-height: 1.5; max-width: 56ch; margin: 0; font-weight: 500;">
       {subhead}
     </p>
