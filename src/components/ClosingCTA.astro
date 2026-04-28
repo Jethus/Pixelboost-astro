@@ -1,18 +1,21 @@
 ---
+import { getEntry } from "astro:content";
+
+const doc = await getEntry("landingCTA", "cta");
+if (!doc) throw new Error("Could not find CTA content");
+const { headline, body, buttonText, buttonLink } = doc.data;
 ---
 
 <section
   id="cta"
   style="background: linear-gradient(135deg, var(--color-ink) 0%, #14261d 100%); color: var(--color-paper); border-radius: var(--radius-section); max-width: 1200px; margin: 24px auto 0; padding: clamp(56px, 7vw, 96px) clamp(28px, 5vw, 72px); text-align: center;"
 >
-  <h2 style="color: var(--color-paper); margin: 0 0 16px 0;">
-    Want to know what your site actually scores?
-  </h2>
+  <h2 style="color: var(--color-paper); margin: 0 0 16px 0;">{headline}</h2>
   <p style="font-size: clamp(16px, 1.35vw, 19px); color: rgba(248,245,238,0.7); line-height: 1.5; max-width: 56ch; margin: 0 auto 32px; font-weight: 500;">
-    Free audit, no email required, no sales pitch attached. You'll get a plain-English report card and the three fixes I'd start with — whether or not we end up working together.
+    {body}
   </p>
   <div style="display: flex; gap: 12px; flex-wrap: wrap; justify-content: center;">
-    <a href="#audit" class="cta-btn-mint">Get my free report card →</a>
+    <a href={buttonLink} class="cta-btn-mint">{buttonText}</a>
     <a href="mailto:hello@pixelboost.ca" class="cta-btn-secondary">Or just email me</a>
   </div>
 </section>
