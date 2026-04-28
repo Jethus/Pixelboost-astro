@@ -4,6 +4,7 @@ headline: "Two ways to work together. No surprise invoices."
 plans:
   - variant: monthly
     title: Pixelboost monthly
+    descriptor: "Ongoing partnership"
     price: "$200"
     priceNote: "/ month"
     features:
@@ -21,6 +22,7 @@ plans:
         included: true
   - variant: lump
     title: Build & hand-off
+    descriptor: "One-time project"
     price: "$4,800"
     priceNote: "flat"
     features:
