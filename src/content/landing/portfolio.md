@@ -1,6 +1,5 @@
-﻿---
-eyebrow: Our Work
-headline: See the clients we've helped
-subhead: Case studies that showcase our expertise
-
+---
+eyebrow: Results
+headline: Real sites. Real scores. Before and after.
+subhead: Every project starts with an audit. Here's what that looks like in practice.
 ---

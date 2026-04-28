@@ -4,7 +4,7 @@ headline: "Two ways to work together. No surprise invoices."
 plans:
   - variant: monthly
     title: Pixelboost monthly
-    descriptor: "Ongoing partnership"
+    descriptor: Best for businesses that want a new site plus ongoing access to a developer for updates, fixes, and small improvements throughout the year.
     price: "$200"
     priceNote: "/ month"
     features:
@@ -22,7 +22,7 @@ plans:
         included: true
   - variant: lump
     title: Build & hand-off
-    descriptor: "One-time project"
+    descriptor: Best for businesses that want the site built, launched, and handed over cleanly.
     price: "$4,800"
     priceNote: "flat"
     features:
