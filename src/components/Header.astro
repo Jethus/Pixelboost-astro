@@ -2,9 +2,10 @@
 import logoBlack from "../assets/svgs/logo-black.svg";
 ---
 
-<header style="position: sticky; top: 28px; z-index: 50; margin-bottom: 0;">
+<header id="site-header" style="position: sticky; top: 28px; z-index: 50; margin-bottom: 0;">
   <nav
-    style="display: flex; justify-content: space-between; align-items: center; background: var(--color-paper); border-radius: 9999px; padding: 10px 14px 10px 22px; box-shadow: var(--shadow-nav); max-width: 1200px; margin: 0 auto;"
+    id="site-nav"
+    style="display: flex; justify-content: space-between; align-items: center; background: var(--color-paper); border-radius: 9999px; padding: 10px 14px 10px 22px; box-shadow: var(--shadow-nav); max-width: 1200px; margin: 0 auto; transition: box-shadow 0.25s ease, padding 0.25s ease;"
     aria-label="Main navigation"
   >
     <!-- Logo -->
@@ -62,6 +63,12 @@ import logoBlack from "../assets/svgs/logo-black.svg";
   .nav-link:hover { color: var(--color-mint-600); }
   .nav-cta:hover { transform: translateY(-1px); box-shadow: var(--shadow-btn); }
 
+  #site-nav.scrolled {
+    box-shadow: 0 4px 24px -4px rgba(15,26,20,0.18), 0 1px 0 rgba(15,26,20,0.04);
+    padding-top: 8px;
+    padding-bottom: 8px;
+  }
+
   @media (max-width: 768px) {
     #nav-links { display: none !important; }
     #nav-toggle { display: flex !important; }
@@ -69,6 +76,16 @@ import logoBlack from "../assets/svgs/logo-black.svg";
 </style>
 
 <script is:inline>
+  // Scroll-aware nav elevation
+  const nav = document.getElementById('site-nav');
+  const header = document.getElementById('site-header');
+  const onScroll = () => {
+    // header top = 28px; once page scrolled past ~60px the nav feels "floating"
+    nav.classList.toggle('scrolled', window.scrollY > 60);
+  };
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
   const toggle = document.getElementById('nav-toggle');
   const mobileMenu = document.getElementById('mobile-nav');
   const spans = toggle.querySelectorAll('span');
