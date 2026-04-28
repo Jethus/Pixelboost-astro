@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(find /c/repos/pixelboost-astro -maxdepth 2 -type f -name README.md -o -name .cursorrules -o -name .cursor -o -name copilot*)",
+      "Bash(grep -v \"^\\\\.\\\\.$\")",
+      "Bash(npm run:*)",
+      "Bash(grep -n \"h2.*fs-\" /c/repos/pixelboost-astro/src/components/*.astro)"
+    ]
+  }
+}
