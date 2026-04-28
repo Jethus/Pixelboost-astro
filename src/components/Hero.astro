@@ -1,4 +1,10 @@
 ---
+import { getEntry } from "astro:content";
+import logoBlack from "../assets/svgs/logo-black.svg";
+
+const doc = await getEntry("landingHero", "hero");
+if (!doc) throw new Error("Could not find hero content");
+const { description } = doc.data;
 ---
 
 <section
@@ -17,7 +23,7 @@
       </h1>
 
       <p style="font-size: clamp(16px, 1.35vw, 19px); color: var(--color-ink-500); line-height: 1.5; max-width: 56ch; margin: 0 0 28px 0; font-weight: 500;">
-        I build fast, accessible, trackable websites for Canadian small businesses — then stick around as your web developer for updates, fixes, and improvements. No site-builder bloat, no surprise invoices.
+        {description}
       </p>
 
       <div style="display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 18px;">
