@@ -1,6 +1,10 @@
 ---
-import { getCollection } from "astro:content";
+import { getCollection, getEntry } from "astro:content";
 import { Image } from "astro:assets";
+
+const landingDoc = await getEntry("landingPortfolio", "portfolio");
+if (!landingDoc) throw new Error("Could not find portfolio landing content");
+const { eyebrow, headline, subhead } = landingDoc.data;
 
 const clientsDocs = await getCollection("portfolio");
 
@@ -13,13 +17,11 @@ const trendingUp = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" 
 >
   <div style="max-width: 780px;">
     <span class="eyebrow-chip" style="background: var(--color-paper);">
-      <span class="eyebrow-dot"></span> Recent work
+      <span class="eyebrow-dot"></span> {eyebrow}
     </span>
-    <h2 style="margin: 0 0 16px 0;">
-      Real Canadian small businesses, <span class="high">real before-and-after.</span>
-    </h2>
+    <h2 style="margin: 0 0 16px 0;" set:html={headline} />
     <p style="font-size: clamp(16px, 1.35vw, 19px); color: var(--color-ink-500); line-height: 1.5; max-width: 56ch; margin: 0; font-weight: 500;">
-      Every project gets a Google Lighthouse score before and after. The numbers are how I keep myself honest.
+      {subhead}
     </p>
   </div>
 
