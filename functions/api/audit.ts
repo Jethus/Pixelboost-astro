@@ -101,16 +101,20 @@ export const onRequestGet: PagesFunction<Env> = async ({ request, env }) => {
   }
 
   const data = await psiRes.json() as {
-    categories: Record<string, { score: number | null }>;
-    audits: Record<string, { numericValue?: number; details?: { items?: Array<{ entity?: string }> } }>;
+    lighthouseResult: {
+      categories: Record<string, { score: number | null }>;
+      audits: Record<string, { numericValue?: number; details?: { items?: Array<{ entity?: string }> } }>;
+    };
   };
 
+  const { categories, audits } = data.lighthouseResult;
+
   const scores: AuditScores = {
-    perf:     psiScore(data.categories, 'performance'),
-    a11y:     psiScore(data.categories, 'accessibility'),
-    seo:      psiScore(data.categories, 'seo'),
-    mobile:   deriveMobile(data.audits),
-    tracking: deriveTracking(data.audits),
+    perf:     psiScore(categories, 'performance'),
+    a11y:     psiScore(categories, 'accessibility'),
+    seo:      psiScore(categories, 'seo'),
+    mobile:   deriveMobile(audits),
+    tracking: deriveTracking(audits),
   };
 
   return new Response(JSON.stringify(scores), {
