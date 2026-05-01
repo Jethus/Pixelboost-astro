@@ -22,6 +22,11 @@ const TRACKING_DOMAINS = [
   'segment.com',
 ];
 
+const JSON_HEADERS = {
+  'Content-Type': 'application/json',
+  'Access-Control-Allow-Origin': '*',
+};
+
 function normalizeMobileMetric(value: number, good: number, poor: number): number {
   if (value <= good) return 100;
   if (value >= poor) return 0;
@@ -60,7 +65,7 @@ export const onRequestGet: PagesFunction<Env> = async ({ request, env }) => {
   if (!rawUrl) {
     return new Response(JSON.stringify({ error: 'Missing url param' }), {
       status: 400,
-      headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' },
+      headers: JSON_HEADERS,
     });
   }
 
@@ -72,12 +77,43 @@ export const onRequestGet: PagesFunction<Env> = async ({ request, env }) => {
   } catch {
     return new Response(JSON.stringify({ error: 'Invalid URL' }), {
       status: 400,
-      headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' },
+      headers: JSON_HEADERS,
     });
   }
 
-  // Placeholder — PSI fetch added in Task 3
-  return new Response(JSON.stringify({ targetUrl }), {
-    headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' },
+  const psiEndpoint = `https://www.googleapis.com/pagespeedonline/v5/runPagespeed?url=${encodeURIComponent(targetUrl)}&strategy=mobile&key=${env.PSI_API_KEY}`;
+
+  let psiRes: Response;
+  try {
+    psiRes = await fetch(psiEndpoint);
+  } catch {
+    return new Response(JSON.stringify({ error: 'Failed to reach PSI API' }), {
+      status: 502,
+      headers: JSON_HEADERS,
+    });
+  }
+
+  if (!psiRes.ok) {
+    return new Response(JSON.stringify({ error: `PSI API error: ${psiRes.status}` }), {
+      status: 502,
+      headers: JSON_HEADERS,
+    });
+  }
+
+  const data = await psiRes.json() as {
+    categories: Record<string, { score: number | null }>;
+    audits: Record<string, { numericValue?: number; details?: { items?: Array<{ entity?: string }> } }>;
+  };
+
+  const scores: AuditScores = {
+    perf:     psiScore(data.categories, 'performance'),
+    a11y:     psiScore(data.categories, 'accessibility'),
+    seo:      psiScore(data.categories, 'seo'),
+    mobile:   deriveMobile(data.audits),
+    tracking: deriveTracking(data.audits),
+  };
+
+  return new Response(JSON.stringify(scores), {
+    headers: JSON_HEADERS,
   });
 };
