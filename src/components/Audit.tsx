@@ -1,6 +1,6 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState } from 'react';
 
-type AuditState = 'idle' | 'scanning' | 'done';
+type AuditState = 'idle' | 'scanning' | 'done' | 'error';
 
 interface Scores {
   perf: number;
@@ -27,8 +27,6 @@ export interface AuditContent {
   callCopy: string;
   rows: AuditRow[];
 }
-
-const TARGETS: Scores = { perf: 58, a11y: 71, seo: 84, mobile: 49, tracking: 25 };
 
 function grade(n: number): 'good' | 'mid' | 'bad' {
   return n >= 90 ? 'good' : n >= 65 ? 'mid' : 'bad';
@@ -60,47 +58,32 @@ export default function Audit({
   const [url, setUrl] = useState('');
   const [state, setState] = useState<AuditState>('idle');
   const [scores, setScores] = useState<Scores>({ perf: 0, a11y: 0, seo: 0, mobile: 0, tracking: 0 });
-  const rafRef = useRef<number>(0);
+  const [scannedUrl, setScannedUrl] = useState('');
 
-  useEffect(() => {
-    if (state !== 'scanning') return;
-    const start = performance.now();
-    const dur = 1400;
-
-    const tick = (t: number) => {
-      const p = Math.min(1, (t - start) / dur);
-      const e = 1 - Math.pow(1 - p, 3);
-      setScores({
-        perf:     Math.round(TARGETS.perf     * e),
-        a11y:     Math.round(TARGETS.a11y     * e),
-        seo:      Math.round(TARGETS.seo      * e),
-        mobile:   Math.round(TARGETS.mobile   * e),
-        tracking: Math.round(TARGETS.tracking * e),
-      });
-      if (p < 1) {
-        rafRef.current = requestAnimationFrame(tick);
-      } else {
-        setState('done');
-      }
-    };
-
-    rafRef.current = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(rafRef.current);
-  }, [state]);
-
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!url.trim()) return;
-    if (state === 'done') {
-      setScores({ perf: 0, a11y: 0, seo: 0, mobile: 0, tracking: 0 });
-      setState('scanning');
-    } else {
-      setState('scanning');
+    if (!url.trim() || state === 'scanning') return;
+    const normalized = url.startsWith('http') ? url : `https://${url}`;
+    setScannedUrl(normalized);
+    setScores({ perf: 0, a11y: 0, seo: 0, mobile: 0, tracking: 0 });
+    setState('scanning');
+    try {
+      const res = await fetch(`/api/audit?url=${encodeURIComponent(normalized)}`);
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const data: Scores = await res.json();
+      setScores(data);
+      setState('done');
+    } catch {
+      setState('error');
     }
   };
 
-  const showScores = state !== 'idle';
-  const displayUrl = state === 'idle' ? 'yourbusiness.ca' : (url || 'yourbusiness.ca');
+  const showScores = state === 'done';
+  const displayUrl = state === 'idle' ? 'yourbusiness.ca' : (scannedUrl || url || 'yourbusiness.ca');
+  const headerDate = (() => {
+    const now = new Date();
+    return now.toLocaleString('en-CA', { month: 'short', year: 'numeric' });
+  })();
 
   return (
     <section
@@ -203,7 +186,7 @@ export default function Audit({
             <div style={{ display: 'flex', gap: '6px' }}>
               {[0,1,2].map(i => <span key={i} style={{ width: '8px', height: '8px', borderRadius: '50%', background: 'var(--color-line-2)', display: 'block' }}/>)}
             </div>
-            <div>Sample report — {displayUrl} · Apr 2026</div>
+            <div>Site report — {displayUrl} · {headerDate}</div>
           </div>
 
           {/* Metric rows */}
@@ -255,7 +238,9 @@ export default function Audit({
                 ? <>{verdictDone} <strong style={{ color: 'var(--color-mint-700)' }}>5 fixes could save ~1 in 2 visitors.</strong></>
                 : state === 'scanning'
                   ? 'Scanning your site…'
-                  : <>Verdict → <strong>{verdictIdle}</strong></>
+                  : state === 'error'
+                    ? <span style={{ color: 'var(--color-red)' }}>Couldn't reach that URL — double-check it and try again.</span>
+                    : <>Verdict → <strong>{verdictIdle}</strong></>
               }
             </p>
           </div>
