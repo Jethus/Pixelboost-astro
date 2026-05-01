@@ -29,3 +29,10 @@ pnpm-debug.log*
 
 keystatic.config.old
 
+CLAUDE.md
+skills-lock.json
+docs/*
+
+.claude
+.agents
+.vscode
