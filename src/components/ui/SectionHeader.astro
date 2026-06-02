@@ -1,25 +1,27 @@
 ---
 /**
- * SectionHeader — eyebrow + heading + subhead block used atop sections.
+ * SectionHeader — eyebrow + heading + subhead block atop sections.
  * Heading content goes in the default slot (so `.high` accent spans work).
- *
- * Usage:
- *   <SectionHeader eyebrow="Honest pricing" subhead="...">
- *     Two ways to work together. <span class="high">No surprise invoices.</span>
- *   </SectionHeader>
+ * maxWidth: "default" (780px) | "narrow" (760px)
  */
 import Eyebrow from "./Eyebrow.astro";
 interface Props {
   eyebrow: string;
   subhead?: string;
-  eyebrowBg?: string;
-  maxWidth?: string;
+  eyebrowOnMint?: boolean;
+  maxWidth?: "default" | "narrow";
 }
-const { eyebrow, subhead, eyebrowBg, maxWidth = "780px" } = Astro.props;
+const { eyebrow, subhead, eyebrowOnMint = false, maxWidth = "default" } = Astro.props;
 ---
 
-<div style={`max-width: ${maxWidth};`}>
-  <Eyebrow label={eyebrow} bg={eyebrowBg} />
-  <h2 style="margin: 0 0 16px 0;"><slot /></h2>
+<div class:list={["section-header", maxWidth === "narrow" && "section-header--narrow"]}>
+  <Eyebrow label={eyebrow} onMint={eyebrowOnMint} />
+  <h2 class="section-header__title"><slot /></h2>
   {subhead && <p class="section-subhead">{subhead}</p>}
 </div>
+
+<style>
+  .section-header { max-width: 780px; }
+  .section-header--narrow { max-width: 760px; }
+  .section-header__title { margin: 0 0 16px 0; }
+</style>

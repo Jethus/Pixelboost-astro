@@ -17,7 +17,7 @@ const formattedDate = pubDate.toLocaleDateString("en-CA", {
 });
 ---
 
-<Card href={`/blog/${slug}`} class="blog-card" padding="26px 24px">
+<Card href={`/blog/${slug}`} class="blog-card">
   <span class="blog-meta">{formattedDate} · {readTime} min read</span>
   <h3 class="blog-title">{title}</h3>
   <p class="blog-desc">{description}</p>
