@@ -1,44 +1,29 @@
 ---
 /**
- * Button — Neo-brutalist CTA and secondary button primitive.
+ * Button — site CTA/link button. Maps to the btn-* @utility classes.
  *
  * Usage:
- *   <Button href="/contact">Get in touch</Button>
- *   <Button href="#work" variant="secondary">See our work</Button>
+ *   <Button href="#audit">Score my site</Button>             // mint + arrow
+ *   <Button href="#work" variant="outline" arrow={false}>See recent work</Button>
+ *   <Button href="/contact" variant="outline-light">Get in touch</Button>
  */
 interface Props {
   href: string;
-  variant?: "primary" | "secondary";
+  variant?: "mint" | "outline" | "outline-light";
+  arrow?: boolean;
   class?: string;
-  size?: "base" | "lg";
 }
-
-const {
-  href,
-  variant = "primary",
-  class: className = "",
-  size = "base",
-} = Astro.props;
-
-const sizeClasses = {
-  base: "px-12 py-3.5 text-xl",
-  lg: "px-16 py-4.5 text-xxl",
-};
-
-const variants = {
-  primary: "bg-primary text-surface hover:bg-primary/90",
-  secondary: "bg-transparent text-ink hover:bg-ink hover:text-surface",
-};
+const { href, variant = "mint", arrow = true, class: className = "" } = Astro.props;
+const variantClass = {
+  mint: "btn-mint",
+  outline: "btn-outline",
+  "outline-light": "btn-outline-light",
+}[variant];
 ---
 
-<a
-  href={href}
-  class:list={[
-    "inline-flex items-center justify-center rounded-brutal border-3 border-ink font-display font-bold shadow-brutal transition-all duration-200 hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-brutal-hover",
-    sizeClasses[size],
-    variants[variant],
-    className,
-  ]}
->
+<a href={href} class:list={[variantClass, "btn-interactive", className]}>
   <slot />
+  {arrow && (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+  )}
 </a>
