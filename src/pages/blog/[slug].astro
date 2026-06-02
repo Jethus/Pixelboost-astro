@@ -171,12 +171,37 @@ const faqLd = faq && {
   .post-body :global(strong) { color: var(--color-ink); font-weight: 700; }
 
   .post-body :global(blockquote) {
-    border-left: 3px solid var(--color-mint-500);
-    padding: 12px 20px;
-    margin: 1.5rem 0;
+    position: relative;
+    border-left: 4px solid var(--color-mint-500);
+    padding: 28px 32px 28px 36px;
+    margin: 2.25rem 0;
     background: var(--color-mint-50);
-    border-radius: 0 8px 8px 0;
-    color: var(--color-ink-700);
+    border-radius: 0 14px 14px 0;
+    color: var(--color-ink);
+  }
+
+  /* Oversized quote mark in the accent, sitting behind the text */
+  .post-body :global(blockquote)::before {
+    content: "\201C";
+    position: absolute;
+    top: 0.18em;
+    right: 0.28em;
+    font-size: 5.5rem;
+    line-height: 1;
+    color: var(--color-mint-200);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .post-body :global(blockquote p) {
+    position: relative;
+    z-index: 1;
+    margin: 0;
+    font-size: clamp(18px, 1.6vw, 22px);
+    line-height: 1.5;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    color: var(--color-ink);
   }
 
   .post-body :global(code) {
