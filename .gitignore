@@ -29,6 +29,9 @@ pnpm-debug.log*
 .DS_Store
 Thumbs.db
 
+# crash dumps
+*.stackdump
+
 # loose research/screenshot files in root
 *.csv
 *.png
