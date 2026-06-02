@@ -2,26 +2,281 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
+import { Image } from "astro:assets";
+import joshPhoto from "../assets/webp/Josh-crop.webp";
+import Eyebrow from "../components/ui/Eyebrow.astro";
+import Card from "../components/ui/Card.astro";
 import Button from "../components/ui/Button.astro";
 ---
 
-<BaseLayout title="About Us">
+<BaseLayout
+  title="About"
+  description="I'm Josh — a web designer and developer based in Ontario. Here's a bit about who I am and how Pixelboost came to be."
+>
   <Header />
-  <main class="border-b-3 border-ink bg-surface">
-    <div class="mx-auto flex min-h-[60vh] max-w-7xl items-center px-6 py-28">
-      <div class="flex max-w-lg flex-col gap-6">
-        <p class="font-display font-bold uppercase tracking-[0.2em] text-accent fs-xs">
-          Coming Soon
+
+  <main>
+
+    <!-- Hero -->
+    <section class="section-card about-hero">
+      <div class="about-hero-text">
+        <Eyebrow label="About" />
+        <h1 style="margin: 0 0 24px 0; line-height: 1.05; white-space: nowrap;">Hey, I'm Josh.</h1>
+        <p style="font-size: clamp(17px, 1.5vw, 21px); color: var(--color-ink-500); line-height: 1.65; margin: 0; font-weight: 450; max-width: 60ch;">
+          I'm a frontend developer with a background in design. I build websites for small businesses in Ontario — not templates, actual custom sites that load fast and look like they belong to you.
         </p>
-        <h1 class="font-display font-bold">About Us</h1>
-        <p class="leading-relaxed text-ink/70">
-          We're working on this page. In the meantime, feel free to get in touch.
-        </p>
-        <div>
-          <Button href="/" variant="secondary">Back to Home</Button>
+      </div>
+      <div class="about-hero-photo">
+        <Image
+          src={joshPhoto}
+          alt="Josh Del Vecchio"
+          width={600}
+          height={720}
+          class="about-hero-img"
+        />
+      </div>
+    </section>
+
+    <!-- Story -->
+    <section class="section-card about-story">
+      <div>
+        <h2 style="margin: 0 0 24px 0; font-size: clamp(24px, 2.5vw, 32px);">How this started</h2>
+        <div style="display: flex; flex-direction: column; gap: 18px; font-size: clamp(15px, 1.2vw, 17px); color: var(--color-ink-700); line-height: 1.7;">
+          <p style="margin: 0;">
+            By day I'm a frontend developer at the Ontario College of Teachers, building accessible, responsive web tools. I've been doing this for about four years — and before that, I came up through design, so I care about how things look just as much as how they work.
+          </p>
+          <p style="margin: 0;">
+            I started Pixelboost on the side because I kept seeing the same thing — small businesses with great products or services, stuck with websites that were slow, clunky, or just kind of embarrassing. The kind of site that makes people leave before they've even read a sentence.
+          </p>
+          <p style="margin: 0;">
+            Most of those businesses had either been quoted a fortune by an agency or tried DIY and hit a wall. Pixelboost sits in between — custom-built sites, real code, at a price that actually makes sense if you're running a small business.
+          </p>
+          <p style="margin: 0;">
+            The thing is, every site I build reflects on me too. So I'm not looking to ship something that's just "good enough." I want it to actually perform — load fast, rank well, convert visitors into customers. The stuff I talk about in audits and on this site isn't filler. Speed, accessibility, structure, Core Web Vitals — I genuinely think these things matter, and I build with all of it in mind from the start.
+          </p>
         </div>
       </div>
-    </div>
+
+      <div style="display: flex; flex-direction: column; gap: 16px;">
+        <Card variant="mint" class="about-card" padding="18px 20px">
+          <span class="about-card-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 1 1 16 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          </span>
+          <div>
+            <p class="about-card-label">Based in</p>
+            <p class="about-card-value">Whitby, Ontario — working with clients across the GTA and Durham Region</p>
+          </div>
+        </Card>
+        <Card variant="mint" class="about-card" padding="18px 20px">
+          <span class="about-card-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+          </span>
+          <div>
+            <p class="about-card-label">Background</p>
+            <p class="about-card-value">Frontend dev with 4+ years experience. TypeScript, React, modern CSS — and a design background before all that</p>
+          </div>
+        </Card>
+        <Card variant="mint" class="about-card" padding="18px 20px">
+          <span class="about-card-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+          </span>
+          <div>
+            <p class="about-card-label">What I actually care about</p>
+            <p class="about-card-value">Sites that perform — fast load times, good Core Web Vitals, clean structure. Every site I ship reflects on me, so I don't cut corners.</p>
+          </div>
+        </Card>
+        <Card variant="mint" class="about-card" padding="18px 20px">
+          <span class="about-card-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          </span>
+          <div>
+            <p class="about-card-label">How I work</p>
+            <p class="about-card-value">Directly with you — no handoffs to junior staff, no project managers in between</p>
+          </div>
+        </Card>
+      </div>
+    </section>
+
+    <!-- What I actually do -->
+    <section class="section-card" style="background: var(--color-paper);">
+      <div style="max-width: 680px; margin-bottom: clamp(36px, 4vw, 56px);">
+        <h2 style="margin: 0 0 16px 0; font-size: clamp(24px, 2.5vw, 32px);">What I actually do</h2>
+        <p style="margin: 0; font-size: clamp(15px, 1.2vw, 17px); color: var(--color-ink-700); line-height: 1.7;">
+          Most of my clients come to me with one of a few situations — they need a new site built from scratch, their current site is slow and outdated, or they've outgrown their DIY setup and need something real.
+        </p>
+      </div>
+
+      <div class="services-grid">
+        <div class="service-item">
+          <h3>Web Design & Development</h3>
+          <p>Custom sites built in code, not drag-and-drop builders. Designed to match your brand and built to perform.</p>
+        </div>
+        <div class="service-item">
+          <h3>Website Redesigns</h3>
+          <p>If your current site is holding you back, I can rebuild it properly — keeping what matters, fixing what doesn't.</p>
+        </div>
+        <div class="service-item">
+          <h3>Search Engine Optimization</h3>
+          <p>Technical SEO is baked in from the start — fast load times, clean markup, structured data, the works.</p>
+        </div>
+        <div class="service-item">
+          <h3>Ongoing Maintenance</h3>
+          <p>Monthly plan clients get updates, edits, and support included. You don't need to stress about the technical side.</p>
+        </div>
+        <div class="service-item">
+          <h3>Branding</h3>
+          <p>Logo, colour palette, type — if you need a brand before the site, I can help with that too.</p>
+        </div>
+        <div class="service-item">
+          <h3>Print Design</h3>
+          <p>Business cards, flyers, signage — keep the brand consistent offline too.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="section-card" style="background: var(--color-ink); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 28px;">
+      <div>
+        <h2 style="margin: 0 0 10px 0; color: var(--color-paper); font-size: clamp(22px, 2.2vw, 30px);">Want to work together?</h2>
+        <p style="margin: 0; color: rgba(248,245,238,0.65); font-size: 15px; max-width: 44ch; line-height: 1.55;">
+          No pressure, no sales pitch. Just tell me what you're working on and we'll figure out if it's a good fit.
+        </p>
+      </div>
+      <Button href="/contact" variant="mint">Get in touch</Button>
+    </section>
+
   </main>
+
   <Footer />
 </BaseLayout>
+
+<style>
+  .about-hero {
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
+    max-height: clamp(360px, 40vw, 520px);
+    background: var(--color-paper);
+    overflow: hidden;
+    padding: 0 !important; /* section-card padding handled by text column */
+  }
+
+  .about-story {
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
+    gap: clamp(40px, 6vw, 96px);
+    align-items: start;
+  }
+
+  @media (max-width: 720px) {
+    .about-story { grid-template-columns: 1fr; }
+  }
+
+  .about-hero-text {
+    padding: clamp(64px, 9vw, 120px) clamp(28px, 5vw, 72px);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .about-hero-photo {
+    overflow: hidden;
+  }
+
+  .about-hero-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center top;
+    display: block;
+  }
+
+  @media (max-width: 720px) {
+    .about-hero {
+      grid-template-columns: 1fr;
+    }
+    .about-hero-photo {
+      height: 320px;
+      border-radius: 0 0 var(--radius-section) var(--radius-section);
+    }
+  }
+
+  @media (max-width: 720px) {
+    section[style*="grid-template-columns: 1fr 1fr"] {
+      grid-template-columns: 1fr !important;
+    }
+  }
+
+  :global(.about-card) {
+    flex-direction: row;
+    gap: 14px;
+    align-items: flex-start;
+  }
+
+  .about-card-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    background: var(--color-mint-100);
+    border: 1px solid var(--color-mint-200);
+    color: var(--color-mint-700);
+    flex-shrink: 0;
+  }
+
+  .about-card-label {
+    margin: 0 0 3px 0;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    color: var(--color-ink-400);
+  }
+
+  .about-card-value {
+    margin: 0;
+    font-size: clamp(14px, 1.1vw, 15.5px);
+    line-height: 1.55;
+    color: var(--color-ink-700);
+    font-weight: 500;
+  }
+
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--color-line);
+    border: 1px solid var(--color-line);
+    border-radius: 20px;
+    overflow: hidden;
+  }
+
+  .service-item {
+    background: var(--color-paper);
+    padding: 24px 26px;
+  }
+
+  .service-item h3 {
+    margin: 0 0 8px 0;
+    font-size: clamp(15px, 1.2vw, 17px);
+    font-weight: 700;
+    color: var(--color-ink);
+  }
+
+  .service-item p {
+    margin: 0;
+    font-size: clamp(15px, 1.2vw, 17px);
+    color: var(--color-ink-500);
+    line-height: 1.65;
+  }
+
+  @media (max-width: 900px) {
+    .services-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  @media (max-width: 560px) {
+    .services-grid { grid-template-columns: 1fr; }
+  }
+
+</style>
