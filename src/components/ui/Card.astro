@@ -1,29 +1,29 @@
 ---
 /**
- * Card — base soft surface card. Single source for paper/mint cards
- * with consistent border, radius, padding, and hover lift.
+ * Card — base soft surface card. Single source for paper/mint cards.
+ * Renders <a> when `href` is set, else <div>.
  *
- * Renders as <a> when `href` is set, else <div>.
- *
- * Usage:
- *   <Card>...</Card>
- *   <Card variant="mint">...</Card>
- *   <Card href="/blog/x">...</Card>
+ * padding: "default" (24px) | "compact" (18px 20px)
  */
 interface Props {
   variant?: "default" | "mint";
   href?: string;
   class?: string;
-  padding?: string;
+  padding?: "default" | "compact";
 }
-const { variant = "default", href, class: className = "", padding } = Astro.props;
+const { variant = "default", href, class: className = "", padding = "default" } = Astro.props;
 const Tag = href ? "a" : "div";
 ---
 
 <Tag
   href={href}
-  class:list={["card", `card--${variant}`, href && "card--link", className]}
-  style={padding ? `padding: ${padding};` : undefined}
+  class:list={[
+    "card",
+    `card--${variant}`,
+    padding === "compact" && "card--compact",
+    href && "card--link",
+    className,
+  ]}
 >
   <slot />
 </Tag>
@@ -42,25 +42,15 @@ const Tag = href ? "a" : "div";
       box-shadow 0.2s ease,
       border-color 0.2s ease;
   }
-
-  .card--default {
-    background: var(--color-paper);
-    border: 1px solid var(--color-line);
-  }
-
-  .card--mint {
-    background: var(--color-mint-50);
-    border: 1px solid var(--color-mint-200);
-  }
-
+  .card--compact { padding: 18px 20px; }
+  .card--default { background: var(--color-paper); border: 1px solid var(--color-line); }
+  .card--mint    { background: var(--color-mint-50); border: 1px solid var(--color-mint-200); }
   .card--link:hover {
     transform: translateY(-3px);
     box-shadow: 0 18px 44px -24px rgba(15, 26, 20, 0.4);
     border-color: var(--color-line-2);
   }
-
   @media (prefers-reduced-motion: reduce) {
-    .card,
-    .card--link:hover { transform: none; transition: none; }
+    .card, .card--link:hover { transform: none; transition: none; }
   }
 </style>
