@@ -2,27 +2,200 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
-import Button from "../components/ui/Button.astro";
+import Eyebrow from "../components/ui/Eyebrow.astro";
 ---
 
-<BaseLayout title="Contact Us">
+<BaseLayout
+  title="Contact"
+  description="Get in touch with Josh at Pixelboost — custom web design for small businesses in Toronto and Durham Region."
+>
   <Header />
-  <main class="border-b-3 border-ink bg-surface">
-    <div class="mx-auto flex min-h-[60vh] max-w-7xl items-center px-6 py-28">
-      <div class="flex max-w-lg flex-col gap-6">
-        <p class="font-display font-bold uppercase tracking-[0.2em] text-accent fs-xs">
-          Coming Soon
-        </p>
-        <h1 class="font-display font-bold">Contact Us</h1>
-        <p class="leading-relaxed text-ink/70">
-          We're working on this page. For now, reach us at
-          <a href="mailto:hello@pixelboost.ca" class="text-primary underline">hello@pixelboost.ca</a>.
-        </p>
-        <div>
-          <Button href="/" variant="secondary">Back to Home</Button>
+
+  <main>
+
+    <section class="section-card" style="background: var(--color-paper);">
+      <Eyebrow label="Contact" />
+      <h1 style="margin: 0 0 20px 0; max-width: 16ch;">Let's talk about your site.</h1>
+      <p style="font-size: clamp(16px, 1.35vw, 19px); color: var(--color-ink-500); line-height: 1.5; max-width: 52ch; margin: 0; font-weight: 500;">
+        No pressure, no sales pitch. Just tell me what you're working on and I'll let you know if I can help.
+      </p>
+    </section>
+
+    <section class="section-card" style="background: var(--color-paper-2);">
+      <div class="contact-grid">
+
+        <div style="display: flex; flex-direction: column; gap: 28px;">
+          <div class="contact-method">
+            <span class="contact-icon">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            </span>
+            <div>
+              <p class="contact-label">Email</p>
+              <a href="mailto:hello@pixelboost.ca" class="contact-value">hello@pixelboost.ca</a>
+            </div>
+          </div>
+
+          <div class="contact-method">
+            <span class="contact-icon">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.7 10a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.66 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.6a16 16 0 0 0 5.49 5.49l1.04-.96a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+            </span>
+            <div>
+              <p class="contact-label">Phone</p>
+              <a href="tel:+19057812464" class="contact-value">(905) 781-2464</a>
+            </div>
+          </div>
+
+          <div class="contact-method">
+            <span class="contact-icon">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 1 1 16 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            </span>
+            <div>
+              <p class="contact-label">Based in</p>
+              <p class="contact-value" style="color: var(--color-ink-700);">Whitby, Ontario — serving the GTA and Durham Region</p>
+            </div>
+          </div>
         </div>
+
+        <form class="contact-form" name="contact" method="POST" data-netlify="true">
+          <input type="hidden" name="form-name" value="contact" />
+
+          <div class="field-group">
+            <label for="name" class="field-label">Your name</label>
+            <input type="text" id="name" name="name" required placeholder="Jane Smith" class="field-input" />
+          </div>
+
+          <div class="field-group">
+            <label for="email" class="field-label">Email address</label>
+            <input type="email" id="email" name="email" required placeholder="jane@yourbusiness.ca" class="field-input" />
+          </div>
+
+          <div class="field-group">
+            <label for="website" class="field-label">Your current website <span style="color: var(--color-ink-400); font-weight: 400;">(optional)</span></label>
+            <input type="text" id="website" name="website" placeholder="yourbusiness.ca" class="field-input" />
+          </div>
+
+          <div class="field-group">
+            <label for="message" class="field-label">What are you working on?</label>
+            <textarea id="message" name="message" required rows="5" placeholder="Tell me a bit about your business and what you're looking for..." class="field-input field-textarea"></textarea>
+          </div>
+
+          <button type="submit" class="submit-btn btn-interactive">Send message →</button>
+        </form>
+
       </div>
-    </div>
+    </section>
+
   </main>
+
   <Footer />
 </BaseLayout>
+
+<style>
+  .contact-grid {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: clamp(40px, 6vw, 96px);
+    align-items: start;
+    max-width: 900px;
+  }
+  @media (max-width: 720px) { .contact-grid { grid-template-columns: 1fr; } }
+
+  .contact-method {
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+  }
+
+  .contact-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    background: var(--color-mint-100);
+    border: 1px solid var(--color-mint-200);
+    color: var(--color-mint-700);
+    flex-shrink: 0;
+  }
+
+  .contact-label {
+    margin: 0 0 3px 0;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    color: var(--color-ink-400);
+  }
+
+  .contact-value {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--color-ink);
+    text-decoration: none;
+    transition: color 0.15s;
+    margin: 0;
+    display: block;
+  }
+  a.contact-value:hover { color: var(--color-mint-600); }
+
+  .contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .field-group {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+  }
+
+  .field-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--color-ink);
+    letter-spacing: -0.01em;
+  }
+
+  .field-input {
+    font-family: inherit;
+    font-size: 15px;
+    padding: 12px 16px;
+    background: var(--color-paper);
+    border: 1.5px solid var(--color-line);
+    border-radius: 10px;
+    color: var(--color-ink);
+    outline: none;
+    transition: border-color 0.15s, box-shadow 0.15s;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  .field-input:focus {
+    border-color: var(--color-mint-500);
+    box-shadow: 0 0 0 3px var(--color-mint-100);
+  }
+  .field-input::placeholder { color: var(--color-ink-400); }
+
+  .field-textarea {
+    resize: vertical;
+    min-height: 130px;
+    line-height: 1.6;
+  }
+
+  .submit-btn {
+    align-self: flex-start;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--color-mint-500);
+    color: var(--color-ink);
+    border: 0;
+    border-radius: 9999px;
+    padding: 14px 24px;
+    font-family: inherit;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+</style>
