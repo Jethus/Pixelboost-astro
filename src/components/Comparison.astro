@@ -1,5 +1,6 @@
 ---
 import ComparisonTable from "./ui/ComparisonTable.astro";
+import SectionHeader from "./ui/SectionHeader.astro";
 
 const rows = [
   {
@@ -30,32 +31,19 @@ const rows = [
 ];
 ---
 
-<section class="border-b-3 border-ink bg-surface" id="compare">
-  <div class="mx-auto max-w-7xl px-6 py-20 md:py-28">
-    <div class="flex flex-col gap-12 lg:flex-row lg:items-start lg:gap-16">
-      <div class="max-w-md lg:sticky lg:top-28">
-        <p
-          class="mb-2 font-display font-bold uppercase tracking-[0.2em] text-accent fs-xs"
-        >
-          What we do
-        </p>
-        <h2 class="mb-4 font-display font-bold">How we compare</h2>
-        <p class="leading-relaxed text-ink/70">
-          A template can get you online. A custom rebuild is for when the site needs to be faster,
-          clearer, and easier to measure.
-        </p>
-      </div>
+<section id="compare" class="section-card" style="background: var(--color-paper);">
+  <SectionHeader eyebrow="What we do" subhead="A template can get you online. A custom rebuild is for when the site needs to be faster, clearer, and easier to measure.">
+    How we compare
+  </SectionHeader>
 
-      <div class="flex-1">
-        <ComparisonTable
-          columns={["Feature", "Standard Platforms", "Our Custom Sites"]}
-          rows={rows.map((row) => [row.feature, row.diy, row.ours]) as [
-            string,
-            string,
-            string,
-          ][]}
-        />
-      </div>
-    </div>
+  <div style="margin-top: 36px;">
+    <ComparisonTable
+      columns={["Feature", "Standard Platforms", "Our Custom Sites"]}
+      rows={rows.map((row) => [row.feature, row.diy, row.ours]) as [
+        string,
+        string,
+        string,
+      ][]}
+    />
   </div>
 </section>
