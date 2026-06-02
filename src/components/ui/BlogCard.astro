@@ -28,7 +28,10 @@ const formattedDate = pubDate.toLocaleDateString("en-CA", {
 </Card>
 
 <style>
-  .blog-card { gap: 12px; height: 100%; }
+  /* .blog-card sits on the Card primitive's root <a>, which carries Card's
+     scope hash — not BlogCard's. Target it with :global() so these rules
+     match across the component boundary. Inner elements stay scoped. */
+  :global(.blog-card) { gap: 12px; height: 100%; }
 
   .blog-meta {
     font-size: 11px; font-weight: 700; text-transform: uppercase;
@@ -39,7 +42,7 @@ const formattedDate = pubDate.toLocaleDateString("en-CA", {
     letter-spacing: -0.02em; margin: 0; transition: color 0.2s ease;
     display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
   }
-  .blog-card:hover .blog-title { color: var(--color-mint-700); }
+  :global(.blog-card:hover) .blog-title { color: var(--color-mint-700); }
   .blog-desc {
     font-size: 14.5px; color: var(--color-ink-500); line-height: 1.55; margin: 0;
     display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
@@ -49,9 +52,9 @@ const formattedDate = pubDate.toLocaleDateString("en-CA", {
     font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--color-ink);
   }
   .blog-readmore svg { transition: transform 0.2s cubic-bezier(0.2, 0.9, 0.2, 1); }
-  .blog-card:hover .blog-readmore { color: var(--color-mint-700); }
-  .blog-card:hover .blog-readmore svg { transform: translateX(3px); }
+  :global(.blog-card:hover) .blog-readmore { color: var(--color-mint-700); }
+  :global(.blog-card:hover) .blog-readmore svg { transform: translateX(3px); }
   @media (prefers-reduced-motion: reduce) {
-    .blog-readmore svg, .blog-card:hover .blog-readmore svg { transform: none; transition: none; }
+    .blog-readmore svg, :global(.blog-card:hover) .blog-readmore svg { transform: none; transition: none; }
   }
 </style>
