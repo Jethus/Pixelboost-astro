@@ -27,7 +27,7 @@ const icons = [
 ];
 ---
 
-<section id="problem" class="section-card" style="background: var(--color-paper-2);">
+<section id="problem" class="section-card surface-paper-2">
   <div data-reveal>
     <SectionHeader eyebrow="Why it matters" subhead="The owner usually cannot see it. Customers feel it right away.">
       Your current site might be quietly <span class="high">costing you customers.</span>
@@ -36,7 +36,7 @@ const icons = [
 
   <ul class="problem-list" aria-label="Common website problems">
     {cards.map((card, i) => (
-      <li class="problem-item" data-reveal style={`--reveal-i: ${i + 1}`}>
+      <li class="problem-item" data-reveal>
         <span class="icon-tile" aria-hidden="true" set:html={icons[i]} />
         <h3 class="problem-title">{card.title}</h3>
         <p class="problem-body">{card.body}</p>
@@ -98,6 +98,11 @@ const icons = [
     display: grid; place-items: center;
     flex-shrink: 0;
   }
+
+  .problem-item:nth-child(1) { --reveal-i: 1; }
+  .problem-item:nth-child(2) { --reveal-i: 2; }
+  .problem-item:nth-child(3) { --reveal-i: 3; }
+  .problem-item:nth-child(4) { --reveal-i: 4; }
 
   @media (max-width: 640px) {
     .problem-list {

@@ -228,6 +228,11 @@
   will-change: transform;
 }
 
+@utility surface-paper   { background: var(--color-paper); }
+@utility surface-paper-2 { background: var(--color-paper-2); }
+@utility surface-ink     { background: var(--color-ink); color: var(--color-paper); }
+@utility surface-mint    { background: var(--color-mint-100); }
+
 @keyframes btn-active-bounce {
   0% {
     transform: translateY(-1px);

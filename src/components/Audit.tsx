@@ -63,6 +63,10 @@ export default function Audit({
   const [scannedUrl, setScannedUrl] = useState('');
   const rafRef = useRef<number | null>(null);
 
+  // Refs for CSSOM-driven dynamic styles (bar widths + score colors)
+  const barFillRefs = useRef<Record<string, HTMLSpanElement | null>>({});
+  const scoreNumRefs = useRef<Record<string, HTMLDivElement | null>>({});
+
   // Count-up animation toward the real scores once a scan completes.
   useEffect(() => {
     if (state !== 'done') return;
@@ -96,6 +100,28 @@ export default function Audit({
     };
   }, [state, scores]);
 
+  // CSSOM updates for dynamic bar widths and score colors.
+  // These are genuinely data-driven (score value + grade) so we use element.style
+  // inside a useEffect rather than static style attributes.
+  useEffect(() => {
+    const showScores = state === 'done';
+    rows.forEach(row => {
+      const val = displayScores[row.key];
+      const g = grade(scores[row.key]);
+
+      const barEl = barFillRefs.current[row.key];
+      if (barEl) {
+        barEl.style.width = showScores ? `${val}%` : '0%';
+        barEl.style.background = BAR_COLOR[g];
+      }
+
+      const numEl = scoreNumRefs.current[row.key];
+      if (numEl) {
+        numEl.style.color = showScores ? GRADE_COLOR[g] : 'var(--color-ink-400)';
+      }
+    });
+  }, [displayScores, state, scores, rows]);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!url.trim() || state === 'scanning') return;
@@ -125,134 +151,83 @@ export default function Audit({
   return (
     <section
       id="audit"
-      className="section-card"
-      style={{
-        background: 'var(--color-ink)',
-        color: 'var(--color-paper)',
-      }}
+      className="section-card audit-section"
     >
       <div className="audit-shell">
 
         {/* Left column */}
         <div>
-          <span style={{
-            display: 'inline-flex', alignItems: 'center', gap: '8px',
-            background: 'rgba(60,203,138,0.15)', color: 'var(--color-mint-300)',
-            fontWeight: 600, fontSize: '13px', letterSpacing: '0.04em',
-            padding: '6px 14px', borderRadius: '9999px', marginBottom: '20px',
-          }}>
-            <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: 'var(--color-mint-500)', display: 'inline-block' }}></span>
+          <span className="audit-eyebrow eyebrow-chip">
+            <span className="eyebrow-dot"></span>
             {eyebrow}
           </span>
 
-          <h2 style={{ color: 'var(--color-paper)', margin: '0 0 16px 0' }}>
+          <h2 className="audit-headline">
             {headline}
           </h2>
 
-          <p style={{
-            fontSize: 'clamp(16px, 1.35vw, 19px)',
-            color: 'rgba(248,245,238,0.75)',
-            lineHeight: 1.5, maxWidth: '56ch', margin: '0 0 28px 0', fontWeight: 500,
-          }}>
+          <p className="audit-body">
             {body}
           </p>
 
-          <form onSubmit={handleSubmit} style={{ display: 'flex', gap: '10px', margin: '20px 0 14px', flexWrap: 'wrap' }}>
+          <form onSubmit={handleSubmit} className="audit-form">
             <input
               type="text"
               placeholder="yourbusiness.ca"
               value={url}
               onChange={e => setUrl(e.target.value)}
               aria-label="Your website URL"
-              style={{
-                flex: 1, minWidth: '200px',
-                fontFamily: 'inherit', fontSize: '15px',
-                padding: '14px 18px',
-                background: 'var(--color-paper)',
-                border: '1.5px solid var(--color-ink)',
-                borderRadius: '9999px',
-                outline: 'none',
-                color: 'var(--color-ink)',
-              }}
+              className="audit-url-input"
               onFocus={e => { e.currentTarget.style.borderColor = 'var(--color-mint-500)'; e.currentTarget.style.boxShadow = '0 0 0 4px var(--color-mint-100)'; }}
               onBlur={e =>  { e.currentTarget.style.borderColor = 'var(--color-ink)';      e.currentTarget.style.boxShadow = 'none'; }}
             />
             <button
               type="submit"
-              className="btn-interactive"
-              style={{
-                display: 'inline-flex', alignItems: 'center', gap: '8px',
-                background: 'var(--color-mint-500)', color: 'var(--color-ink)',
-                border: 0, borderRadius: '9999px', padding: '14px 22px',
-                fontWeight: 600, fontSize: '14.5px', fontFamily: 'inherit', cursor: 'pointer',
-              }}
+              className="btn-interactive audit-scan-btn"
             >
               {state === 'scanning' ? 'Scanning…' : state === 'done' ? 'Run again' : 'Score my site'} →
             </button>
           </form>
 
-          <div style={{ margin: '0 0 0 2px' }}>
-            <span style={{ display: 'block', fontSize: '11px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: 'var(--color-mint-300)', marginBottom: '4px' }}>Technical</span>
-            <p style={{ fontSize: '12.5px', color: 'rgba(248,245,238,0.55)', fontStyle: 'italic', margin: 0 }}>{footnote}</p>
+          <div className="audit-footnote-wrap">
+            <span className="audit-footnote-label">Technical</span>
+            <p className="audit-footnote-text">{footnote}</p>
           </div>
         </div>
 
         {/* Right column — report card */}
         <div
           aria-live="polite"
-          style={{
-            background: 'var(--color-paper)',
-            color: 'var(--color-ink)',
-            borderRadius: '24px',
-            overflow: 'hidden',
-            boxShadow: 'var(--shadow-card)',
-          }}
+          className="audit-card"
         >
           {/* Card header */}
-          <div style={{
-            padding: '16px 22px',
-            borderBottom: '1px solid var(--color-line)',
-            background: 'var(--color-paper-2)',
-            display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-            fontSize: '12px', fontWeight: 600, color: 'var(--color-ink-500)',
-          }}>
-            <div style={{ display: 'flex', gap: '6px' }}>
-              {[0,1,2].map(i => <span key={i} style={{ width: '8px', height: '8px', borderRadius: '50%', background: 'var(--color-line-2)', display: 'block' }}/>)}
+          <div className="audit-card-header">
+            <div className="audit-mac-dots">
+              {[0,1,2].map(i => <span key={i} className="audit-mac-dot"/>)}
             </div>
             <div>Site report — {displayUrl} · {headerDate}</div>
           </div>
 
           {/* Metric rows */}
-          <div style={{ padding: '10px 22px' }}>
+          <div className="audit-rows-wrap">
             {rows.map(row => {
               const val = displayScores[row.key];
-              const g = grade(scores[row.key]);
               return (
-                <div key={row.key} style={{
-                  display: 'grid',
-                  gridTemplateColumns: '1.3fr 1fr 60px',
-                  alignItems: 'center', gap: '16px',
-                  padding: '12px 0',
-                  borderBottom: '1px solid var(--color-line)',
-                  fontSize: '14px',
-                }}>
+                <div key={row.key} className="audit-row">
                   <div>
-                    <span style={{ fontWeight: 600, display: 'block' }}>{row.label}</span>
-                    <span style={{ color: 'var(--color-ink-500)', fontSize: '12.5px', fontWeight: 500 }}>{row.sub}</span>
+                    <span className="audit-row-label">{row.label}</span>
+                    <span className="audit-row-sub">{row.sub}</span>
                   </div>
-                  <div style={{ height: '8px', background: 'var(--color-line)', borderRadius: '4px', overflow: 'hidden' }}>
-                    <span style={{
-                      display: 'block', height: '100%', borderRadius: '4px',
-                      background: BAR_COLOR[g],
-                      width: showScores ? `${val}%` : '0%',
-                      transition: 'width 0.12s linear',
-                    }}/>
+                  <div className="audit-bar-track">
+                    <span
+                      ref={el => { barFillRefs.current[row.key] = el; }}
+                      className="audit-bar-fill"
+                    />
                   </div>
-                  <div style={{
-                    fontWeight: 800, fontSize: '17px', textAlign: 'right',
-                    letterSpacing: '-0.02em',
-                    color: showScores ? GRADE_COLOR[g] : 'var(--color-ink-400)',
-                  }}>
+                  <div
+                    ref={el => { scoreNumRefs.current[row.key] = el; }}
+                    className="audit-score-num"
+                  >
                     {showScores ? val : '—'}
                   </div>
                 </div>
@@ -261,18 +236,14 @@ export default function Audit({
           </div>
 
           {/* Card footer / verdict */}
-          <div style={{
-            padding: '16px 22px',
-            background: 'var(--color-mint-50)',
-            borderTop: '1px solid var(--color-line)',
-          }}>
-            <p style={{ fontSize: '13.5px', fontWeight: 600, margin: 0 }}>
+          <div className="audit-verdict">
+            <p className="audit-verdict-text">
               {state === 'done'
-                ? <>{verdictDone} <strong style={{ color: 'var(--color-mint-700)' }}>5 fixes could save ~1 in 2 visitors.</strong></>
+                ? <>{verdictDone} <strong className="audit-verdict-strong">5 fixes could save ~1 in 2 visitors.</strong></>
                 : state === 'scanning'
                   ? 'Scanning your site…'
                   : state === 'error'
-                    ? <span style={{ color: 'var(--color-red)' }}>Couldn't reach that URL — double-check it and try again.</span>
+                    ? <span className="audit-error-msg">Couldn't reach that URL — double-check it and try again.</span>
                     : <>Verdict → <strong>{verdictIdle}</strong></>
               }
             </p>
@@ -280,50 +251,27 @@ export default function Audit({
 
           {/* Email capture — shown after scan */}
           {state === 'done' && (
-            <div style={{
-              padding: '14px 22px',
-              borderTop: '1px solid var(--color-line)',
-              background: 'var(--color-paper)',
-              display: 'flex', flexDirection: 'column', gap: '10px',
-            }}>
-              <p style={{ fontSize: '13px', color: 'var(--color-ink-700)', margin: 0, lineHeight: 1.5 }}>
+            <div className="audit-email-section">
+              <p className="audit-email-copy">
                 {emailCopy}
               </p>
-              <form style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }} onSubmit={e => e.preventDefault()}>
+              <form className="audit-email-form" onSubmit={e => e.preventDefault()}>
                 <input
                   type="email"
                   placeholder="you@yourbusiness.ca"
                   aria-label="Your email address"
-                  style={{
-                    flex: 1, minWidth: '160px',
-                    fontFamily: 'inherit', fontSize: '14px',
-                    padding: '10px 16px',
-                    background: 'var(--color-paper-2)',
-                    border: '1.5px solid var(--color-line)',
-                    borderRadius: '9999px',
-                    outline: 'none',
-                    color: 'var(--color-ink)',
-                  }}
+                  className="audit-email-input"
                 />
                 <button
                   type="submit"
-                  className="btn-interactive"
-                  style={{
-                    display: 'inline-flex', alignItems: 'center',
-                    background: 'var(--color-mint-500)', color: 'var(--color-ink)',
-                    border: 0, borderRadius: '9999px', padding: '10px 18px',
-                    fontWeight: 600, fontSize: '13.5px', fontFamily: 'inherit', cursor: 'pointer',
-                  }}
+                  className="btn-interactive audit-email-btn"
                 >
                   Send my report →
                 </button>
               </form>
               <a
                 href="/contact"
-                style={{
-                  fontSize: '13px', color: 'var(--color-mint-700)',
-                  fontWeight: 600, textDecoration: 'none',
-                }}
+                className="audit-call-link"
               >
                 {callCopy}
               </a>
@@ -334,6 +282,11 @@ export default function Audit({
       </div>
 
       <style>{`
+        .audit-section {
+          background: var(--color-ink);
+          color: var(--color-paper);
+        }
+
         .audit-shell {
           display: grid;
           grid-template-columns: 1fr 1.1fr;
@@ -343,6 +296,242 @@ export default function Audit({
         }
         @media (max-width: 920px) {
           .audit-shell { grid-template-columns: 1fr; }
+        }
+
+        /* Left column */
+        .audit-eyebrow {
+          background: rgba(60,203,138,0.15);
+          color: var(--color-mint-300);
+        }
+
+        .audit-headline {
+          color: var(--color-paper);
+          margin: 0 0 16px 0;
+        }
+
+        .audit-body {
+          font-size: clamp(16px, 1.35vw, 19px);
+          color: rgba(248,245,238,0.75);
+          line-height: 1.5;
+          max-width: 56ch;
+          margin: 0 0 28px 0;
+          font-weight: 500;
+        }
+
+        .audit-form {
+          display: flex;
+          gap: 10px;
+          margin: 20px 0 14px;
+          flex-wrap: wrap;
+        }
+
+        .audit-url-input {
+          flex: 1;
+          min-width: 200px;
+          font-family: inherit;
+          font-size: 15px;
+          padding: 14px 18px;
+          background: var(--color-paper);
+          border: 1.5px solid var(--color-ink);
+          border-radius: 9999px;
+          outline: none;
+          color: var(--color-ink);
+        }
+
+        .audit-scan-btn {
+          display: inline-flex;
+          align-items: center;
+          gap: 8px;
+          background: var(--color-mint-500);
+          color: var(--color-ink);
+          border: 0;
+          border-radius: 9999px;
+          padding: 14px 22px;
+          font-weight: 600;
+          font-size: 14.5px;
+          font-family: inherit;
+          cursor: pointer;
+        }
+
+        .audit-footnote-wrap {
+          margin: 0 0 0 2px;
+        }
+
+        .audit-footnote-label {
+          display: block;
+          font-size: 11px;
+          font-weight: 700;
+          text-transform: uppercase;
+          letter-spacing: 0.08em;
+          color: var(--color-mint-300);
+          margin-bottom: 4px;
+        }
+
+        .audit-footnote-text {
+          font-size: 12.5px;
+          color: rgba(248,245,238,0.55);
+          font-style: italic;
+          margin: 0;
+        }
+
+        /* Right column — report card */
+        .audit-card {
+          background: var(--color-paper);
+          color: var(--color-ink);
+          border-radius: 24px;
+          overflow: hidden;
+          box-shadow: var(--shadow-card);
+        }
+
+        .audit-card-header {
+          padding: 16px 22px;
+          border-bottom: 1px solid var(--color-line);
+          background: var(--color-paper-2);
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          font-size: 12px;
+          font-weight: 600;
+          color: var(--color-ink-500);
+        }
+
+        .audit-mac-dots {
+          display: flex;
+          gap: 6px;
+        }
+
+        .audit-mac-dot {
+          width: 8px;
+          height: 8px;
+          border-radius: 50%;
+          background: var(--color-line-2);
+          display: block;
+        }
+
+        .audit-rows-wrap {
+          padding: 10px 22px;
+        }
+
+        .audit-row {
+          display: grid;
+          grid-template-columns: 1.3fr 1fr 60px;
+          align-items: center;
+          gap: 16px;
+          padding: 12px 0;
+          border-bottom: 1px solid var(--color-line);
+          font-size: 14px;
+        }
+
+        .audit-row-label {
+          font-weight: 600;
+          display: block;
+        }
+
+        .audit-row-sub {
+          color: var(--color-ink-500);
+          font-size: 12.5px;
+          font-weight: 500;
+        }
+
+        .audit-bar-track {
+          height: 8px;
+          background: var(--color-line);
+          border-radius: 4px;
+          overflow: hidden;
+        }
+
+        /* width + background set via CSSOM (score-dependent) */
+        .audit-bar-fill {
+          display: block;
+          height: 100%;
+          border-radius: 4px;
+          width: 0%;
+          transition: width 0.12s linear;
+        }
+
+        /* color set via CSSOM (grade-dependent) */
+        .audit-score-num {
+          font-weight: 800;
+          font-size: 17px;
+          text-align: right;
+          letter-spacing: -0.02em;
+          color: var(--color-ink-400);
+        }
+
+        .audit-verdict {
+          padding: 16px 22px;
+          background: var(--color-mint-50);
+          border-top: 1px solid var(--color-line);
+        }
+
+        .audit-verdict-text {
+          font-size: 13.5px;
+          font-weight: 600;
+          margin: 0;
+        }
+
+        .audit-verdict-strong {
+          color: var(--color-mint-700);
+        }
+
+        .audit-error-msg {
+          color: var(--color-red);
+        }
+
+        .audit-email-section {
+          padding: 14px 22px;
+          border-top: 1px solid var(--color-line);
+          background: var(--color-paper);
+          display: flex;
+          flex-direction: column;
+          gap: 10px;
+        }
+
+        .audit-email-copy {
+          font-size: 13px;
+          color: var(--color-ink-700);
+          margin: 0;
+          line-height: 1.5;
+        }
+
+        .audit-email-form {
+          display: flex;
+          gap: 8px;
+          flex-wrap: wrap;
+        }
+
+        .audit-email-input {
+          flex: 1;
+          min-width: 160px;
+          font-family: inherit;
+          font-size: 14px;
+          padding: 10px 16px;
+          background: var(--color-paper-2);
+          border: 1.5px solid var(--color-line);
+          border-radius: 9999px;
+          outline: none;
+          color: var(--color-ink);
+        }
+
+        .audit-email-btn {
+          display: inline-flex;
+          align-items: center;
+          background: var(--color-mint-500);
+          color: var(--color-ink);
+          border: 0;
+          border-radius: 9999px;
+          padding: 10px 18px;
+          font-weight: 600;
+          font-size: 13.5px;
+          font-family: inherit;
+          cursor: pointer;
+        }
+
+        .audit-call-link {
+          font-size: 13px;
+          color: var(--color-mint-700);
+          font-weight: 600;
+          text-decoration: none;
         }
       `}</style>
     </section>
