@@ -358,6 +358,51 @@
     height: 100%;
   }
 
+  /* Prose tables — shared by markdown tables in posts (.post-body table)
+     and the <Table> component (.prose-table). Mint header + alternating
+     row shades so the table lifts off whatever paper surface it sits on. */
+  .post-body :is(table),
+  .prose-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    margin-bottom: 1.6rem;
+    font-size: 14px;
+    border: 1px solid var(--color-line-2);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+
+  .post-body :is(th, td),
+  .prose-table :is(th, td) {
+    padding: 11px 16px;
+    text-align: left;
+    border-bottom: 1px solid var(--color-line);
+  }
+
+  .post-body :is(thead th),
+  .prose-table thead th {
+    background: var(--color-mint-500);
+    color: var(--color-ink);
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    border-bottom: 1px solid var(--color-mint-600);
+  }
+
+  /* Zebra striping over the paper surface */
+  .post-body :is(tbody tr:nth-child(odd)),
+  .prose-table tbody tr:nth-child(odd) { background: var(--color-paper); }
+
+  .post-body :is(tbody tr:nth-child(even)),
+  .prose-table tbody tr:nth-child(even) { background: var(--color-mint-50); }
+
+  .post-body :is(tbody tr:last-child :is(th, td)),
+  .prose-table tbody tr:last-child :is(th, td) { border-bottom: none; }
+
+  /* First column reads as a row label */
+  .post-body :is(tbody td:first-child),
+  .prose-table tbody td:first-child { font-weight: 600; color: var(--color-ink); }
+
   /* .high — the mint-600 emphasis span used in h1/h2 */
   .high {
     color: var(--color-mint-600);
