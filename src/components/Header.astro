@@ -4,112 +4,132 @@ const pathname = Astro.url.pathname;
 const isActive = (href: string) => pathname === href || (href !== '/' && pathname.startsWith(href));
 ---
 
-<header id="site-header" style="position: sticky; top: 28px; z-index: 50; margin-bottom: 0;">
-  <nav
-    id="site-nav"
-    style="display: flex; justify-content: space-between; align-items: center; background: #ffffff; border-radius: 9999px; padding: 10px 14px 10px 22px; box-shadow: var(--shadow-nav); max-width: 1200px; margin: 0 auto; transition: box-shadow 0.25s ease, padding 0.25s ease;"
-    aria-label="Main navigation"
-  >
-    <!-- Logo -->
-    <a href="/" style="display: flex; align-items: center;">
-      <img src={logoBlack.src} alt="Pixelboost" style="height: 40px; width: auto;" />
+<header id="site-header">
+  <nav id="site-nav" aria-label="Main navigation">
+    <a href="/" class="nav-logo">
+      <img src={logoBlack.src} alt="Pixelboost" />
     </a>
 
-    <!-- Desktop links -->
-    <div id="nav-links" style="display: flex; gap: 28px; align-items: center; font-weight: 500; font-size: 16px;">
-      <a href="/about"   class={`nav-link${isActive('/about') ? ' nav-active' : ''}`}>About</a>
-      <a href="/blog"    class={`nav-link${isActive('/blog') ? ' nav-active' : ''}`}>Blog</a>
-      <a
-        href="/contact"
-        style="display: inline-flex; align-items: center; gap: 8px; background: var(--color-mint-500); color: var(--color-ink); border: 0; border-radius: 9999px; padding: 11px 20px; font-weight: 600; font-size: 15px; text-decoration: none;"
-        class="nav-cta btn-interactive"
-      >Get in touch →</a>
+    <div id="nav-links" class="nav-links">
+      <a href="/about"   class:list={["nav-link", isActive('/about') && "nav-active"]}>About</a>
+      <a href="/blog"    class:list={["nav-link", isActive('/blog') && "nav-active"]}>Blog</a>
+      <a href="/contact" class="nav-cta btn-interactive">
+        Get in touch
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+      </a>
     </div>
 
-    <!-- Mobile hamburger -->
-    <button
-      id="nav-toggle"
-      style="display: none; flex-direction: column; align-items: center; justify-content: center; gap: 5px; width: 40px; height: 32px; background: none; border: none; cursor: pointer;"
-      aria-label="Toggle menu"
-      aria-expanded="false"
-      aria-controls="mobile-nav"
-    >
-      <span style="display: block; height: 2px; width: 100%; border-radius: 2px; background: var(--color-ink); transition: all 0.3s;" aria-hidden="true"></span>
-      <span style="display: block; height: 2px; width: 100%; border-radius: 2px; background: var(--color-ink); transition: all 0.3s;" aria-hidden="true"></span>
-      <span style="display: block; height: 2px; width: 100%; border-radius: 2px; background: var(--color-ink); transition: all 0.3s;" aria-hidden="true"></span>
+    <button id="nav-toggle" class="nav-toggle" aria-label="Toggle menu" aria-expanded="false" aria-controls="mobile-nav">
+      <span class="nav-toggle__bar" aria-hidden="true"></span>
+      <span class="nav-toggle__bar" aria-hidden="true"></span>
+      <span class="nav-toggle__bar" aria-hidden="true"></span>
     </button>
   </nav>
 
-  <!-- Mobile menu -->
-  <div
-    id="mobile-nav"
-    style="display: none; background: #ffffff; border-radius: 20px; margin-top: 8px; padding: 16px 24px; max-width: 1200px; margin-left: auto; margin-right: auto;"
-  >
-    <div style="display: flex; flex-direction: column; gap: 4px; font-weight: 500; font-size: 15px;">
-      <a href="/about"   style={`padding: 10px 0; border-bottom: 1px solid var(--color-line); color: inherit; ${isActive('/about') ? 'font-weight: 700;' : ''}`}>About</a>
-      <a href="/blog"    style={`padding: 10px 0; border-bottom: 1px solid var(--color-line); color: inherit; ${isActive('/blog') ? 'font-weight: 700;' : ''}`}>Blog</a>
-      <a href="/contact" class="btn-interactive" style="margin-top: 12px; display: block; text-align: center; background: var(--color-ink); color: var(--color-paper); border-radius: 9999px; padding: 12px 20px; font-weight: 600;">Get in touch →</a>
+  <div id="mobile-nav" class="mobile-nav">
+    <div class="mobile-nav__links">
+      <a href="/about"   class:list={["mobile-link", isActive('/about') && "mobile-link--active"]}>About</a>
+      <a href="/blog"    class:list={["mobile-link", isActive('/blog') && "mobile-link--active"]}>Blog</a>
+      <a href="/contact" class="mobile-cta btn-interactive">Get in touch</a>
     </div>
   </div>
 </header>
 
 <style>
-  .nav-link {
-    color: var(--color-ink);
-    transition: color 0.15s;
+  #site-header { position: sticky; top: 28px; z-index: 50; }
+
+  #site-nav {
+    display: flex; justify-content: space-between; align-items: center;
+    background: #ffffff; border-radius: 9999px;
+    padding: 10px 14px 10px 22px;
+    box-shadow: var(--shadow-nav);
+    max-width: 1200px; margin: 0 auto;
+    transition: box-shadow 0.25s ease, padding 0.25s ease;
   }
-  .nav-link:hover { color: var(--color-mint-600); }
-  .nav-active { font-weight: 700; }
   #site-nav.scrolled {
     box-shadow: 0 4px 28px -4px rgba(15,26,20,0.28), 0 1px 0 rgba(15,26,20,0.08);
-    padding-top: 8px;
-    padding-bottom: 8px;
+    padding-top: 8px; padding-bottom: 8px;
+  }
+
+  .nav-logo { display: flex; align-items: center; }
+  .nav-logo img { height: 40px; width: auto; }
+
+  .nav-links { display: flex; gap: 28px; align-items: center; font-weight: 500; font-size: 16px; }
+
+  .nav-link { color: var(--color-ink); transition: color 0.15s; }
+  .nav-link:hover { color: var(--color-mint-600); }
+  .nav-active { font-weight: 700; }
+
+  .nav-cta {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--color-mint-500); color: var(--color-ink);
+    border: 0; border-radius: 9999px; padding: 11px 20px;
+    font-weight: 600; font-size: 15px; text-decoration: none;
+  }
+
+  .nav-toggle {
+    display: none; flex-direction: column; align-items: center; justify-content: center;
+    gap: 5px; width: 40px; height: 32px; background: none; border: none; cursor: pointer;
+  }
+  .nav-toggle__bar {
+    display: block; height: 2px; width: 100%; border-radius: 2px;
+    background: var(--color-ink); transition: transform 0.3s, opacity 0.3s;
+  }
+  .nav-toggle.is-active .nav-toggle__bar:nth-child(1) { transform: rotate(45deg) translate(4px, 4px); }
+  .nav-toggle.is-active .nav-toggle__bar:nth-child(2) { opacity: 0; }
+  .nav-toggle.is-active .nav-toggle__bar:nth-child(3) { transform: rotate(-45deg) translate(4px, -4px); }
+
+  .mobile-nav {
+    display: none;
+    background: #ffffff; border-radius: 20px; margin-top: 8px;
+    padding: 16px 24px; max-width: 1200px; margin-left: auto; margin-right: auto;
+  }
+  .mobile-nav.is-open { display: block; }
+
+  .mobile-nav__links { display: flex; flex-direction: column; gap: 4px; font-weight: 500; font-size: 15px; }
+  .mobile-link {
+    padding: 10px 0; border-bottom: 1px solid var(--color-line); color: inherit;
+  }
+  .mobile-link--active { font-weight: 700; }
+  .mobile-cta {
+    margin-top: 12px; display: block; text-align: center;
+    background: var(--color-ink); color: var(--color-paper);
+    border-radius: 9999px; padding: 12px 20px; font-weight: 600;
   }
 
   @media (max-width: 768px) {
-    #nav-links { display: none !important; }
-    #nav-toggle { display: flex !important; }
+    .nav-links { display: none; }
+    .nav-toggle { display: flex; }
   }
 </style>
 
-<script is:inline>
-  // Scroll-aware nav elevation
+<script>
+  // Scroll-aware nav elevation + class-driven mobile menu (CSP-safe: no inline
+  // styles, no is:inline — Astro bundles & hashes this module script).
   const nav = document.getElementById('site-nav');
-  const header = document.getElementById('site-header');
-  const onScroll = () => {
-    // header top = 28px; once page scrolled past ~60px the nav feels "floating"
-    nav.classList.toggle('scrolled', window.scrollY > 60);
-  };
+  const onScroll = () => nav?.classList.toggle('scrolled', window.scrollY > 60);
   window.addEventListener('scroll', onScroll, { passive: true });
   onScroll();
 
   const toggle = document.getElementById('nav-toggle');
   const mobileMenu = document.getElementById('mobile-nav');
-  const spans = toggle.querySelectorAll('span');
 
-  toggle.addEventListener('click', () => {
+  const closeMenu = () => {
+    mobileMenu?.classList.remove('is-open');
+    toggle?.classList.remove('is-active');
+    toggle?.setAttribute('aria-expanded', 'false');
+  };
+
+  toggle?.addEventListener('click', () => {
     const isOpen = toggle.getAttribute('aria-expanded') === 'true';
-    toggle.setAttribute('aria-expanded', String(!isOpen));
-    mobileMenu.style.display = isOpen ? 'none' : 'block';
-    if (!isOpen) {
-      spans[0].style.transform = 'rotate(45deg) translate(4px, 4px)';
-      spans[1].style.opacity = '0';
-      spans[2].style.transform = 'rotate(-45deg) translate(4px, -4px)';
+    if (isOpen) {
+      closeMenu();
     } else {
-      spans[0].style.transform = '';
-      spans[1].style.opacity = '';
-      spans[2].style.transform = '';
+      mobileMenu?.classList.add('is-open');
+      toggle.classList.add('is-active');
+      toggle.setAttribute('aria-expanded', 'true');
     }
   });
 
-  // Close mobile nav when any anchor link is clicked
-  mobileMenu.querySelectorAll('a').forEach(a => {
-    a.addEventListener('click', () => {
-      mobileMenu.style.display = 'none';
-      toggle.setAttribute('aria-expanded', 'false');
-      spans[0].style.transform = '';
-      spans[1].style.opacity = '';
-      spans[2].style.transform = '';
-    });
-  });
+  mobileMenu?.querySelectorAll('a').forEach((a) => a.addEventListener('click', closeMenu));
 </script>
