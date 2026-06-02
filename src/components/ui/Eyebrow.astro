@@ -16,5 +16,5 @@ const { label, bg, class: className = "" } = Astro.props;
 ---
 
 <span class:list={["eyebrow-chip", className]} style={bg ? `background: ${bg};` : undefined}>
-  <span class="eyebrow-dot"></span>{label}
+  <span class="eyebrow-dot" aria-hidden="true"></span>{label}
 </span>
