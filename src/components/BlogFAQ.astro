@@ -1,0 +1,67 @@
+---
+// Blog-post FAQ. Shares the accordion markup + styling of the landing
+// FAQ.astro, but takes its Q&A as a prop (the post's frontmatter `faq`)
+// instead of hardcoding copy, and renders a real <h2> heading so the
+// section reads as part of the article (and for on-page SEO/AEO).
+interface Props {
+  questions: { q: string; a: string }[];
+  heading?: string;
+}
+const { questions, heading = "Frequently asked questions" } = Astro.props;
+---
+
+<section class="blog-faq" aria-labelledby="faq-heading">
+  <h2 id="faq-heading">{heading}</h2>
+
+  <div class="faq-list">
+    {questions.map((item, i) => (
+      <details class="faq-item" open={i === 0}>
+        <summary class="faq-q">{item.q}</summary>
+        <div class="faq-a">{item.a}</div>
+      </details>
+    ))}
+  </div>
+</section>
+
+<style>
+  .blog-faq {
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--color-line);
+  }
+
+  /* Accordion styles mirror FAQ.astro so the two read identically. */
+  .faq-list { border-top: 1px solid var(--color-line); }
+
+  .faq-item { border-bottom: 1px solid var(--color-line); padding: 20px 0; }
+
+  .faq-q {
+    display: flex; justify-content: space-between; align-items: center; gap: 20px;
+    cursor: pointer; font-size: 17px; font-weight: 600; letter-spacing: -0.01em;
+    list-style: none;
+  }
+  .faq-q::-webkit-details-marker { display: none; }
+  .faq-q::after {
+    content: "+";
+    font-size: 20px;
+    font-weight: 400;
+    color: var(--color-ink-500);
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    transform-origin: 50% 50%;
+    transition: transform 0.2s ease;
+    line-height: 1;
+    padding-bottom: 1px;
+  }
+  .faq-item[open] .faq-q::after { transform: rotate(45deg); }
+
+  .faq-a {
+    margin-top: 10px;
+    font-size: 14.5px; color: var(--color-ink-500); line-height: 1.6;
+    max-width: 64ch;
+  }
+</style>

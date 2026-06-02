@@ -3,6 +3,7 @@ import { getCollection, render } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import Header from "../../components/Header.astro";
 import Footer from "../../components/Footer.astro";
+import BlogFAQ from "../../components/BlogFAQ.astro";
 
 export async function getStaticPaths() {
   const posts = await getCollection("blog");
@@ -77,17 +78,7 @@ const faqLd = faq && {
       <article class="post-body post-body-width">
         <Content />
 
-        {faq && (
-          <section class="post-faq" aria-labelledby="faq-heading">
-            <h2 id="faq-heading">Frequently asked questions</h2>
-            {faq.map((item) => (
-              <div class="post-faq-item">
-                <h3>{item.q}</h3>
-                <p>{item.a}</p>
-              </div>
-            ))}
-          </section>
-        )}
+        {faq && <BlogFAQ questions={faq} />}
       </article>
 
       <div class="post-footer">
@@ -122,15 +113,6 @@ const faqLd = faq && {
   }
 
   .post-body-width { max-width: 68ch; }
-
-  .post-faq {
-    margin-top: 3rem;
-    padding-top: 2rem;
-    border-top: 1px solid var(--color-line);
-  }
-
-  .post-faq-item { margin-bottom: 1.5rem; }
-  .post-faq-item h3 { margin-bottom: 0.4rem; }
 
   .post-footer {
     margin-top: 56px;
