@@ -4,6 +4,8 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 import Header from "../../components/Header.astro";
 import Footer from "../../components/Footer.astro";
 import ClosingCTA from "../../components/ClosingCTA.astro";
+import Eyebrow from "../../components/ui/Eyebrow.astro";
+import Button from "../../components/ui/Button.astro";
 
 export async function getStaticPaths() {
   const servicesDocs = await getCollection("services");
@@ -23,36 +25,17 @@ const { service } = Astro.props;
 >
   <Header />
 
-  <main
-    class="min-h-[60vh] flex flex-col items-center justify-center text-center px-6 py-28 md:py-36 bg-surface relative overflow-hidden"
-  >
-    <div class="max-w-3xl relative z-10">
-      <p
-        class="mb-4 font-display font-bold uppercase tracking-[0.2em] text-accent fs-xs"
-      >
-        Service Details
-      </p>
-
-      <h1
-        class="mb-8 font-display font-bold leading-tight uppercase tracking-tighter"
-        style={{ fontSize: "clamp(3rem, 6vw, 5rem)" }}
-      >
-        {service.data.tab}
-      </h1>
-
-      <p class="fs-l text-ink/80 leading-relaxed mb-12">
+  <main>
+    <section class="section-card" style="background: var(--color-paper);">
+      <Eyebrow label="Service details" />
+      <h1 style="margin: 20px 0 24px 0; max-width: 18ch;">{service.data.tab}</h1>
+      <p class="section-subhead" style="max-width: 60ch;">
         {service.body}
       </p>
-
-      <div class="flex justify-center">
-        <a
-          href="/#services"
-          class="btn-interactive inline-block border-2 border-ink px-8 py-3 font-display font-bold uppercase tracking-wider text-ink bg-primary-light"
-        >
-          &larr; Back to Services
-        </a>
+      <div style="margin-top: 32px;">
+        <Button href="/#services" variant="outline">Back to services</Button>
       </div>
-    </div>
+    </section>
   </main>
 
   <ClosingCTA />
