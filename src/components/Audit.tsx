@@ -185,7 +185,8 @@ export default function Audit({
               type="submit"
               className="btn-interactive audit-scan-btn"
             >
-              {state === 'scanning' ? 'Scanning…' : state === 'done' ? 'Run again' : 'Score my site'} →
+              {state === 'scanning' ? 'Scanning…' : state === 'done' ? 'Run again' : 'Score my site'}
+              <svg className="audit-btn-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.25" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
             </button>
           </form>
 
@@ -244,7 +245,7 @@ export default function Audit({
                   ? 'Scanning your site…'
                   : state === 'error'
                     ? <span className="audit-error-msg">Couldn't reach that URL — double-check it and try again.</span>
-                    : <>Verdict → <strong>{verdictIdle}</strong></>
+                    : <>Verdict <svg className="audit-verdict-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.25" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg> <strong>{verdictIdle}</strong></>
               }
             </p>
           </div>
@@ -266,7 +267,8 @@ export default function Audit({
                   type="submit"
                   className="btn-interactive audit-email-btn"
                 >
-                  Send my report →
+                  Send my report
+                  <svg className="audit-btn-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.25" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
                 </button>
               </form>
               <a
@@ -337,6 +339,9 @@ export default function Audit({
           outline: none;
           color: var(--color-ink);
         }
+
+        .audit-btn-arrow { flex: none; }
+        .audit-verdict-arrow { display: inline-block; vertical-align: -2px; }
 
         .audit-scan-btn {
           display: inline-flex;
@@ -516,6 +521,7 @@ export default function Audit({
         .audit-email-btn {
           display: inline-flex;
           align-items: center;
+          gap: 8px;
           background: var(--color-mint-500);
           color: var(--color-ink);
           border: 0;
