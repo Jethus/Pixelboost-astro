@@ -1,6 +1,6 @@
 ---
-title: "Wix vs a custom website: what Toronto small businesses actually need"
-description: "Wix is cheap and easy to start. But is it actually good enough for a small business trying to win customers online? Here's an honest comparison."
+title: "Wix vs a custom website: what your business actually needs"
+description: "Wix is cheap and easy to start, but is it good enough for a small business trying to win customers online? Here's an honest, plain-English comparison."
 pubDate: 2026-05-01
 draft: false
 ---
@@ -49,7 +49,7 @@ You've outgrown Wix when:
 - You want to look more professional than your current site allows
 - You're tired of paying Wix monthly and still needing to pay someone every time something needs to change
 
-At that point, the cost of a custom site — [$200/month or $4,800 flat](/blog#pricing) — is easy to justify against what you're losing.
+At that point, the cost of a custom site — [$200/month or $4,800 flat](/#pricing) — is easy to justify against what you're losing.
 
 ## Not sure where you fall?
 

@@ -1,5 +1,5 @@
 ---
-title: "What is a Google Lighthouse score — and what does yours mean?"
+title: "What is a Google Lighthouse score, and what does yours mean?"
 description: "Google grades every website on speed, accessibility, SEO, and best practices. Here's what those scores actually mean for your business, in plain English."
 pubDate: 2026-05-01
 draft: false
@@ -32,7 +32,7 @@ This measures how fast your site loads for a real person on a real phone. It loo
 - **50–89:** Noticeable. Some visitors will wait, some won't.
 - **Below 50:** Slow. A meaningful percentage of your visitors are leaving before they see your content.
 
-Most Wix and WordPress sites score 40–65 on mobile. A well-built custom site should be 90+.
+Most Wix and WordPress sites score 40–65 on mobile. A well-built custom site should be 90+. (Here's [why Wix and WordPress sites are slow](/blog/why-your-wix-wordpress-site-is-slow) in the first place.)
 
 ### Accessibility
 
@@ -43,7 +43,7 @@ This measures whether your site works for everyone — not just people on a fast
 - Whether buttons and links are large enough to tap on a phone
 - Whether forms are labelled properly
 
-**Why it matters for your business:** Accessibility problems don't just affect a small edge case. They affect older visitors, people on low-end phones, anyone with a vision or motor difficulty. In Ontario, the AODA (Accessibility for Ontarians with Disabilities Act) also sets legal requirements for websites — something most small business owners don't know about until it's a problem.
+**Why it matters for your business:** Accessibility problems don't just affect a small edge case. They affect older visitors, people on low-end phones, anyone with a vision or motor difficulty. In Ontario, the AODA (Accessibility for Ontarians with Disabilities Act) also sets legal requirements for websites — something most small business owners don't know about until it's a problem. ([Here's what AODA means for your website](/blog/web-accessibility-small-business-ontario).)
 
 **What the numbers mean:**
 - **90–100:** Solid. Most users can navigate your site without friction.

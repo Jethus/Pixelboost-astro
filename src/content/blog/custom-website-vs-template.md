@@ -1,6 +1,6 @@
 ---
-title: "Custom website vs template: what's the real difference for your business?"
-description: "Templates are faster and cheaper to start. But there are real costs that don't show up on the invoice. Here's what you're actually choosing between."
+title: "Custom website vs template: what's the real difference?"
+description: "Templates are faster and cheaper to start, but the real costs don't show up on the invoice. Here's what you're actually choosing between for your business."
 pubDate: 2026-05-01
 draft: false
 ---
@@ -29,7 +29,7 @@ The design follows from that. The layout, the flow, the visual choices — they'
 
 In practice, this usually means:
 
-**It performs better.** Template sites carry a lot of weight — code for features you're not using, styles for layouts you didn't pick. A custom build has exactly what it needs and nothing else. That's why custom sites load faster, score higher on Google's speed tests, and convert better.
+**It performs better.** Template sites carry a lot of weight — code for features you're not using, styles for layouts you didn't pick. A custom build has exactly what it needs and nothing else. That's why custom sites load faster, [score higher on Google's speed tests](/blog/what-is-google-lighthouse-score), and convert better. (This is also [why most Wix and WordPress sites are slow](/blog/why-your-wix-wordpress-site-is-slow).)
 
 **It's actually yours.** You don't share a layout with thousands of other businesses. You don't look like the Squarespace site two doors down. Your site feels like your business because it was designed to.
 
@@ -49,7 +49,7 @@ Templates have an upfront price advantage that's real. But there are costs that 
 
 ## Which one is right for you?
 
-Template: if you're just starting out, testing a business idea, or need something live quickly with minimal budget.
+Template: if you're just starting out, testing a business idea, or need something live quickly with minimal budget. (If you're specifically weighing Wix, see [Wix vs a custom website](/blog/wix-vs-custom-website-small-business).)
 
 Custom: if you've been in business for a while, you're spending money on marketing, you care about showing up on Google, and you want a site that actually represents what your business is.
 
