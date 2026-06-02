@@ -2,6 +2,7 @@
 title: Ontario College of Teachers FAQ
 tags: Regulatory / Education
 image: ../../assets/webp/oct.webp
+url: https://www.oct.ca
 location: Toronto, ON
 summary: Provincial regulatory body. Rebuilt the FAQ experience to reduce support call volume.
 outcome: "Reduced support calls by clarifying the application process"

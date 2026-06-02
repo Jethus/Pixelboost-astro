@@ -62,55 +62,61 @@ const {
 <style>
   .sudo-table {
     width: 100%;
-    border: 3px solid var(--color-ink, #1a1a1a);
-    border-radius: var(--radius-brutal, 12px);
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-card);
     overflow: hidden;
-    box-shadow: var(--shadow-brutal, 4px 4px 0px 0px oklch(0.2 0.02 250));
+    background: var(--color-paper);
   }
 
   .sudo-table__row {
     display: grid;
     grid-template-columns: 0.75fr 1fr 1fr;
-    border-bottom: 1px solid var(--color-ink, #1a1a1a);
+    border-bottom: 1px solid var(--color-line);
+  }
+
+  .sudo-table__row:last-child {
+    border-bottom: none;
   }
 
   .sudo-table__row--head {
-    border-bottom-width: 2px;
+    border-bottom: 1px solid var(--color-line-2);
   }
 
   .sudo-table__cell {
     padding: 0.875rem 1rem;
-    color: var(--color-ink, #1a1a1a);
+    color: var(--color-ink-700);
+    line-height: 1.45;
   }
 
   /* First column = feature label */
   .sudo-table__cell--feature {
     font-weight: 600;
+    color: var(--color-ink);
   }
 
   /* Highlighted brand column */
   .sudo-table__row--head .sudo-table__cell--highlight {
-    background: var(--color-primary, #2e7d32);
-    color: var(--color-cream, #fff);
+    background: var(--color-mint-500);
+    color: var(--color-ink);
     font-weight: 700;
   }
 
   .sudo-table__row:not(.sudo-table__row--head) .sudo-table__cell--highlight {
-    background: var(--color-primary-light, oklch(0.95 0.04 155));
-    color: var(--color-ink, #1a1a1a);
+    background: var(--color-mint-50);
+    color: var(--color-ink);
     font-weight: 500;
   }
 
   /* De-emphasize the middle column */
   .sudo-table__cell--deemphasized {
-    opacity: 0.6;
+    color: var(--color-ink-500);
   }
 
   /* Header text styling */
   .sudo-table__row--head .sudo-table__cell {
-    font-family: var(--font-heading);
     text-transform: uppercase;
     letter-spacing: 0.05em;
+    font-weight: 700;
     padding-bottom: 1rem;
   }
 </style>

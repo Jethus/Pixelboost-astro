@@ -2,6 +2,7 @@
 title: Lunar Rhythm Gardens
 tags: Agriculture / Local Markets
 image: ../../assets/jpg/lunar-farm.jpg
+url: https://lunarrhythmgardens.ca
 location: Prince Edward Island
 summary: Family farm selling at local markets. Built an online order flow that actually converts.
 outcome: "Increased local online orders by 40% in the first season"

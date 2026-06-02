@@ -1,9 +1,23 @@
 ---
-import { getEntry } from "astro:content";
-
-const doc = await getEntry("landingProblem", "problem");
-if (!doc) throw new Error("Could not find problem content");
-const { eyebrow, headline, subhead, cards } = doc.data;
+import SectionHeader from "./ui/SectionHeader.astro";
+const cards = [
+  {
+    title: "Your site loads too slowly.",
+    body: "Most visitors won't wait. If your site feels slow on a phone, they leave before they call.",
+  },
+  {
+    title: "You don't know where leads come from.",
+    body: "Without analytics, you can't tell which pages, searches, or ads are actually bringing people in.",
+  },
+  {
+    title: "Some customers can't use your site at all.",
+    body: "If your site is hard to read, tap, or navigate, people leave. Accessibility is customer experience.",
+  },
+  {
+    title: "Small updates cost you time and money.",
+    body: "Hours changed? New service? Photo swap? You should be able to send a note and move on.",
+  },
+];
 
 const icons = [
   `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>`,
@@ -13,66 +27,86 @@ const icons = [
 ];
 ---
 
-<section
-  id="problem"
-  style="background: var(--color-paper-2); border-radius: var(--radius-section); max-width: 1200px; margin: 24px auto 0; padding: clamp(56px, 7vw, 96px) clamp(28px, 5vw, 72px);"
->
-  <div style="max-width: 780px;">
-    <span class="eyebrow-chip">
-      <span class="eyebrow-dot"></span> {eyebrow}
-    </span>
-    <h2 style="margin: 0 0 16px 0;" set:html={headline} />
-    <p style="font-size: clamp(16px, 1.35vw, 19px); color: var(--color-ink-500); line-height: 1.5; max-width: 56ch; margin: 0; font-weight: 500;">
-      {subhead}
-    </p>
+<section id="problem" class="section-card" style="background: var(--color-paper-2);">
+  <div data-reveal>
+    <SectionHeader eyebrow="Why it matters" subhead="The owner usually cannot see it. Customers feel it right away.">
+      Your current site might be quietly <span class="high">costing you customers.</span>
+    </SectionHeader>
   </div>
 
-  <div class="problem-grid">
+  <ul class="problem-list" aria-label="Common website problems">
     {cards.map((card, i) => (
-      <div class="problem-card">
-        <div class="icon-tile" set:html={icons[i]} />
-        <h3 style="font-size: 18px; font-weight: 700; margin: 0; letter-spacing: -0.01em;">{card.title}</h3>
-        <p style="margin: 0; font-size: 14.5px; color: var(--color-ink-500); line-height: 1.5;">{card.body}</p>
-      </div>
+      <li class="problem-item" data-reveal style={`--reveal-i: ${i + 1}`}>
+        <span class="icon-tile" aria-hidden="true" set:html={icons[i]} />
+        <h3 class="problem-title">{card.title}</h3>
+        <p class="problem-body">{card.body}</p>
+      </li>
     ))}
-  </div>
+  </ul>
 </section>
 
 <style>
-  .eyebrow-chip {
-    display: inline-flex; align-items: center; gap: 8px;
-    background: var(--color-mint-100); color: var(--color-mint-600);
-    font-weight: 600; font-size: 13px; letter-spacing: 0.04em;
-    padding: 6px 14px; border-radius: 9999px; margin-bottom: 20px;
-  }
-  .eyebrow-dot {
-    width: 6px; height: 6px; border-radius: 50%;
-    background: var(--color-mint-500); display: inline-block;
-  }
-
-  .problem-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 14px;
+  .problem-list {
     margin-top: 40px;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
   }
-  @media (max-width: 920px) { .problem-grid { grid-template-columns: repeat(2, 1fr); } }
-  @media (max-width: 560px) { .problem-grid { grid-template-columns: 1fr; } }
 
-  .problem-card {
-    background: var(--color-paper-2);
+  .problem-item {
+    display: grid;
+    grid-template-columns: 40px minmax(0, 1fr);
+    column-gap: 16px;
+    row-gap: 6px;
+    align-items: start;
+    padding: 22px;
     border: 1px solid var(--color-line);
-    border-radius: var(--radius-card);
-    padding: 24px;
-    display: flex; flex-direction: column; gap: 10px;
+    border-radius: 18px;
+    background: rgba(248, 245, 238, 0.48);
+  }
+
+  .problem-title {
+    grid-column: 2;
+    grid-row: 1;
+    margin: 0;
+    font-size: clamp(18px, 1.45vw, 22px);
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    color: var(--color-ink);
+  }
+
+  .problem-body {
+    grid-column: 2;
+    grid-row: 2;
+    margin: 0;
+    font-size: clamp(14.5px, 1.1vw, 16.5px);
+    color: var(--color-ink-500);
+    line-height: 1.55;
+    font-weight: 450;
   }
 
   .icon-tile {
+    grid-column: 1;
+    grid-row: 1 / span 2;
     width: 40px; height: 40px; border-radius: var(--radius-icon);
     background: var(--color-mint-100);
     border: 1px solid var(--color-mint-200);
     color: var(--color-mint-700);
     display: grid; place-items: center;
     flex-shrink: 0;
+  }
+
+  @media (max-width: 640px) {
+    .problem-list {
+      grid-template-columns: 1fr;
+      margin-top: 36px;
+    }
+
+    .problem-item {
+      padding: 20px;
+    }
   }
 </style>

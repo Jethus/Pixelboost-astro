@@ -1,15 +1,9 @@
 ---
-import { getEntry } from "astro:content";
 import logoBlack from "../assets/svgs/logo-black.svg";
-
-const doc = await getEntry("landingHero", "hero");
-if (!doc) throw new Error("Could not find hero content");
-const { description } = doc.data;
+import Button from "./ui/Button.astro";
 ---
 
-<section
-  style="position: relative; overflow: hidden; background: var(--color-paper); border-radius: var(--radius-section); max-width: 1200px; margin: 24px auto 0; padding: clamp(56px, 7vw, 96px) clamp(28px, 5vw, 72px);"
->
+<section class="section-card" style="position: relative; overflow: hidden; background: var(--color-paper);">
   <!-- Decorative blobs -->
   <div aria-hidden="true" style="position: absolute; right: -80px; top: -80px; width: 360px; height: 360px; background: var(--color-mint-100); border-radius: 50%; z-index: 0;" class="hero-blob"></div>
   <div aria-hidden="true" style="position: absolute; right: 60px; top: 140px; width: 120px; height: 120px; background: var(--color-peach); border-radius: 50%; z-index: 0;" class="hero-blob"></div>
@@ -18,36 +12,27 @@ const { description } = doc.data;
 
     <!-- Left: copy -->
     <div>
-      <h1 style="font-size: clamp(44px, 6.2vw, 84px); font-weight: 800; line-height: 0.98; letter-spacing: -0.035em; margin: 0 0 22px 0; text-wrap: balance;">
+      <h1 style="font-size: clamp(38px, 6.2vw, 84px); font-weight: 800; line-height: 0.98; letter-spacing: -0.035em; margin: 0 0 22px 0; text-wrap: balance;">
         Websites that <span class="high">actually work</span> for your small business.
       </h1>
 
       <p style="font-size: clamp(16px, 1.35vw, 19px); color: var(--color-ink-500); line-height: 1.5; max-width: 56ch; margin: 0 0 28px 0; font-weight: 500;">
-        {description}
+        I redesign slow or dated websites for small businesses in Toronto and Durham, then set up simple analytics so you can see what's working.
       </p>
 
       <div style="display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 18px;">
-        <a href="#audit" class="btn-mint-lg">Score my site →</a>
-        <a href="#work"  class="btn-secondary-lg">See recent work</a>
+        <Button href="#audit">Score my site</Button>
+        <Button href="#work" variant="outline" arrow={false}>See recent work</Button>
       </div>
 
       <p style="font-size: 13.5px; color: var(--color-ink-500); margin: 0 0 28px 0; font-style: italic;">
-        Free report card. No email required. Takes 30 seconds.
+        Free Google PageSpeed scan. No email required.
       </p>
 
-      <div style="display: flex; gap: 18px; align-items: center; font-size: 13px; color: var(--color-ink-500); font-weight: 500;">
-        <!-- Avatar stack -->
-        <div style="display: flex;">
-          <div style="width: 32px; height: 32px; border-radius: 50%; background: var(--color-mint-300); border: 2px solid var(--color-paper); display: grid; place-items: center; font-size: 11px; font-weight: 700; color: var(--color-ink); margin-left: 0;"></div>
-          <div style="width: 32px; height: 32px; border-radius: 50%; background: var(--color-peach);    border: 2px solid var(--color-paper); display: grid; place-items: center; font-size: 11px; font-weight: 700; color: var(--color-ink); margin-left: -8px;"></div>
-          <div style="width: 32px; height: 32px; border-radius: 50%; background: var(--color-mint-500); border: 2px solid var(--color-paper); display: grid; place-items: center; font-size: 11px; font-weight: 700; color: var(--color-ink); margin-left: -8px;"></div>
-        </div>
-        <span>Trusted by 20+ local businesses across Ontario &amp; the Maritimes</span>
-      </div>
     </div>
 
     <!-- Right: browser card visual -->
-    <div aria-hidden="true" style="background: var(--color-ink); border-radius: 24px; padding: 22px; box-shadow: var(--shadow-card); transform: rotate(1.5deg); color: var(--color-paper);">
+    <div class="hero-score-card" aria-hidden="true" style="background: var(--color-ink); border-radius: 24px; padding: 22px; box-shadow: var(--shadow-card); transform: rotate(1.5deg); color: var(--color-paper);">
       <!-- Chrome bar -->
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px;">
         <div style="display: flex; gap: 6px;">
@@ -86,27 +71,10 @@ const { description } = doc.data;
 </section>
 
 <style>
-  .btn-mint-lg {
-    display: inline-flex; align-items: center; gap: 8px;
-    background: var(--color-mint-500); color: var(--color-ink);
-    border-radius: 9999px; padding: 15px 24px;
-    font-weight: 600; font-size: 15.5px; text-decoration: none;
-    transition: transform 0.15s, box-shadow 0.15s;
-  }
-  .btn-mint-lg:hover { transform: translateY(-1px); box-shadow: var(--shadow-btn); background: var(--color-mint-600); color: var(--color-paper); }
-
-  .btn-secondary-lg {
-    display: inline-flex; align-items: center; gap: 8px;
-    background: transparent; color: var(--color-ink);
-    border: 1.5px solid var(--color-ink); border-radius: 9999px; padding: 15px 24px;
-    font-weight: 600; font-size: 15.5px; text-decoration: none;
-    transition: transform 0.15s, box-shadow 0.15s;
-    white-space: nowrap;
-  }
-  .btn-secondary-lg:hover { transform: translateY(-1px); box-shadow: var(--shadow-btn); }
-
   @media (max-width: 920px) {
     .hero-inner { grid-template-columns: 1fr !important; }
+    .hero-inner > * { min-width: 0; }
     .hero-blob  { display: none !important; }
+    .hero-score-card { transform: none !important; max-width: 100%; padding: 16px !important; }
   }
 </style>

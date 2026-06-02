@@ -2,6 +2,7 @@
 title: Success Installations
 tags: Commercial / Racking
 image: ../../assets/webp/racking.webp
+url: https://successinstallations.ca
 location: Burlington, ON
 summary: Commercial racking company. Rebuilt for mobile leads with a faster, cleaner service-area focus.
 outcome: "Doubled inbound lead volume with a faster, mobile-first design"

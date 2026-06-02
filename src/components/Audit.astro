@@ -1,21 +1,45 @@
 ---
-import { getEntry } from "astro:content";
 import AuditIsland from "./Audit.tsx";
+import type { AuditRow } from "./Audit.tsx";
 
-const doc = await getEntry("landingAudit", "audit");
-if (!doc) throw new Error("Could not find audit content");
-const { eyebrow, headline, body, footnote, verdictIdle, verdictDone, emailCopy, callCopy, rows } = doc.data;
+const rows: AuditRow[] = [
+  {
+    key: "perf",
+    label: "Speed",
+    sub: "How fast pages load on a phone",
+  },
+  {
+    key: "a11y",
+    label: "Accessibility",
+    sub: "Can everyone actually use your site?",
+  },
+  {
+    key: "seo",
+    label: "SEO basics",
+    sub: "Can Google find and read it?",
+  },
+  {
+    key: "mobile",
+    label: "Mobile experience",
+    sub: "Tap targets, layout, readability",
+  },
+  {
+    key: "tracking",
+    label: "Lead tracking",
+    sub: "Can you see where calls come from?",
+  },
+];
 ---
 
 <AuditIsland
   client:load
-  eyebrow={eyebrow}
-  headline={headline}
-  body={body}
-  footnote={footnote}
-  verdictIdle={verdictIdle}
-  verdictDone={verdictDone}
-  emailCopy={emailCopy}
-  callCopy={callCopy}
+  eyebrow="Free, no email required"
+  headline="Run a free Google PageSpeed scan."
+  body="I'll check mobile speed, accessibility, SEO basics, and whether you're tracking leads. You'll get a plain-English scorecard showing what's working, what's broken, and what I'd fix first."
+  footnote="Uses Google Lighthouse plus real-device usability checks. The score is one benchmark; the customer experience still matters."
+  verdictIdle="Enter your URL above to run a real scan."
+  verdictDone="Want the full breakdown sent to your inbox?"
+  emailCopy="Enter your email and I'll send the plain-English breakdown: what each score means and the 3 fixes I'd start with."
+  callCopy="Book a free 15-min call to walk through it ->"
   rows={rows}
 />
