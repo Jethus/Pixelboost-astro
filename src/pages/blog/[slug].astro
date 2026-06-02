@@ -29,23 +29,22 @@ const formattedDate = post.data.pubDate.toLocaleDateString("en-CA", {
 
   <main>
 
-    <section class="section-card" style="background: var(--color-paper);">
+    <section class="section-card surface-paper">
       <p class="post-eyebrow">{formattedDate}</p>
-      <h1 style="margin: 0 0 20px 0; max-width: 22ch;">{post.data.title}</h1>
-      <p style="font-size: clamp(16px, 1.35vw, 19px); color: var(--color-ink-500); line-height: 1.5; max-width: 56ch; margin: 0; font-weight: 500;">
+      <h1 class="post-title">{post.data.title}</h1>
+      <p class="post-description">
         {post.data.description}
       </p>
     </section>
 
-    <section class="section-card" style="background: var(--color-paper-2);">
-      <article class="post-body" style="max-width: 68ch;">
+    <section class="section-card surface-paper-2">
+      <article class="post-body post-body-width">
         <Content />
       </article>
 
-      <div style="margin-top: 56px; padding-top: 32px; border-top: 1px solid var(--color-line);">
+      <div class="post-footer">
         <a
           href="/blog"
-          style="display: inline-flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 600; color: var(--color-ink); text-decoration: none; transition: color 0.15s;"
           class="back-link"
         >
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="m12 19-7-7 7-7"/></svg>
@@ -60,6 +59,39 @@ const formattedDate = post.data.pubDate.toLocaleDateString("en-CA", {
 </BaseLayout>
 
 <style>
+  .post-title {
+    margin: 0 0 20px 0;
+    max-width: 22ch;
+  }
+
+  .post-description {
+    font-size: clamp(16px, 1.35vw, 19px);
+    color: var(--color-ink-500);
+    line-height: 1.5;
+    max-width: 56ch;
+    margin: 0;
+    font-weight: 500;
+  }
+
+  .post-body-width { max-width: 68ch; }
+
+  .post-footer {
+    margin-top: 56px;
+    padding-top: 32px;
+    border-top: 1px solid var(--color-line);
+  }
+
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--color-ink);
+    text-decoration: none;
+    transition: color 0.15s;
+  }
+
   .post-eyebrow {
     font-size: 13px;
     font-weight: 700;
