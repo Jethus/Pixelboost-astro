@@ -26,13 +26,13 @@ const { service } = Astro.props;
   <Header />
 
   <main>
-    <section class="section-card" style="background: var(--color-paper);">
+    <section class="section-card surface-paper">
       <Eyebrow label="Service details" />
-      <h1 style="margin: 20px 0 24px 0; max-width: 18ch;">{service.data.tab}</h1>
-      <p class="section-subhead" style="max-width: 60ch;">
+      <h1 class="service-detail-h1">{service.data.tab}</h1>
+      <p class="section-subhead service-detail-subhead">
         {service.body}
       </p>
-      <div style="margin-top: 32px;">
+      <div class="service-detail-cta">
         <Button href="/#services" variant="outline">Back to services</Button>
       </div>
     </section>
@@ -41,3 +41,14 @@ const { service } = Astro.props;
   <ClosingCTA />
   <Footer />
 </BaseLayout>
+
+<style>
+  .service-detail-h1 {
+    margin: 20px 0 24px 0;
+    max-width: 18ch;
+  }
+
+  .service-detail-subhead { max-width: 60ch; }
+
+  .service-detail-cta { margin-top: 32px; }
+</style>

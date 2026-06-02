@@ -9,16 +9,25 @@ import Button from "../../components/ui/Button.astro";
 <BaseLayout title="Services">
   <Header />
   <main>
-    <section class="section-card" style="background: var(--color-paper);">
+    <section class="section-card surface-paper">
       <Eyebrow label="Coming soon" />
-      <h1 style="margin: 20px 0 20px 0; max-width: 16ch;">Services</h1>
+      <h1 class="services-index-h1">Services</h1>
       <p class="section-subhead">
         I'm building out this page. In the meantime, see what I offer on the home page.
       </p>
-      <div style="margin-top: 28px;">
+      <div class="services-index-cta">
         <Button href="/#services" variant="outline">View services</Button>
       </div>
     </section>
   </main>
   <Footer />
 </BaseLayout>
+
+<style>
+  .services-index-h1 {
+    margin: 20px 0 20px 0;
+    max-width: 16ch;
+  }
+
+  .services-index-cta { margin-top: 28px; }
+</style>
