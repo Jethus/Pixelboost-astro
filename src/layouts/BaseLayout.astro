@@ -38,10 +38,74 @@ const pageTitle = title === SITE_TITLE ? title : `${title} | ${SITE_TITLE}`;
     <meta property="og:url" content={Astro.url} />
     <meta property="og:title" content={pageTitle} />
     <meta property="og:description" content={description} />
-    {image && <meta property="og:image" content={new URL(image.src, Astro.url)} />}
+    <meta property="og:image" content={image ? new URL(image.src, Astro.url) : new URL("/og-image.png", Astro.url)} />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={pageTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={image ? new URL(image.src, Astro.url) : new URL("/og-image.png", Astro.url)} />
+
+    <script type="application/ld+json" set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "LocalBusiness",
+      "name": "Pixelboost",
+      "description": "Custom web design and development for small businesses in Toronto, Oshawa, and Durham Region.",
+      "url": "https://pixelboost.ca",
+      "telephone": "+19057812464",
+      "email": "hello@pixelboost.ca",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Whitby",
+        "addressRegion": "ON",
+        "addressCountry": "CA"
+      },
+      "areaServed": [
+        { "@type": "City", "name": "Toronto" },
+        { "@type": "City", "name": "Oshawa" },
+        { "@type": "City", "name": "Whitby" },
+        { "@type": "City", "name": "Ajax" },
+        { "@type": "City", "name": "Pickering" },
+        { "@type": "AdministrativeArea", "name": "Durham Region" },
+        { "@type": "AdministrativeArea", "name": "Ontario" }
+      ],
+      "serviceType": ["Web Design", "Web Development", "Website Redesign", "Website Maintenance"],
+      "priceRange": "$$",
+      "sameAs": []
+    })} />
   </head>
 
-  <body class="min-h-screen">
-    <slot />
+  <body class="min-h-screen no-js">
+    <div class="site-shell">
+      <slot />
+    </div>
+
+    <script>
+      // Drop no-js fallback the moment JS runs.
+      document.body.classList.remove("no-js");
+
+      const prefersReduced = window.matchMedia(
+        "(prefers-reduced-motion: reduce)",
+      ).matches;
+
+      const revealEls = document.querySelectorAll<HTMLElement>("[data-reveal]");
+
+      if (prefersReduced || !("IntersectionObserver" in window)) {
+        // Reveal everything immediately — no motion.
+        revealEls.forEach((el) => el.classList.add("is-in"));
+      } else {
+        const io = new IntersectionObserver(
+          (entries, obs) => {
+            for (const entry of entries) {
+              if (entry.isIntersecting) {
+                entry.target.classList.add("is-in");
+                obs.unobserve(entry.target);
+              }
+            }
+          },
+          { rootMargin: "0px 0px -10% 0px", threshold: 0.1 },
+        );
+        revealEls.forEach((el) => io.observe(el));
+      }
+    </script>
   </body>
 </html>

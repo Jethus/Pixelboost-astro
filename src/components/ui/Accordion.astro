@@ -28,7 +28,8 @@ const { title, open = false, class: className = "" } = Astro.props;
   >
     <span>{title}</span>
     <span
-      class="ml-4 flex h-8 w-8 shrink-0 items-center justify-center rounded-full border-2 border-ink text-xl leading-none transition-transform duration-200 group-open:rotate-45"
+      class="ml-4 flex h-8 w-8 shrink-0 items-center justify-center rounded-full border-2 border-ink transition-transform duration-200 group-open:rotate-45"
+      style="transform-origin: center; font-size: 20px; line-height: 1; padding-bottom: 1px;"
     >
       +
     </span>

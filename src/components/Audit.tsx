@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 type AuditState = 'idle' | 'scanning' | 'done' | 'error';
 
@@ -58,7 +58,43 @@ export default function Audit({
   const [url, setUrl] = useState('');
   const [state, setState] = useState<AuditState>('idle');
   const [scores, setScores] = useState<Scores>({ perf: 0, a11y: 0, seo: 0, mobile: 0, tracking: 0 });
+  // Scores actually shown — count up from 0 to `scores` for a "results landing" feel.
+  const [displayScores, setDisplayScores] = useState<Scores>({ perf: 0, a11y: 0, seo: 0, mobile: 0, tracking: 0 });
   const [scannedUrl, setScannedUrl] = useState('');
+  const rafRef = useRef<number | null>(null);
+
+  // Count-up animation toward the real scores once a scan completes.
+  useEffect(() => {
+    if (state !== 'done') return;
+
+    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (prefersReduced) {
+      setDisplayScores(scores);
+      return;
+    }
+
+    const keys: (keyof Scores)[] = ['perf', 'a11y', 'seo', 'mobile', 'tracking'];
+    const duration = 1000;
+    const start = performance.now();
+
+    const tick = (now: number) => {
+      const t = Math.min((now - start) / duration, 1);
+      const eased = 1 - Math.pow(1 - t, 3); // easeOutCubic
+      setDisplayScores(
+        keys.reduce((acc, k) => {
+          acc[k] = Math.round(scores[k] * eased);
+          return acc;
+        }, {} as Scores),
+      );
+      if (t < 1) rafRef.current = requestAnimationFrame(tick);
+      else setDisplayScores(scores);
+    };
+    rafRef.current = requestAnimationFrame(tick);
+
+    return () => {
+      if (rafRef.current !== null) cancelAnimationFrame(rafRef.current);
+    };
+  }, [state, scores]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -66,6 +102,7 @@ export default function Audit({
     const normalized = url.startsWith('http') ? url : `https://${url}`;
     setScannedUrl(normalized);
     setScores({ perf: 0, a11y: 0, seo: 0, mobile: 0, tracking: 0 });
+    setDisplayScores({ perf: 0, a11y: 0, seo: 0, mobile: 0, tracking: 0 });
     setState('scanning');
     try {
       const res = await fetch(`/api/audit?url=${encodeURIComponent(normalized)}`);
@@ -88,13 +125,10 @@ export default function Audit({
   return (
     <section
       id="audit"
+      className="section-card"
       style={{
         background: 'var(--color-ink)',
         color: 'var(--color-paper)',
-        borderRadius: 'var(--radius-section)',
-        maxWidth: '1200px',
-        margin: '24px auto 0',
-        padding: 'clamp(56px, 7vw, 96px) clamp(28px, 5vw, 72px)',
       }}
     >
       <div className="audit-shell">
@@ -145,23 +179,22 @@ export default function Audit({
             />
             <button
               type="submit"
+              className="btn-interactive"
               style={{
                 display: 'inline-flex', alignItems: 'center', gap: '8px',
                 background: 'var(--color-mint-500)', color: 'var(--color-ink)',
                 border: 0, borderRadius: '9999px', padding: '14px 22px',
                 fontWeight: 600, fontSize: '14.5px', fontFamily: 'inherit', cursor: 'pointer',
-                transition: 'transform 0.15s, box-shadow 0.15s',
               }}
-              onMouseEnter={e => { (e.currentTarget as HTMLElement).style.transform = 'translateY(-1px)'; (e.currentTarget as HTMLElement).style.boxShadow = 'var(--shadow-btn)'; }}
-              onMouseLeave={e => { (e.currentTarget as HTMLElement).style.transform = ''; (e.currentTarget as HTMLElement).style.boxShadow = ''; }}
             >
               {state === 'scanning' ? 'Scanning…' : state === 'done' ? 'Run again' : 'Score my site'} →
             </button>
           </form>
 
-          <p style={{ fontSize: '12.5px', color: 'rgba(248,245,238,0.55)', fontStyle: 'italic', margin: '0 0 0 2px' }}>
-            <em style={{ color: 'var(--color-mint-300)', fontStyle: 'normal' }}>Technically:</em> {footnote}
-          </p>
+          <div style={{ margin: '0 0 0 2px' }}>
+            <span style={{ display: 'block', fontSize: '11px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: 'var(--color-mint-300)', marginBottom: '4px' }}>Technical</span>
+            <p style={{ fontSize: '12.5px', color: 'rgba(248,245,238,0.55)', fontStyle: 'italic', margin: 0 }}>{footnote}</p>
+          </div>
         </div>
 
         {/* Right column — report card */}
@@ -192,8 +225,8 @@ export default function Audit({
           {/* Metric rows */}
           <div style={{ padding: '10px 22px' }}>
             {rows.map(row => {
-              const val = scores[row.key];
-              const g = grade(val);
+              const val = displayScores[row.key];
+              const g = grade(scores[row.key]);
               return (
                 <div key={row.key} style={{
                   display: 'grid',
@@ -212,7 +245,7 @@ export default function Audit({
                       display: 'block', height: '100%', borderRadius: '4px',
                       background: BAR_COLOR[g],
                       width: showScores ? `${val}%` : '0%',
-                      transition: 'width 0.05s linear',
+                      transition: 'width 0.12s linear',
                     }}/>
                   </div>
                   <div style={{
@@ -274,6 +307,7 @@ export default function Audit({
                 />
                 <button
                   type="submit"
+                  className="btn-interactive"
                   style={{
                     display: 'inline-flex', alignItems: 'center',
                     background: 'var(--color-mint-500)', color: 'var(--color-ink)',
