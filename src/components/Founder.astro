@@ -1,0 +1,156 @@
+---
+/**
+ * Founder — compact "who you'll work with" teaser. Reuses the /about voice
+ * and photo; links to /about for the full story. Not a second bio.
+ */
+import { Image } from "astro:assets";
+import joshPhoto from "../assets/webp/Josh-crop.webp";
+import Eyebrow from "./ui/Eyebrow.astro";
+import Card from "./ui/Card.astro";
+import Button from "./ui/Button.astro";
+
+const facts = [
+  {
+    label: "Based in",
+    value: "Whitby, Ontario — serving Durham and the GTA",
+    icon: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 1 1 16 0z"/><circle cx="12" cy="10" r="3"/></svg>`,
+  },
+  {
+    label: "How I work",
+    value: "Directly with you — no handoffs, no project managers in between",
+    icon: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>`,
+  },
+  {
+    label: "Experience",
+    value: "Frontend developer, 4+ years — with a design background before that",
+    icon: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>`,
+  },
+];
+---
+
+<section id="founder" class="section-card surface-paper founder" data-reveal>
+  <div class="founder-photo">
+    <Image
+      src={joshPhoto}
+      alt="Josh Del Vecchio"
+      width={600}
+      height={720}
+      class="founder-img"
+    />
+  </div>
+
+  <div class="founder-text">
+    <Eyebrow label="Who you'll work with" />
+    <h2 class="founder-h2">You'll be working with me — Josh.</h2>
+    <p class="founder-lead">
+      Pixelboost is just me, not an agency. The person who designs and builds
+      your site is the same person who answers when you need something changed.
+      No call centres, no juniors, no runaround.
+    </p>
+
+    <div class="founder-facts">
+      {facts.map((f) => (
+        <Card variant="mint" class="founder-card" padding="compact">
+          <span class="founder-card-icon" aria-hidden="true" set:html={f.icon} />
+          <div>
+            <p class="founder-card-label">{f.label}</p>
+            <p class="founder-card-value">{f.value}</p>
+          </div>
+        </Card>
+      ))}
+    </div>
+
+    <div class="founder-actions">
+      <Button href="/about">More about me</Button>
+    </div>
+  </div>
+</section>
+
+<style>
+  .founder {
+    display: grid;
+    grid-template-columns: 0.85fr 1.15fr;
+    gap: clamp(28px, 4vw, 56px);
+    align-items: center;
+  }
+
+  .founder-photo {
+    border-radius: var(--radius-card);
+    overflow: hidden;
+    align-self: stretch;
+    min-height: 320px;
+  }
+
+  .founder-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center top;
+    display: block;
+  }
+
+  .founder-h2 {
+    margin: 14px 0 16px 0;
+    font-size: clamp(26px, 3vw, 38px);
+    letter-spacing: -0.03em;
+    line-height: 1.08;
+  }
+
+  .founder-lead {
+    margin: 0 0 24px 0;
+    font-size: clamp(15px, 1.2vw, 17px);
+    color: var(--color-ink-700);
+    line-height: 1.65;
+    max-width: 56ch;
+  }
+
+  .founder-facts {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 26px;
+  }
+
+  :global(.founder-card) {
+    flex-direction: row;
+    gap: 14px;
+    align-items: flex-start;
+  }
+
+  .founder-card-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    background: var(--color-mint-100);
+    border: 1px solid var(--color-mint-200);
+    color: var(--color-mint-700);
+    flex-shrink: 0;
+  }
+
+  .founder-card-label {
+    margin: 0 0 3px 0;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    color: var(--color-ink-400);
+  }
+
+  .founder-card-value {
+    margin: 0;
+    font-size: clamp(14px, 1.1vw, 15.5px);
+    line-height: 1.55;
+    color: var(--color-ink-700);
+    font-weight: 500;
+  }
+
+  .founder-actions { display: flex; }
+
+  @media (max-width: 720px) {
+    .founder { grid-template-columns: 1fr; }
+    .founder-photo { min-height: 280px; max-height: 360px; }
+  }
+</style>
