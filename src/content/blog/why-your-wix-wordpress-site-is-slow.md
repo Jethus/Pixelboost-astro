@@ -1,5 +1,5 @@
 ---
-title: "Why your Wix or WordPress site is slow — and what it's costing you"
+title: "Why your Wix or WordPress site is slow (and what it costs)"
 description: "A slow website isn't just annoying — it's losing you real customers. Here's why Wix and WordPress sites slow down, and what you can actually do about it."
 pubDate: 2026-05-01
 draft: false
@@ -11,7 +11,7 @@ It's not fine — and here's the part that hurts: most of your customers won't w
 
 ## The 3-second rule
 
-Google's research is consistent: more than half of mobile users will leave a page if it hasn't loaded in three seconds. Not five seconds. Three. And on a slow mobile connection — which is what a lot of people in Ontario are on when they're searching for a local business — your site might be taking six, eight, ten seconds.
+[Google's research is consistent](https://www.thinkwithgoogle.com/marketing-strategies/app-and-mobile/mobile-page-speed-new-industry-benchmarks/): 53% of mobile users will leave a page if it hasn't loaded in three seconds. Not five seconds. Three. And on a slow mobile connection — which is what a lot of people in Ontario are on when they're searching for a local business — your site might be taking six, eight, ten seconds.
 
 That's not a bounce. That's a lost customer who never saw what you offer, never found your phone number, never booked an appointment.
 
@@ -43,4 +43,4 @@ The honest answer is that most Wix and WordPress speed problems can't be fully f
 
 A custom-built static site, by comparison, sends exactly what the page needs and nothing else. No plugin bloat, no platform overhead. That's why the sites I build consistently score 95+ on Google's speed test — not because of tricks, but because there's nothing extra to slow them down.
 
-If your site is slow and you're tired of it costing you customers, [start with a free audit](/blog#audit). I'll tell you what's hurting you and whether a rebuild actually makes sense — sometimes it doesn't, and I'll tell you that too.
+If your site is slow and you're tired of it costing you customers, [start with a free audit](/#audit). I'll tell you what's hurting you and whether a rebuild actually makes sense — sometimes it doesn't, and I'll tell you that too.

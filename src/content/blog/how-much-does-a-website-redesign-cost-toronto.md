@@ -1,6 +1,6 @@
 ---
-title: "How much does a website redesign cost in Toronto?"
-description: "Web design pricing in Toronto varies wildly. Here's what actually drives the cost, what you should expect to pay, and how to avoid overpaying for the wrong thing."
+title: "How much does a website redesign cost in Toronto in 2026?"
+description: "Web design pricing in Toronto varies wildly. Here's what actually drives the cost of a redesign, what you should expect to pay, and how to avoid overpaying."
 pubDate: 2026-05-01
 draft: false
 ---
@@ -11,7 +11,7 @@ If you've started asking around about a website redesign in Toronto, you've prob
 
 Web design pricing varies because "website" means very different things to different people.
 
-A $500 website is usually a Wix or Squarespace template with your logo and text swapped in. Fast to produce, looks okay, but you're getting a template — not a custom design — and often a slow, hard-to-update result.
+A $500 website is usually a Wix or Squarespace template with your logo and text swapped in. Fast to produce, looks okay, but you're getting a template — not a custom design — and often a slow, hard-to-update result. ([Here's the real difference between a template and a custom build](/blog/custom-website-vs-template).)
 
 A $30,000+ website is usually a large agency with project managers, account teams, and multiple rounds of stakeholder approvals built into the quote. The work might be excellent, but a lot of what you're paying for is overhead that a small business doesn't need.
 
@@ -52,4 +52,4 @@ Both include Plausible analytics installed so you can actually see where your tr
 
 That depends on what your current site is doing. If you're getting traffic and converting it into calls or bookings, maybe not much needs to change. If you're spending money on ads and can't tell whether they're working, or if you suspect your site is slow and losing people — that's worth fixing.
 
-The fastest way to find out is the free audit at the top of this page. I'll check your current site's speed, accessibility, and tracking setup, and tell you honestly whether a redesign makes financial sense.
+The fastest way to find out is the free audit at the top of this page. I'll check your current site's speed, accessibility, and tracking setup, and tell you honestly whether a redesign makes financial sense. (Not sure how to read your current scores? Start with [what a Google Lighthouse score means](/blog/what-is-google-lighthouse-score).)

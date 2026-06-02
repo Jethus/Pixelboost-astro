@@ -1,6 +1,6 @@
 ---
-title: "Web accessibility for Ontario small businesses: what AODA means for your website"
-description: "Ontario's accessibility law applies to websites — and most small business owners don't know it. Here's what AODA requires, why it matters, and what to actually do about it."
+title: "Web accessibility for Ontario small businesses: AODA basics"
+description: "Ontario's AODA accessibility law applies to your website, and most small business owners don't know it. Here's what it requires and what to do about it."
 pubDate: 2026-05-01
 draft: false
 ---
@@ -11,7 +11,7 @@ It does. Here's what you need to know.
 
 ## What AODA is
 
-The Accessibility for Ontarians with Disabilities Act is Ontario legislation that sets accessibility standards across a range of areas — customer service, employment, and yes, the web. The web-specific requirements are part of the Integrated Accessibility Standards Regulation (IASR) and reference an international standard called WCAG 2.0 Level AA.
+The [Accessibility for Ontarians with Disabilities Act](https://www.ontario.ca/page/accessibility-laws) is Ontario legislation that sets accessibility standards across a range of areas — customer service, employment, and yes, the web. The web-specific requirements are part of the Integrated Accessibility Standards Regulation (IASR) and reference an international standard called [WCAG 2.0 Level AA](https://www.w3.org/WAI/standards-guidelines/wcag/).
 
 The short version: if you operate a business in Ontario and have a website, that website is expected to meet a baseline accessibility standard. The requirements have been phased in over time, and enforcement has been inconsistent — but the law exists, and the direction it's moving is toward broader enforcement, not less.
 
@@ -65,6 +65,6 @@ None of these are hard to fix. They just require someone to actually check for t
 
 ## What to do
 
-If you want to know where your site stands, run it through the free audit at the top of this page. I include an accessibility check as part of every audit — you'll see your score and a plain-English explanation of what's failing.
+If you want to know where your site stands, run it through the free audit at the top of this page. I include an accessibility check as part of every audit — you'll see your score and a plain-English explanation of what's failing. (Accessibility is one of the four things [Google's Lighthouse score](/blog/what-is-google-lighthouse-score) grades, too.)
 
 All sites I build are designed to WCAG 2.1 AA standard from the start — it's not an add-on, it's part of how I build. That means you're covered under AODA, your site works for every customer, and you're not quietly losing business to barriers most owners never see.
