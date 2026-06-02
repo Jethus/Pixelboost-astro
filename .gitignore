@@ -4,7 +4,11 @@ dist/
 .astro/
 .vscode/
 
-agents/
+.claude/
+.agents/
+
+docs/
+
 
 # dependencies
 node_modules/
@@ -23,6 +27,16 @@ pnpm-debug.log*
 
 # macOS-specific files
 .DS_Store
+Thumbs.db
+
+# loose research/screenshot files in root
+*.csv
+*.png
+*.jpg
+image.png
+
+# wrangler (Cloudflare dev)
+.wrangler/
 
 # jetbrains setting folder
 .idea/
@@ -31,8 +45,3 @@ keystatic.config.old
 
 CLAUDE.md
 skills-lock.json
-docs/*
-
-.claude
-.agents
-.vscode

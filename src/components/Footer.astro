@@ -8,8 +8,8 @@ const year = new Date().getFullYear();
 >
   <div class="foot-grid">
     <div>
-      <a href="/">
-        <img src={logoBlack.src} alt="Pixelboost" style="height: 40px; width: auto;" />
+      <a href="/" style="display: inline-flex; line-height: 0;">
+        <img src={logoBlack.src} alt="Pixelboost" style="height: 40px; width: auto; display: block;" />
       </a>
       <p style="margin: 14px 0 0 0; max-width: 40ch; line-height: 1.5; font-size: 14px; color: var(--color-ink-500);">
         A one-person web studio in Ontario, building fast, accessible custom websites for Canadian small businesses.
@@ -18,12 +18,9 @@ const year = new Date().getFullYear();
 
     <div>
       <h4 style="margin: 0 0 12px 0; font-size: 13px; font-weight: 700; color: var(--color-ink); letter-spacing: -0.01em;">Pixelboost</h4>
-      <a href="#problem" class="foot-link">Why it matters</a>
-      <a href="#audit"   class="foot-link">Free audit</a>
-      <a href="#work"    class="foot-link">Recent work</a>
-      <a href="#pricing" class="foot-link">Pricing</a>
-      <a href="#faq"     class="foot-link">FAQ</a>
+      <a href="/about"   class="foot-link">About</a>
       <a href="/blog"    class="foot-link">Blog</a>
+      <a href="/contact" class="foot-link">Contact</a>
     </div>
 
     <div>
@@ -34,7 +31,7 @@ const year = new Date().getFullYear();
   </div>
 
   <div style="margin-top: 32px; padding: 16px 0 32px; border-top: 1px solid var(--color-line); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; font-size: 12px; color: var(--color-ink-500);">
-    <span>&copy; {year} Pixelboost · Made in Ontario, Canada</span>
+    <span>&copy; {year} Pixelboost · Made in Toronto, Ontario</span>
     <span>Built on this site. Lighthouse 100/100/100/100.</span>
   </div>
 </footer>
