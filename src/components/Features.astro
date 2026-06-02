@@ -31,7 +31,7 @@ const icons = [
 ];
 ---
 
-<section class="section-card" style="background: var(--color-paper);">
+<section class="section-card surface-paper">
   <div data-reveal>
     <SectionHeader eyebrow="What you actually get" subhead="Better design, faster pages, clearer analytics, and someone to call when the site needs changing.">
       What I fix when I rebuild your site.
@@ -40,7 +40,7 @@ const icons = [
 
   <ol class="fix-list">
     {pillars.map((p, i) => (
-      <li class="fix-row" data-reveal style={`--reveal-i: ${i + 1}`}>
+      <li class="fix-row" data-reveal>
         <span class="fix-num" aria-hidden="true">{String(i + 1).padStart(2, "0")}</span>
         <div class="fix-body">
           <div class="fix-head">
@@ -147,6 +147,11 @@ const icons = [
     color: var(--color-ink-500);
     line-height: 1.5;
   }
+
+  .fix-row:nth-child(1) { --reveal-i: 1; }
+  .fix-row:nth-child(2) { --reveal-i: 2; }
+  .fix-row:nth-child(3) { --reveal-i: 3; }
+  .fix-row:nth-child(4) { --reveal-i: 4; }
 
   @media (max-width: 600px) {
     .fix-row {

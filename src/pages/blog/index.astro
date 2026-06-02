@@ -33,17 +33,17 @@ const featuredDate = featured?.data.pubDate.toLocaleDateString("en-CA", {
 
   <main>
 
-    <section class="section-card" style="background: var(--color-paper);">
+    <section class="section-card surface-paper">
       <Eyebrow label="Blog" />
-      <h1 style="margin: 0 0 20px 0; max-width: 18ch;">Practical web advice for small businesses.</h1>
+      <h1 class="blog-hero-h1">Practical web advice for small businesses.</h1>
       <p class="section-subhead">
         Speed, SEO, accessibility — the stuff that actually affects whether your site works for your customers.
       </p>
     </section>
 
-    <section class="section-card" style="background: var(--color-paper-2);">
+    <section class="section-card surface-paper-2">
       {posts.length === 0 ? (
-        <p style="color: var(--color-ink-500);">No posts yet. Check back soon.</p>
+        <p class="blog-empty">No posts yet. Check back soon.</p>
       ) : (
         <>
           {featured && (
@@ -64,7 +64,7 @@ const featuredDate = featured?.data.pubDate.toLocaleDateString("en-CA", {
           {rest.length > 0 && (
             <div class="blog-grid">
               {rest.map((post, i) => (
-                <div data-reveal style={`--reveal-i: ${i + 1}`}>
+                <div data-reveal>
                   <BlogCard
                     title={post.data.title}
                     description={post.data.description}
@@ -178,6 +178,20 @@ const featuredDate = featured?.data.pubDate.toLocaleDateString("en-CA", {
   }
   @media (max-width: 900px) { .blog-grid { grid-template-columns: repeat(2, 1fr); } }
   @media (max-width: 560px) { .blog-grid { grid-template-columns: 1fr; } }
+
+  .blog-hero-h1 {
+    margin: 0 0 20px 0;
+    max-width: 18ch;
+  }
+
+  .blog-empty { color: var(--color-ink-500); }
+
+  .blog-grid > [data-reveal]:nth-child(1) { --reveal-i: 1; }
+  .blog-grid > [data-reveal]:nth-child(2) { --reveal-i: 2; }
+  .blog-grid > [data-reveal]:nth-child(3) { --reveal-i: 3; }
+  .blog-grid > [data-reveal]:nth-child(4) { --reveal-i: 4; }
+  .blog-grid > [data-reveal]:nth-child(5) { --reveal-i: 5; }
+  .blog-grid > [data-reveal]:nth-child(6) { --reveal-i: 6; }
 
   @media (prefers-reduced-motion: reduce) {
     .featured-card,

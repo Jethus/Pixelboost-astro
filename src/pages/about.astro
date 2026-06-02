@@ -21,8 +21,8 @@ import Button from "../components/ui/Button.astro";
     <section class="section-card about-hero">
       <div class="about-hero-text">
         <Eyebrow label="About" />
-        <h1 style="margin: 0 0 24px 0; line-height: 1.05; white-space: nowrap;">Hey, I'm Josh.</h1>
-        <p style="font-size: clamp(17px, 1.5vw, 21px); color: var(--color-ink-500); line-height: 1.65; margin: 0; font-weight: 450; max-width: 60ch;">
+        <h1 class="about-hero-h1">Hey, I'm Josh.</h1>
+        <p class="about-hero-lead">
           I'm a frontend developer with a background in design. I build websites for small businesses in Ontario — not templates, actual custom sites that load fast and look like they belong to you.
         </p>
       </div>
@@ -40,25 +40,25 @@ import Button from "../components/ui/Button.astro";
     <!-- Story -->
     <section class="section-card about-story">
       <div>
-        <h2 style="margin: 0 0 24px 0; font-size: clamp(24px, 2.5vw, 32px);">How this started</h2>
-        <div style="display: flex; flex-direction: column; gap: 18px; font-size: clamp(15px, 1.2vw, 17px); color: var(--color-ink-700); line-height: 1.7;">
-          <p style="margin: 0;">
+        <h2 class="about-story-h2">How this started</h2>
+        <div class="about-story-body">
+          <p class="about-story-p">
             By day I'm a frontend developer at the Ontario College of Teachers, building accessible, responsive web tools. I've been doing this for about four years — and before that, I came up through design, so I care about how things look just as much as how they work.
           </p>
-          <p style="margin: 0;">
+          <p class="about-story-p">
             I started Pixelboost on the side because I kept seeing the same thing — small businesses with great products or services, stuck with websites that were slow, clunky, or just kind of embarrassing. The kind of site that makes people leave before they've even read a sentence.
           </p>
-          <p style="margin: 0;">
+          <p class="about-story-p">
             Most of those businesses had either been quoted a fortune by an agency or tried DIY and hit a wall. Pixelboost sits in between — custom-built sites, real code, at a price that actually makes sense if you're running a small business.
           </p>
-          <p style="margin: 0;">
+          <p class="about-story-p">
             The thing is, every site I build reflects on me too. So I'm not looking to ship something that's just "good enough." I want it to actually perform — load fast, rank well, convert visitors into customers. The stuff I talk about in audits and on this site isn't filler. Speed, accessibility, structure, Core Web Vitals — I genuinely think these things matter, and I build with all of it in mind from the start.
           </p>
         </div>
       </div>
 
-      <div style="display: flex; flex-direction: column; gap: 16px;">
-        <Card variant="mint" class="about-card" padding="18px 20px">
+      <div class="about-cards-col">
+        <Card variant="mint" class="about-card" padding="compact">
           <span class="about-card-icon">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 1 1 16 0z"/><circle cx="12" cy="10" r="3"/></svg>
           </span>
@@ -67,7 +67,7 @@ import Button from "../components/ui/Button.astro";
             <p class="about-card-value">Whitby, Ontario — working with clients across the GTA and Durham Region</p>
           </div>
         </Card>
-        <Card variant="mint" class="about-card" padding="18px 20px">
+        <Card variant="mint" class="about-card" padding="compact">
           <span class="about-card-icon">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
           </span>
@@ -76,7 +76,7 @@ import Button from "../components/ui/Button.astro";
             <p class="about-card-value">Frontend dev with 4+ years experience. TypeScript, React, modern CSS — and a design background before all that</p>
           </div>
         </Card>
-        <Card variant="mint" class="about-card" padding="18px 20px">
+        <Card variant="mint" class="about-card" padding="compact">
           <span class="about-card-icon">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
           </span>
@@ -85,7 +85,7 @@ import Button from "../components/ui/Button.astro";
             <p class="about-card-value">Sites that perform — fast load times, good Core Web Vitals, clean structure. Every site I ship reflects on me, so I don't cut corners.</p>
           </div>
         </Card>
-        <Card variant="mint" class="about-card" padding="18px 20px">
+        <Card variant="mint" class="about-card" padding="compact">
           <span class="about-card-icon">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
           </span>
@@ -98,10 +98,10 @@ import Button from "../components/ui/Button.astro";
     </section>
 
     <!-- What I actually do -->
-    <section class="section-card" style="background: var(--color-paper);">
-      <div style="max-width: 680px; margin-bottom: clamp(36px, 4vw, 56px);">
-        <h2 style="margin: 0 0 16px 0; font-size: clamp(24px, 2.5vw, 32px);">What I actually do</h2>
-        <p style="margin: 0; font-size: clamp(15px, 1.2vw, 17px); color: var(--color-ink-700); line-height: 1.7;">
+    <section class="section-card surface-paper">
+      <div class="about-services-intro">
+        <h2 class="about-services-h2">What I actually do</h2>
+        <p class="about-services-lead">
           Most of my clients come to me with one of a few situations — they need a new site built from scratch, their current site is slow and outdated, or they've outgrown their DIY setup and need something real.
         </p>
       </div>
@@ -135,10 +135,10 @@ import Button from "../components/ui/Button.astro";
     </section>
 
     <!-- CTA -->
-    <section class="section-card" style="background: var(--color-ink); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 28px;">
+    <section class="section-card surface-ink about-cta">
       <div>
-        <h2 style="margin: 0 0 10px 0; color: var(--color-paper); font-size: clamp(22px, 2.2vw, 30px);">Want to work together?</h2>
-        <p style="margin: 0; color: rgba(248,245,238,0.65); font-size: 15px; max-width: 44ch; line-height: 1.55;">
+        <h2 class="about-cta-h2">Want to work together?</h2>
+        <p class="about-cta-p">
           No pressure, no sales pitch. Just tell me what you're working on and we'll figure out if it's a good fit.
         </p>
       </div>
@@ -197,12 +197,6 @@ import Button from "../components/ui/Button.astro";
     .about-hero-photo {
       height: 320px;
       border-radius: 0 0 var(--radius-section) var(--radius-section);
-    }
-  }
-
-  @media (max-width: 720px) {
-    section[style*="grid-template-columns: 1fr 1fr"] {
-      grid-template-columns: 1fr !important;
     }
   }
 
@@ -277,6 +271,82 @@ import Button from "../components/ui/Button.astro";
 
   @media (max-width: 560px) {
     .services-grid { grid-template-columns: 1fr; }
+  }
+
+  .about-hero-h1 {
+    margin: 0 0 24px 0;
+    line-height: 1.05;
+    white-space: nowrap;
+  }
+
+  .about-hero-lead {
+    font-size: clamp(17px, 1.5vw, 21px);
+    color: var(--color-ink-500);
+    line-height: 1.65;
+    margin: 0;
+    font-weight: 450;
+    max-width: 60ch;
+  }
+
+  .about-story-h2 {
+    margin: 0 0 24px 0;
+    font-size: clamp(24px, 2.5vw, 32px);
+  }
+
+  .about-story-body {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    font-size: clamp(15px, 1.2vw, 17px);
+    color: var(--color-ink-700);
+    line-height: 1.7;
+  }
+
+  .about-story-p { margin: 0; }
+
+  .about-cards-col {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .about-services-intro {
+    max-width: 680px;
+    margin-bottom: clamp(36px, 4vw, 56px);
+  }
+
+  .about-services-h2 {
+    margin: 0 0 16px 0;
+    font-size: clamp(24px, 2.5vw, 32px);
+  }
+
+  .about-services-lead {
+    margin: 0;
+    font-size: clamp(15px, 1.2vw, 17px);
+    color: var(--color-ink-700);
+    line-height: 1.7;
+  }
+
+  .about-cta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 28px;
+  }
+
+  .about-cta-h2 {
+    margin: 0 0 10px 0;
+    color: var(--color-paper);
+    font-size: clamp(22px, 2.2vw, 30px);
+  }
+
+  .about-cta-p {
+    margin: 0;
+    color: rgba(248,245,238,0.65);
+    font-size: 15px;
+    max-width: 44ch;
+    line-height: 1.55;
   }
 
 </style>

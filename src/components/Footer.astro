@@ -3,51 +3,63 @@ import logoBlack from "../assets/svgs/logo-black.svg";
 const year = new Date().getFullYear();
 ---
 
-<footer
-  style="background: var(--color-paper); max-width: 1200px; margin: 24px auto 0; border-radius: 28px 28px 0 0; padding: 40px clamp(28px, 5vw, 72px) 0; font-size: 14px; color: var(--color-ink-500);"
->
+<footer class="site-footer">
   <div class="foot-grid">
     <div>
-      <a href="/" style="display: inline-flex; line-height: 0;">
-        <img src={logoBlack.src} alt="Pixelboost" style="height: 40px; width: auto; display: block;" />
+      <a href="/" class="foot-logo">
+        <img src={logoBlack.src} alt="Pixelboost" />
       </a>
-      <p style="margin: 14px 0 0 0; max-width: 40ch; line-height: 1.5; font-size: 14px; color: var(--color-ink-500);">
+      <p class="foot-blurb">
         A one-person web studio in Ontario, building fast, accessible custom websites for Canadian small businesses.
       </p>
     </div>
 
     <div>
-      <h4 style="margin: 0 0 12px 0; font-size: 13px; font-weight: 700; color: var(--color-ink); letter-spacing: -0.01em;">Pixelboost</h4>
+      <h4 class="foot-head">Pixelboost</h4>
       <a href="/about"   class="foot-link">About</a>
       <a href="/blog"    class="foot-link">Blog</a>
       <a href="/contact" class="foot-link">Contact</a>
     </div>
 
     <div>
-      <h4 style="margin: 0 0 12px 0; font-size: 13px; font-weight: 700; color: var(--color-ink); letter-spacing: -0.01em;">Get in touch</h4>
+      <h4 class="foot-head">Get in touch</h4>
       <a href="mailto:hello@pixelboost.ca" class="foot-link">hello@pixelboost.ca</a>
       <a href="tel:+19057812464"           class="foot-link">(905) 781-2464</a>
     </div>
   </div>
 
-  <div style="margin-top: 32px; padding: 16px 0 32px; border-top: 1px solid var(--color-line); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; font-size: 12px; color: var(--color-ink-500);">
+  <div class="foot-bottom">
     <span>&copy; {year} Pixelboost · Made in Toronto, Ontario</span>
     <span>Built on this site. Lighthouse 100/100/100/100.</span>
   </div>
 </footer>
 
 <style>
-  .foot-grid {
-    display: grid;
-    grid-template-columns: 2fr 1fr 1fr;
-    gap: 40px;
+  .site-footer {
+    background: var(--color-paper);
+    max-width: 1200px; margin: 24px auto 0;
+    border-radius: 28px 28px 0 0;
+    padding: 40px clamp(28px, 5vw, 72px) 0;
+    font-size: 14px; color: var(--color-ink-500);
   }
+
+  .foot-grid { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 40px; }
   @media (max-width: 720px) { .foot-grid { grid-template-columns: 1fr; } }
 
-  .foot-link {
-    display: block; color: var(--color-ink-500);
-    text-decoration: none; padding: 4px 0;
-    transition: color 0.15s;
-  }
+  .foot-logo { display: inline-flex; line-height: 0; }
+  .foot-logo img { height: 40px; width: auto; display: block; }
+
+  .foot-blurb { margin: 14px 0 0 0; max-width: 40ch; line-height: 1.5; font-size: 14px; color: var(--color-ink-500); }
+
+  .foot-head { margin: 0 0 12px 0; font-size: 13px; font-weight: 700; color: var(--color-ink); letter-spacing: -0.01em; }
+
+  .foot-link { display: block; color: var(--color-ink-500); text-decoration: none; padding: 4px 0; transition: color 0.15s; }
   .foot-link:hover { color: var(--color-mint-600); }
+
+  .foot-bottom {
+    margin-top: 32px; padding: 16px 0 32px;
+    border-top: 1px solid var(--color-line);
+    display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px;
+    font-size: 12px; color: var(--color-ink-500);
+  }
 </style>

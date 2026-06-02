@@ -1,20 +1,21 @@
 ---
 /**
- * Eyebrow — the mint pill label used above section headings.
- * Single source of truth for the `eyebrow-chip` + dot pattern.
- *
- * Usage:
- *   <Eyebrow label="Results" />
- *   <Eyebrow label="Results" bg="var(--color-paper)" />  // on mint sections
+ * Eyebrow — mint pill label above section headings.
+ * onMint: use a paper background instead of the default mint-100,
+ *         for placement on mint-tinted sections (e.g. Portfolio).
  */
 interface Props {
   label: string;
-  bg?: string;
+  onMint?: boolean;
   class?: string;
 }
-const { label, bg, class: className = "" } = Astro.props;
+const { label, onMint = false, class: className = "" } = Astro.props;
 ---
 
-<span class:list={["eyebrow-chip", className]} style={bg ? `background: ${bg};` : undefined}>
+<span class:list={["eyebrow-chip", onMint && "eyebrow-chip--on-mint", className]}>
   <span class="eyebrow-dot" aria-hidden="true"></span>{label}
 </span>
+
+<style>
+  .eyebrow-chip--on-mint { background: var(--color-paper); }
+</style>

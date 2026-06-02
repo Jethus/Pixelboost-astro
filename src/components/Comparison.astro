@@ -31,12 +31,12 @@ const rows = [
 ];
 ---
 
-<section id="compare" class="section-card" style="background: var(--color-paper);">
+<section id="compare" class="section-card surface-paper">
   <SectionHeader eyebrow="What we do" subhead="A template can get you online. A custom rebuild is for when the site needs to be faster, clearer, and easier to measure.">
     How we compare
   </SectionHeader>
 
-  <div style="margin-top: 36px;">
+  <div class="compare-table-wrap">
     <ComparisonTable
       columns={["Feature", "Standard Platforms", "Our Custom Sites"]}
       rows={rows.map((row) => [row.feature, row.diy, row.ours]) as [
@@ -47,3 +47,7 @@ const rows = [
     />
   </div>
 </section>
+
+<style>
+  .compare-table-wrap { margin-top: 36px; }
+</style>
