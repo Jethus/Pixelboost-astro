@@ -1,52 +1,57 @@
 ---
 /**
- * BlogCard — Neo-brutalist blog post card.
- *
- * Usage:
- *   <BlogCard title="Post Title" description="..." pubDate={date} slug="post-slug" />
+ * BlogCard — blog post card built on the Card primitive.
  */
+import Card from "./Card.astro";
+
 interface Props {
   title: string;
   description: string;
   pubDate: Date;
+  readTime: number;
   slug: string;
 }
-
-const { title, description, pubDate, slug } = Astro.props;
-
+const { title, description, pubDate, readTime, slug } = Astro.props;
 const formattedDate = pubDate.toLocaleDateString("en-CA", {
-  year: "numeric",
-  month: "long",
-  day: "numeric",
+  year: "numeric", month: "long", day: "numeric",
 });
 ---
 
-<article class="group flex flex-col rounded-brutal border-3 border-ink bg-surface shadow-brutal transition-all duration-300 hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-brutal-hover">
-  <div class="flex flex-1 flex-col gap-4 p-6">
-    <p class="font-display font-bold uppercase tracking-[0.2em] text-ink/50 fs-xs">
-      {formattedDate}
-    </p>
-    <h2 class="font-display font-bold leading-tight">{title}</h2>
-    <p class="leading-relaxed text-ink/70 line-clamp-3">{description}</p>
-    <a
-      href={`/blog/${slug}`}
-      class="inline-flex items-center font-display font-bold uppercase tracking-widest text-ink transition-colors duration-200 hover:text-primary fs-xs"
-    >
-      Read post
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke-width="2.5"
-        stroke="currentColor"
-        class="ml-2 h-4 w-4"
-      >
-        <path
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"
-        />
-      </svg>
-    </a>
-  </div>
-</article>
+<Card href={`/blog/${slug}`} class="blog-card" padding="26px 24px">
+  <span class="blog-meta">{formattedDate} · {readTime} min read</span>
+  <h3 class="blog-title">{title}</h3>
+  <p class="blog-desc">{description}</p>
+  <span class="blog-readmore">
+    Read post
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+  </span>
+</Card>
+
+<style>
+  .blog-card { gap: 12px; height: 100%; }
+
+  .blog-meta {
+    font-size: 11px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.08em; color: var(--color-mint-600);
+  }
+  .blog-title {
+    font-size: clamp(19px, 1.5vw, 23px); font-weight: 700; line-height: 1.25;
+    letter-spacing: -0.02em; margin: 0; transition: color 0.2s ease;
+    display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
+  }
+  .blog-card:hover .blog-title { color: var(--color-mint-700); }
+  .blog-desc {
+    font-size: 14.5px; color: var(--color-ink-500); line-height: 1.55; margin: 0;
+    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+  }
+  .blog-readmore {
+    display: inline-flex; align-items: center; gap: 7px; margin-top: auto; padding-top: 6px;
+    font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--color-ink);
+  }
+  .blog-readmore svg { transition: transform 0.2s cubic-bezier(0.2, 0.9, 0.2, 1); }
+  .blog-card:hover .blog-readmore { color: var(--color-mint-700); }
+  .blog-card:hover .blog-readmore svg { transform: translateX(3px); }
+  @media (prefers-reduced-motion: reduce) {
+    .blog-readmore svg, .blog-card:hover .blog-readmore svg { transform: none; transition: none; }
+  }
+</style>
