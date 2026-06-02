@@ -50,7 +50,7 @@ const standard = plans.find(p => p.variant === 'lump')!;
       <ul class="plan-features">
         {featured.features.map(f => <li>{f.text}</li>)}
       </ul>
-      <a href="#audit" class="plan-btn mint btn-interactive">Start with a free audit →</a>
+      <a href="#audit" class="plan-btn mint btn-interactive">Start with a free audit <svg class="plan-btn-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a>
     </div>
 
     <div class="price-card">
@@ -60,7 +60,7 @@ const standard = plans.find(p => p.variant === 'lump')!;
       <ul class="plan-features">
         {standard.features.map(f => <li>{f.text}</li>)}
       </ul>
-      <a href="#audit" class="plan-btn dark btn-interactive">Talk it through →</a>
+      <a href="#audit" class="plan-btn dark btn-interactive">Talk it through <svg class="plan-btn-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a>
     </div>
   </div>
 
@@ -122,11 +122,12 @@ const standard = plans.find(p => p.variant === 'lump')!;
   .featured .plan-features li::before { color: var(--color-mint-300); }
 
   .plan-btn {
-    display: flex; justify-content: center; align-items: center;
+    display: flex; justify-content: center; align-items: center; gap: 8px;
     border-radius: 9999px; padding: 13px 20px;
     font-weight: 600; font-size: 14.5px; text-decoration: none; margin-top: auto;
     border: 0;
   }
+  .plan-btn-arrow { flex: none; }
   .plan-btn.mint { background: var(--color-mint-500); color: var(--color-ink); }
   .plan-btn.dark { background: var(--color-ink); color: var(--color-paper); }
   .plan-btn.dark:hover { background: var(--color-ink-700); }
