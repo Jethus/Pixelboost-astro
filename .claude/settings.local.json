@@ -20,7 +20,9 @@
       "Bash(echo \"EXIT: $?\")",
       "Bash(git checkout *)",
       "Bash(dir C:\\\\repos\\\\pixelboost-astro\\\\dist *)",
-      "Bash(node *)"
+      "Bash(node *)",
+      "Bash(sed -n '30,42p' src/components/Comparison.astro)",
+      "Bash(sed -n '1,15p' src/components/ClosingCTA.astro)"
     ]
   },
   "enabledPlugins": {
