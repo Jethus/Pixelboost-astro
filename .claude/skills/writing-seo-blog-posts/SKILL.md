@@ -62,7 +62,7 @@ If an existing post already targets your query, **expand that post or pick a dis
 
 ### 4. Draft — see `pixelboost-style.md` for voice + frontmatter rules
 
-Write in pixelboost voice (plain-spoken, "you", lead with business cost). Structure for AEO (below).
+Write in pixelboost voice (plain-spoken, "you", lead with business cost). Structure for AEO (below). If a post needs UI (e.g. an FAQ), **reuse existing components** — FAQs render via the frontmatter `faq` array + `BlogFAQ.astro`; don't hand-roll markup. See CLAUDE.md "Reuse components and primitives".
 
 ### 5. Verify — mechanical, do it before claiming done
 
