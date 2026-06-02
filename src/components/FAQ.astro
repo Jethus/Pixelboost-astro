@@ -1,21 +1,49 @@
 ---
-import { getEntry } from "astro:content";
-
-const doc = await getEntry("landingFaq", "faq");
-if (!doc) throw new Error("Could not find FAQ content");
-const { eyebrow, headline, questions } = doc.data;
+import SectionHeader from "./ui/SectionHeader.astro";
+const questions = [
+  {
+    q: "How long does a project take?",
+    a: "Most small-business sites take 3-4 weeks from kickoff. Larger sites or projects where I write the content usually take 5-6 weeks. I only take on two projects at a time so timelines stay honest.",
+  },
+  {
+    q: "What's included in the $200/month plan?",
+    a: "The full custom build, hosting, SSL, analytics, and ongoing small updates. Copy changes, new photos, simple page edits, and quick fixes are included. Bigger new features are quoted first.",
+  },
+  {
+    q: "Am I locked into a contract?",
+    a: "No. The monthly plan is month-to-month after the initial 12 months. If you leave, I help move the site wherever you want.",
+  },
+  {
+    q: "Who owns the website?",
+    a: "You do. The code, design, content, domain, and analytics are yours.",
+  },
+  {
+    q: "What if I already have a site?",
+    a: "Start with the free scan above. Sometimes the answer is \"your site is mostly fine; fix these 3 things.\" If a redesign makes sense, we talk through it.",
+  },
+  {
+    q: "What does my site score mean?",
+    a: "Google Lighthouse scores speed, accessibility, SEO, and best practices from 0 to 100. A score over 90 is strong. Below 50 usually means visitors are feeling the problem, even if they cannot name it.",
+  },
+  {
+    q: "Do you work with businesses outside Toronto?",
+    a: "Yes. I mainly work with Toronto, Oshawa, Whitby, Ajax, Pickering, and Durham Region businesses, but remote work across Ontario or Canada is fine.",
+  },
+  {
+    q: "How much does a website redesign cost in Toronto?",
+    a: "My monthly plan is $200/month for the build plus ongoing updates. The flat-rate option is $4,800 for a clean hand-off. Both are shown above with no hidden fees.",
+  },
+  {
+    q: "What tools do you actually use?",
+    a: "Lighthouse for Google PageSpeed-style scoring, and Plausible for simple privacy-friendly analytics. You get access to the dashboards too.",
+  },
+];
 ---
 
-<section
-  id="faq"
-  style="background: var(--color-paper-2); border-radius: var(--radius-section); max-width: 1200px; margin: 24px auto 0; padding: clamp(56px, 7vw, 96px) clamp(28px, 5vw, 72px);"
->
-  <div style="max-width: 760px;">
-    <span class="eyebrow-chip">
-      <span class="eyebrow-dot"></span> {eyebrow}
-    </span>
-    <h2 style="margin: 0 0 0 0;">{headline}</h2>
-  </div>
+<section id="faq" class="section-card" style="background: var(--color-paper-2);">
+  <SectionHeader eyebrow="FAQ" maxWidth="760px">
+    Reasonable questions, plain answers.
+  </SectionHeader>
 
   <div class="faq-list" style="max-width: 760px; margin-top: 32px;">
     {questions.map((item, i) => (
@@ -28,17 +56,6 @@ const { eyebrow, headline, questions } = doc.data;
 </section>
 
 <style>
-  .eyebrow-chip {
-    display: inline-flex; align-items: center; gap: 8px;
-    background: var(--color-mint-100); color: var(--color-mint-600);
-    font-weight: 600; font-size: 13px; letter-spacing: 0.04em;
-    padding: 6px 14px; border-radius: 9999px; margin-bottom: 20px;
-  }
-  .eyebrow-dot {
-    width: 6px; height: 6px; border-radius: 50%;
-    background: var(--color-mint-500); display: inline-block;
-  }
-
   .faq-list { border-top: 1px solid var(--color-line); }
 
   .faq-item { border-bottom: 1px solid var(--color-line); padding: 20px 0; }
@@ -50,16 +67,26 @@ const { eyebrow, headline, questions } = doc.data;
   }
   .faq-q::-webkit-details-marker { display: none; }
   .faq-q::after {
-    content: "+"; font-weight: 400; font-size: 22px;
-    color: var(--color-ink-500); flex-shrink: 0;
+    content: "+";
+    font-size: 20px;
+    font-weight: 400;
+    color: var(--color-ink-500);
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    transform-origin: 50% 50%;
     transition: transform 0.2s ease;
-    display: inline-block;
+    line-height: 1;
+    padding-bottom: 1px;
   }
   .faq-item[open] .faq-q::after { transform: rotate(45deg); }
 
   .faq-a {
     margin-top: 10px;
-    font-size: 15px; color: var(--color-ink-500); line-height: 1.6;
+    font-size: 14.5px; color: var(--color-ink-500); line-height: 1.6;
     max-width: 64ch;
   }
 </style>
