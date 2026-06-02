@@ -3,6 +3,15 @@ title: "How much does a website redesign cost in Toronto in 2026?"
 description: "Web design pricing in Toronto varies wildly. Here's what actually drives the cost of a redesign, what you should expect to pay, and how to avoid overpaying."
 pubDate: 2026-05-01
 draft: false
+faq:
+  - q: "How much does a website redesign cost in Toronto?"
+    a: "For most small businesses, somewhere between a $500 template and a $30,000 agency build. A well-executed custom site sits in the middle. At Pixelboost it's $200/month all-in, or $4,800 flat to own it outright — both include the full custom build."
+  - q: "How long does a website redesign take?"
+    a: "A custom build at Pixelboost runs about 3 to 4 weeks, depending on how quickly content and feedback come together. A quick visual refresh is faster; a large site with many pages or integrations takes longer. Most small business sites land in that 3 to 4 week window."
+  - q: "Is a website redesign worth it?"
+    a: "It depends on what your current site is doing. If it's fast, converts visitors into calls, and you can see where leads come from, maybe not. If it's slow, dated, or you're paying for ads you can't measure, a redesign usually pays for itself in new leads."
+  - q: "How often should you redesign a website?"
+    a: "Most sites need a real redesign every two to three years to stay current. But don't redesign a one or two year old site that already loads fast, looks right on mobile, and brings in leads. If it's working, leave it alone — spend the money where it's actually hurting."
 ---
 
 If you've started asking around about a website redesign in Toronto, you've probably gotten quotes ranging from a few hundred dollars to tens of thousands. That range is real, and it's confusing. Here's what's actually driving the difference — and how to figure out what you should be paying.
