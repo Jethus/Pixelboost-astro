@@ -4,45 +4,188 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 import Header from "../../components/Header.astro";
 import Footer from "../../components/Footer.astro";
 import BlogCard from "../../components/ui/BlogCard.astro";
+import Eyebrow from "../../components/ui/Eyebrow.astro";
 
-const posts = (await getCollection("blog")).sort(
-  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
-);
+// ~200 wpm; strip markdown/frontmatter noise to a rough word count.
+const readTime = (body: string | undefined) => {
+  const words = (body ?? "").trim().split(/\s+/).filter(Boolean).length;
+  return Math.max(1, Math.round(words / 200));
+};
+
+const posts = (await getCollection("blog"))
+  .filter((p) => !p.data.draft)
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+
+const [featured, ...rest] = posts;
+
+const featuredDate = featured?.data.pubDate.toLocaleDateString("en-CA", {
+  year: "numeric",
+  month: "long",
+  day: "numeric",
+});
 ---
 
 <BaseLayout
   title="Blog"
-  description="Insights and articles from the Pixelboost team."
+  description="Practical web advice for small business owners — speed, SEO, accessibility, and what actually makes a site work."
 >
   <Header />
+
   <main>
-    <section class="border-b-3 border-ink bg-surface">
-      <div class="mx-auto max-w-7xl px-6 py-20 md:py-28">
-        <p class="mb-2 font-display font-bold uppercase tracking-[0.2em] text-accent fs-xs">
-          Insights
-        </p>
-        <h1 class="font-display font-bold">Our Blog</h1>
-      </div>
+
+    <section class="section-card" style="background: var(--color-paper);">
+      <Eyebrow label="Blog" />
+      <h1 style="margin: 0 0 20px 0; max-width: 18ch;">Practical web advice for small businesses.</h1>
+      <p class="section-subhead">
+        Speed, SEO, accessibility — the stuff that actually affects whether your site works for your customers.
+      </p>
     </section>
 
-    <section class="border-b-3 border-ink bg-primary-light">
-      <div class="mx-auto max-w-7xl px-6 py-20 md:py-28">
-        {posts.length === 0 ? (
-          <p class="text-center text-ink/60">No posts yet. Check back soon.</p>
-        ) : (
-          <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-            {posts.map((post) => (
-              <BlogCard
-                title={post.data.title}
-                description={post.data.description}
-                pubDate={post.data.pubDate}
-                slug={post.id}
-              />
-            ))}
-          </div>
-        )}
-      </div>
+    <section class="section-card" style="background: var(--color-paper-2);">
+      {posts.length === 0 ? (
+        <p style="color: var(--color-ink-500);">No posts yet. Check back soon.</p>
+      ) : (
+        <>
+          {featured && (
+            <a href={`/blog/${featured.id}`} class="featured-card" data-reveal>
+              <span class="featured-metarow">
+                <span class="featured-flag">Latest</span>
+                <span class="featured-meta">{featuredDate} · {readTime(featured.body)} min read</span>
+              </span>
+              <h2 class="featured-title">{featured.data.title}</h2>
+              <p class="featured-desc">{featured.data.description}</p>
+              <span class="featured-readmore">
+                Read post
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+              </span>
+            </a>
+          )}
+
+          {rest.length > 0 && (
+            <div class="blog-grid">
+              {rest.map((post, i) => (
+                <div data-reveal style={`--reveal-i: ${i + 1}`}>
+                  <BlogCard
+                    title={post.data.title}
+                    description={post.data.description}
+                    pubDate={post.data.pubDate}
+                    readTime={readTime(post.body)}
+                    slug={post.id}
+                  />
+                </div>
+              ))}
+            </div>
+          )}
+        </>
+      )}
     </section>
+
   </main>
+
   <Footer />
 </BaseLayout>
+
+<style>
+  .featured-card {
+    display: block;
+    position: relative;
+    background: var(--color-mint-100);
+    border: 1px solid var(--color-mint-200);
+    border-radius: var(--radius-card);
+    padding: clamp(28px, 4vw, 48px);
+    margin-bottom: 16px;
+    text-decoration: none;
+    color: var(--color-ink);
+    transition:
+      transform 0.2s cubic-bezier(0.2, 0.9, 0.2, 1),
+      box-shadow 0.2s ease;
+  }
+
+  .featured-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 22px 54px -28px rgba(15, 26, 20, 0.45);
+  }
+
+  .featured-metarow {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+
+  .featured-flag {
+    display: inline-block;
+    background: var(--color-mint-500);
+    color: var(--color-ink);
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 5px 12px;
+    border-radius: 9999px;
+  }
+
+  .featured-meta {
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--color-mint-700);
+  }
+
+  .featured-title {
+    font-size: clamp(26px, 2.8vw, 36px);
+    font-weight: 800;
+    line-height: 1.12;
+    letter-spacing: -0.03em;
+    margin: 0 0 18px 0;
+    max-width: 22ch;
+    transition: color 0.2s ease;
+  }
+
+  .featured-card:hover .featured-title { color: var(--color-mint-700); }
+
+  .featured-desc {
+    font-size: clamp(15px, 1.3vw, 18px);
+    color: var(--color-ink-500);
+    line-height: 1.55;
+    max-width: 58ch;
+    margin: 0 0 24px 0;
+    font-weight: 500;
+  }
+
+  .featured-readmore {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--color-ink);
+  }
+
+  .featured-readmore svg {
+    transition: transform 0.2s cubic-bezier(0.2, 0.9, 0.2, 1);
+  }
+
+  .featured-card:hover .featured-readmore svg { transform: translateX(3px); }
+
+  .blog-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+  @media (max-width: 900px) { .blog-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 560px) { .blog-grid { grid-template-columns: 1fr; } }
+
+  @media (prefers-reduced-motion: reduce) {
+    .featured-card,
+    .featured-card:hover,
+    .featured-readmore svg,
+    .featured-card:hover .featured-readmore svg {
+      transform: none;
+      transition: none;
+    }
+  }
+</style>

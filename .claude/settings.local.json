@@ -4,7 +4,28 @@
       "Bash(find /c/repos/pixelboost-astro -maxdepth 2 -type f -name README.md -o -name .cursorrules -o -name .cursor -o -name copilot*)",
       "Bash(grep -v \"^\\\\.\\\\.$\")",
       "Bash(npm run:*)",
-      "Bash(grep -n \"h2.*fs-\" /c/repos/pixelboost-astro/src/components/*.astro)"
+      "Bash(grep -n \"h2.*fs-\" /c/repos/pixelboost-astro/src/components/*.astro)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:4321)",
+      "mcp__plugin_chrome-devtools-mcp_chrome-devtools__navigate_page",
+      "mcp__plugin_chrome-devtools-mcp_chrome-devtools__new_page",
+      "mcp__plugin_chrome-devtools-mcp_chrome-devtools__take_screenshot",
+      "mcp__plugin_chrome-devtools-mcp_chrome-devtools__take_snapshot",
+      "mcp__plugin_chrome-devtools-mcp_chrome-devtools__evaluate_script",
+      "mcp__plugin_chrome-devtools-mcp_chrome-devtools__fill",
+      "mcp__plugin_chrome-devtools-mcp_chrome-devtools__click",
+      "PowerShell($p = Get-Content package.json -Raw | ConvertFrom-Json; $p.scripts)",
+      "mcp__plugin_chrome-devtools-mcp_chrome-devtools__resize_page",
+      "Bash(git ls-tree *)",
+      "Bash(git -C C:\\\\repos\\\\pixelboost-astro checkout design-primitive-unification)",
+      "Bash(echo \"EXIT: $?\")",
+      "Bash(git checkout *)",
+      "Bash(dir C:\\\\repos\\\\pixelboost-astro\\\\dist *)",
+      "Bash(node *)",
+      "Bash(sed -n '30,42p' src/components/Comparison.astro)",
+      "Bash(sed -n '1,15p' src/components/ClosingCTA.astro)"
     ]
+  },
+  "enabledPlugins": {
+    "chrome-devtools-mcp@claude-plugins-official": true
   }
 }

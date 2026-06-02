@@ -1,0 +1,25 @@
+---
+/**
+ * SectionHeader — eyebrow + heading + subhead block used atop sections.
+ * Heading content goes in the default slot (so `.high` accent spans work).
+ *
+ * Usage:
+ *   <SectionHeader eyebrow="Honest pricing" subhead="...">
+ *     Two ways to work together. <span class="high">No surprise invoices.</span>
+ *   </SectionHeader>
+ */
+import Eyebrow from "./Eyebrow.astro";
+interface Props {
+  eyebrow: string;
+  subhead?: string;
+  eyebrowBg?: string;
+  maxWidth?: string;
+}
+const { eyebrow, subhead, eyebrowBg, maxWidth = "780px" } = Astro.props;
+---
+
+<div style={`max-width: ${maxWidth};`}>
+  <Eyebrow label={eyebrow} bg={eyebrowBg} />
+  <h2 style="margin: 0 0 16px 0;"><slot /></h2>
+  {subhead && <p class="section-subhead">{subhead}</p>}
+</div>

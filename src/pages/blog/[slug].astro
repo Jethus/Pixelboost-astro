@@ -6,10 +6,12 @@ import Footer from "../../components/Footer.astro";
 
 export async function getStaticPaths() {
   const posts = await getCollection("blog");
-  return posts.map((post) => ({
-    params: { slug: post.id },
-    props: { post },
-  }));
+  return posts
+    .filter((p) => !p.data.draft)
+    .map((post) => ({
+      params: { slug: post.id },
+      props: { post },
+    }));
 }
 
 const { post } = Astro.props;
@@ -24,97 +26,104 @@ const formattedDate = post.data.pubDate.toLocaleDateString("en-CA", {
 
 <BaseLayout title={post.data.title} description={post.data.description}>
   <Header />
+
   <main>
-    <section class="border-b-3 border-ink bg-primary-light">
-      <div class="mx-auto max-w-7xl px-6 py-20 md:py-28">
-        <p class="mb-4 font-display font-bold uppercase tracking-[0.2em] text-accent fs-xs">
-          {formattedDate}
-        </p>
-        <h1 class="mb-6 max-w-3xl font-display font-bold leading-tight">
-          {post.data.title}
-        </h1>
-        <p class="max-w-2xl leading-relaxed text-ink/70">
-          {post.data.description}
-        </p>
+
+    <section class="section-card" style="background: var(--color-paper);">
+      <p class="post-eyebrow">{formattedDate}</p>
+      <h1 style="margin: 0 0 20px 0; max-width: 22ch;">{post.data.title}</h1>
+      <p style="font-size: clamp(16px, 1.35vw, 19px); color: var(--color-ink-500); line-height: 1.5; max-width: 56ch; margin: 0; font-weight: 500;">
+        {post.data.description}
+      </p>
+    </section>
+
+    <section class="section-card" style="background: var(--color-paper-2);">
+      <article class="post-body" style="max-width: 68ch;">
+        <Content />
+      </article>
+
+      <div style="margin-top: 56px; padding-top: 32px; border-top: 1px solid var(--color-line);">
+        <a
+          href="/blog"
+          style="display: inline-flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 600; color: var(--color-ink); text-decoration: none; transition: color 0.15s;"
+          class="back-link"
+        >
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="m12 19-7-7 7-7"/></svg>
+          Back to blog
+        </a>
       </div>
     </section>
 
-    <section class="border-b-3 border-ink bg-surface">
-      <div class="mx-auto max-w-prose px-6 py-20">
-        <article class="post-body">
-          <Content />
-        </article>
-        <div class="mt-16">
-          <a
-            href="/blog"
-            class="inline-block rounded-brutal border-3 border-ink bg-primary-light px-8 py-3 font-display font-bold uppercase tracking-wider text-ink transition-all duration-200 hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-brutal"
-          >
-            &larr; Back to Blog
-          </a>
-        </div>
-      </div>
-    </section>
   </main>
+
   <Footer />
 </BaseLayout>
 
 <style>
-  /* Basic prose styles for rendered markdown — no typography plugin needed */
+  .post-eyebrow {
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-mint-600);
+    margin: 0 0 20px 0;
+  }
+
+  .back-link:hover { color: var(--color-mint-600); }
+
   .post-body :global(h1),
   .post-body :global(h2),
   .post-body :global(h3),
-  .post-body :global(h4),
-  .post-body :global(h5),
-  .post-body :global(h6) {
-    margin-top: 2rem;
+  .post-body :global(h4) {
+    margin-top: 2.25rem;
     margin-bottom: 0.75rem;
+    letter-spacing: -0.02em;
   }
 
   .post-body :global(p) {
-    margin-bottom: 1.25rem;
+    margin-bottom: 1.35rem;
     line-height: 1.75;
+    color: var(--color-ink-700);
   }
 
   .post-body :global(ul),
   .post-body :global(ol) {
-    margin-bottom: 1.25rem;
+    margin-bottom: 1.35rem;
     padding-left: 1.5rem;
+    color: var(--color-ink-700);
   }
 
-  .post-body :global(li) {
-    margin-bottom: 0.35rem;
-  }
+  .post-body :global(li) { margin-bottom: 0.4rem; line-height: 1.65; }
+  .post-body :global(ul) { list-style-type: disc; }
+  .post-body :global(ol) { list-style-type: decimal; }
 
-  .post-body :global(ul) {
-    list-style-type: disc;
-  }
-
-  .post-body :global(ol) {
-    list-style-type: decimal;
-  }
+  .post-body :global(strong) { color: var(--color-ink); font-weight: 700; }
 
   .post-body :global(blockquote) {
-    border-left: 3px solid var(--color-primary);
-    padding-left: 1rem;
+    border-left: 3px solid var(--color-mint-500);
+    padding: 12px 20px;
     margin: 1.5rem 0;
-    color: oklch(0.35 0.02 250);
+    background: var(--color-mint-50);
+    border-radius: 0 8px 8px 0;
+    color: var(--color-ink-700);
   }
 
   .post-body :global(code) {
-    background: var(--color-primary-light);
-    border: 1px solid var(--color-ink);
+    background: var(--color-paper-2);
+    border: 1px solid var(--color-line);
     border-radius: 4px;
     padding: 0.1em 0.4em;
-    font-size: 0.9em;
+    font-size: 0.875em;
+    color: var(--color-ink);
   }
 
   .post-body :global(pre) {
     background: var(--color-ink);
-    color: var(--color-surface);
-    border-radius: var(--radius-brutal);
-    padding: 1.25rem;
+    color: var(--color-paper);
+    border-radius: var(--radius-card);
+    padding: 1.25rem 1.5rem;
     overflow-x: auto;
-    margin-bottom: 1.25rem;
+    margin-bottom: 1.35rem;
   }
 
   .post-body :global(pre code) {
@@ -124,32 +133,31 @@ const formattedDate = post.data.pubDate.toLocaleDateString("en-CA", {
     font-size: 0.875em;
   }
 
-  .post-body :global(a) {
-    color: var(--color-primary-dark);
-    text-decoration: underline;
+  /* prose link styles handled globally via .post-body a in global.css */
+
+  .post-body :global(hr) {
+    border: none;
+    border-top: 1px solid var(--color-line);
+    margin: 2.5rem 0;
   }
 
   .post-body :global(table) {
     width: 100%;
     border-collapse: collapse;
-    margin-bottom: 1.25rem;
+    margin-bottom: 1.35rem;
+    font-size: 14px;
   }
 
   .post-body :global(th),
   .post-body :global(td) {
-    border: 2px solid var(--color-ink);
-    padding: 0.5rem 0.75rem;
+    border: 1px solid var(--color-line);
+    padding: 10px 14px;
     text-align: left;
   }
 
   .post-body :global(th) {
-    background: var(--color-primary-light);
+    background: var(--color-paper-2);
     font-weight: 700;
-  }
-
-  .post-body :global(hr) {
-    border: none;
-    border-top: 3px solid var(--color-ink);
-    margin: 2rem 0;
+    color: var(--color-ink);
   }
 </style>

@@ -1,9 +1,27 @@
 ---
-import { getEntry } from "astro:content";
-
-const doc = await getEntry("landingFeatures", "features");
-if (!doc) throw new Error("Could not find features content");
-const { eyebrow, headline, subhead, pillars } = doc.data;
+import SectionHeader from "./ui/SectionHeader.astro";
+const pillars = [
+  {
+    title: "Fast on mobile.",
+    pitch: "Your site should feel quick on a phone, even on a slow connection.",
+    proof: "I target 95+ on Google PageSpeed and show you the result before launch.",
+  },
+  {
+    title: "Works for every customer.",
+    pitch: "Clear text, easy taps, strong contrast, and layouts that do not break.",
+    proof: "Built toward Ontario AODA expectations and checked beyond automated scores.",
+  },
+  {
+    title: "You can see where your leads come from.",
+    pitch: "See which pages, searches, and campaigns are sending people your way.",
+    proof: "Simple, private analytics. No data selling, no noisy dashboard.",
+  },
+  {
+    title: "I'm still your developer after launch.",
+    pitch: "Need hours changed, a service added, or a photo swapped? Just send it.",
+    proof: "Small updates are included in the monthly plan. Most are done within the week.",
+  },
+];
 
 const icons = [
   `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>`,
@@ -13,74 +31,129 @@ const icons = [
 ];
 ---
 
-<section
-  style="background: var(--color-paper); border-radius: var(--radius-section); max-width: 1200px; margin: 24px auto 0; padding: clamp(56px, 7vw, 96px) clamp(28px, 5vw, 72px);"
->
-  <div style="max-width: 780px;">
-    <span class="eyebrow-chip">
-      <span class="eyebrow-dot"></span> {eyebrow}
-    </span>
-    <h2 style="margin: 0 0 16px 0;" set:html={headline} />
-    <p style="font-size: clamp(16px, 1.35vw, 19px); color: var(--color-ink-500); line-height: 1.5; max-width: 56ch; margin: 0; font-weight: 500;">
-      {subhead}
-    </p>
+<section class="section-card" style="background: var(--color-paper);">
+  <div data-reveal>
+    <SectionHeader eyebrow="What you actually get" subhead="Better design, faster pages, clearer analytics, and someone to call when the site needs changing.">
+      What I fix when I rebuild your site.
+    </SectionHeader>
   </div>
 
-  <div class="pillars-grid">
+  <ol class="fix-list">
     {pillars.map((p, i) => (
-      <div class="pillar-card">
-        <div class="icon-tile" set:html={icons[i]} />
-        <h3 style="font-size: 19px; font-weight: 700; letter-spacing: -0.02em; line-height: 1.2; margin: 4px 0 0 0;">{p.title}</h3>
-        <p style="font-size: 14.5px; line-height: 1.5; color: var(--color-ink-700); margin: 0;">{p.pitch}</p>
-        <p class="proof-line"><em>Technically:</em> {p.proof}</p>
-      </div>
+      <li class="fix-row" data-reveal style={`--reveal-i: ${i + 1}`}>
+        <span class="fix-num" aria-hidden="true">{String(i + 1).padStart(2, "0")}</span>
+        <div class="fix-body">
+          <div class="fix-head">
+            <span class="fix-icon" aria-hidden="true" set:html={icons[i]} />
+            <h3 class="fix-title">{p.title}</h3>
+          </div>
+          <p class="fix-pitch">{p.pitch}</p>
+          <p class="fix-proof">
+            <span class="fix-proof-tag">Proof</span>
+            <span class="fix-proof-text">{p.proof}</span>
+          </p>
+        </div>
+      </li>
     ))}
-  </div>
+  </ol>
 </section>
 
 <style>
-  .eyebrow-chip {
-    display: inline-flex; align-items: center; gap: 8px;
-    background: var(--color-mint-100); color: var(--color-mint-600);
-    font-weight: 600; font-size: 13px; letter-spacing: 0.04em;
-    padding: 6px 14px; border-radius: 9999px; margin-bottom: 20px;
-  }
-  .eyebrow-dot {
-    width: 6px; height: 6px; border-radius: 50%;
-    background: var(--color-mint-500); display: inline-block;
+  .fix-list {
+    list-style: none;
+    margin: 36px 0 0 0;
+    padding: 0;
+    border-top: 1px solid var(--color-line);
   }
 
-  .pillars-grid {
+  .fix-row {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 14px;
-    margin-top: 36px;
+    grid-template-columns: 72px minmax(0, 1fr);
+    column-gap: 28px;
+    align-items: start;
+    padding: 28px 4px;
+    border-bottom: 1px solid var(--color-line);
+    transition: background 0.18s ease;
   }
-  @media (max-width: 1000px) { .pillars-grid { grid-template-columns: repeat(2, 1fr); } }
-  @media (max-width: 600px)  { .pillars-grid { grid-template-columns: 1fr; } }
+  .fix-row:hover { background: var(--color-paper-2); }
 
-  .pillar-card {
-    background: var(--color-paper-2);
-    border-radius: var(--radius-card);
-    padding: 26px;
-    border: 1px solid var(--color-line);
-    display: flex; flex-direction: column; gap: 12px;
+  .fix-num {
+    font-size: clamp(34px, 4vw, 52px);
+    font-weight: 800;
+    line-height: 0.9;
+    letter-spacing: -0.04em;
+    color: var(--color-mint-200);
+    font-variant-numeric: tabular-nums;
+  }
+  .fix-row:hover .fix-num { color: var(--color-mint-500); }
+
+  .fix-body { display: flex; flex-direction: column; gap: 8px; }
+
+  .fix-head {
+    display: flex;
+    align-items: center;
+    gap: 10px;
   }
 
-  .icon-tile {
-    width: 40px; height: 40px; border-radius: var(--radius-icon);
-    background: var(--color-mint-100);
-    border: 1px solid var(--color-mint-200);
-    color: var(--color-mint-700);
-    display: grid; place-items: center;
+  .fix-icon {
+    color: var(--color-mint-600);
+    display: inline-grid;
+    place-items: center;
     flex-shrink: 0;
   }
+  .fix-icon :global(svg) { width: 18px; height: 18px; }
 
-  .proof-line {
-    font-size: 12.5px; color: var(--color-ink-500);
-    padding-top: 12px; margin-top: auto;
-    border-top: 1px dashed var(--color-line-2);
-    line-height: 1.5; margin-bottom: 0;
+  .fix-title {
+    margin: 0;
+    font-size: clamp(18px, 1.45vw, 22px);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+    color: var(--color-ink);
   }
-  .proof-line em { color: var(--color-ink); font-style: italic; font-weight: 600; }
+
+  .fix-pitch {
+    margin: 0;
+    font-size: clamp(14.5px, 1.1vw, 16.5px);
+    color: var(--color-ink-500);
+    line-height: 1.55;
+    max-width: 60ch;
+  }
+
+  .fix-proof {
+    margin: 4px 0 0 0;
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .fix-proof-tag {
+    flex-shrink: 0;
+    font-size: 10.5px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--color-mint-700);
+    background: var(--color-mint-100);
+    border: 1px solid var(--color-mint-200);
+    border-radius: var(--radius-pill);
+    padding: 3px 10px;
+    line-height: 1.4;
+  }
+
+  .fix-proof-text {
+    font-size: 13px;
+    color: var(--color-ink-500);
+    line-height: 1.5;
+  }
+
+  @media (max-width: 600px) {
+    .fix-row {
+      grid-template-columns: 48px minmax(0, 1fr);
+      column-gap: 16px;
+      padding: 22px 2px;
+    }
+    .fix-num { font-size: 30px; }
+  }
 </style>

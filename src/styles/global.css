@@ -44,9 +44,15 @@
   --radius-pill:    9999px;
 
   /* Shadows */
-  --shadow-nav:  0 2px 12px -2px rgba(15,26,20,0.14), 0 1px 0 rgba(15,26,20,0.06);
-  --shadow-btn:  0 6px 18px -8px rgba(15,26,20,0.35);
-  --shadow-card: 0 20px 60px -20px rgba(0,0,0,0.35);
+  --shadow-nav:         0 2px 12px -2px rgba(15,26,20,0.14), 0 1px 0 rgba(15,26,20,0.06);
+  --shadow-btn:         0 6px 18px -8px rgba(15,26,20,0.35);
+  --shadow-card:        0 20px 60px -20px rgba(0,0,0,0.35);
+  --shadow-brutal:      4px 4px 0px 0px var(--color-ink);
+  --shadow-brutal-hover: 2px 2px 0px 0px var(--color-ink);
+  --shadow-brutal-lg:   6px 6px 0px 0px var(--color-ink);
+
+  /* Radii (extended) */
+  --radius-brutal: 12px;
 }
 
 /* ————————————————————————————————————————————————————————————
@@ -105,6 +111,160 @@
 @utility fs-xxxl { --fl: 6;  font-size: var(--fluid-type); }
 
 /* ————————————————————————————————————————————————————————————
+   Section card — shared pill layout for every landing + inner section
+   ———————————————————————————————————————————————————————————— */
+
+@utility section-card {
+  max-width: 1200px;
+  margin: 24px auto 0;
+  border-radius: var(--radius-section);
+  padding: clamp(56px, 7vw, 96px) clamp(28px, 5vw, 72px);
+  min-width: 0;
+}
+
+/* ————————————————————————————————————————————————————————————
+   Neo-brutalist utilities
+   ———————————————————————————————————————————————————————————— */
+
+@utility rounded-brutal      { border-radius: var(--radius-brutal); }
+@utility shadow-brutal       { box-shadow: var(--shadow-brutal); }
+@utility shadow-brutal-hover { box-shadow: var(--shadow-brutal-hover); }
+@utility shadow-brutal-lg    { box-shadow: var(--shadow-brutal-lg); }
+@utility border-3            { border-width: 3px; }
+
+/* ————————————————————————————————————————————————————————————
+   Shared component utilities
+   ———————————————————————————————————————————————————————————— */
+
+@utility eyebrow-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--color-mint-100);
+  color: var(--color-mint-600);
+  font-weight: 600;
+  font-size: 13px;
+  letter-spacing: 0.04em;
+  padding: 6px 14px;
+  border-radius: 9999px;
+  margin-bottom: 20px;
+}
+
+@utility eyebrow-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--color-mint-500);
+  display: inline-block;
+}
+
+@utility section-subhead {
+  font-size: clamp(16px, 1.35vw, 19px);
+  color: var(--color-ink-500);
+  line-height: 1.5;
+  max-width: 56ch;
+  margin: 0;
+  font-weight: 500;
+}
+
+@utility card-body {
+  font-size: 14.5px;
+  color: var(--color-ink-700);
+  line-height: 1.55;
+  margin: 0;
+}
+
+@utility btn-mint {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--color-mint-500);
+  color: var(--color-ink);
+  border: 0;
+  border-radius: 9999px;
+  padding: 15px 24px;
+  font-weight: 600;
+  font-size: 15.5px;
+  text-decoration: none;
+}
+
+@utility btn-outline {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: transparent;
+  color: var(--color-ink);
+  border: 1.5px solid var(--color-ink);
+  border-radius: 9999px;
+  padding: 15px 24px;
+  font-weight: 600;
+  font-size: 15.5px;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+@utility btn-outline-light {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: transparent;
+  color: var(--color-paper);
+  border: 1.5px solid var(--color-paper);
+  border-radius: 9999px;
+  padding: 15px 24px;
+  font-weight: 600;
+  font-size: 15.5px;
+  text-decoration: none;
+}
+
+@utility btn-interactive {
+  transform-origin: center;
+  transition:
+    transform 0.18s cubic-bezier(0.2, 0.9, 0.2, 1),
+    box-shadow 0.18s ease,
+    filter 0.18s ease,
+    background-color 0.18s ease,
+    color 0.18s ease;
+  will-change: transform;
+}
+
+@keyframes btn-active-bounce {
+  0% {
+    transform: translateY(-1px);
+  }
+  55% {
+    transform: translateY(2px);
+  }
+  100% {
+    transform: translateY(1px);
+  }
+}
+
+.btn-interactive:hover {
+  filter: brightness(1.03);
+  transform: translateY(-2px);
+  box-shadow: var(--btn-hover-shadow, 0 10px 22px -14px rgba(15, 26, 20, 0.45));
+}
+
+.btn-interactive:active {
+  animation: btn-active-bounce 0.24s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+  filter: brightness(0.99);
+  box-shadow: var(--btn-active-shadow, 0 4px 12px -12px rgba(15, 26, 20, 0.4));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .btn-interactive,
+  .btn-interactive:hover,
+  .btn-interactive:active {
+    animation: none;
+    filter: none;
+    box-shadow: none;
+    transform: none;
+    transition: none;
+  }
+}
+
+/* ————————————————————————————————————————————————————————————
    Base element defaults
    ———————————————————————————————————————————————————————————— */
 
@@ -120,6 +280,14 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     line-height: 1.5;
+    overflow-x: clip;
+  }
+
+  .site-shell {
+    background: var(--color-mint-100);
+    padding: 28px 28px 0;
+    min-height: 100vh;
+    overflow-x: clip;
   }
 
   h1, h2, h3, h4, h5, h6 {
@@ -149,12 +317,100 @@
     color: inherit;
   }
 
+  /* Growing background hover — prose/body links only, not buttons/nav */
+  .post-body a,
+  .prose-link {
+    color: var(--color-mint-700);
+    font-weight: 500;
+    position: relative;
+    margin: 0 -0.1em;
+    padding: 0 0.1em;
+    text-decoration: none;
+    transition: color 0.25s ease-in-out;
+  }
+
+  .post-body a::before,
+  .prose-link::before {
+    content: '';
+    background-color: var(--color-mint-200);
+    position: absolute;
+    left: 0;
+    bottom: 2px;
+    width: 100%;
+    height: 6px;
+    z-index: -1;
+    transition: height 0.25s ease-in-out, bottom 0.25s ease-in-out;
+  }
+
+  .post-body a:hover,
+  .prose-link:hover {
+    color: var(--color-ink);
+  }
+
+  .post-body a:hover::before,
+  .prose-link:hover::before {
+    bottom: 0;
+    height: 100%;
+  }
+
   /* .high — the mint-600 emphasis span used in h1/h2 */
   .high {
     color: var(--color-mint-600);
+  }
+
+  @media (max-width: 640px) {
+    .site-shell {
+      padding: 20px 14px 0;
+    }
+
+    .section-card {
+      margin-top: 20px;
+      padding: 48px 28px;
+      border-radius: 24px;
+    }
   }
 }
 
 [hidden] {
   display: none !important;
+}
+
+/* ————————————————————————————————————————————————————————————
+   Scroll reveal — opt-in via [data-reveal]. JS adds .is-in when
+   the element enters the viewport. Children with [data-reveal-stagger]
+   sequence off --reveal-i. Purposeful, cheap, GPU-only (opacity+transform).
+   ———————————————————————————————————————————————————————————— */
+
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(18px);
+  transition:
+    opacity 0.55s cubic-bezier(0.2, 0.7, 0.2, 1),
+    transform 0.55s cubic-bezier(0.2, 0.7, 0.2, 1);
+  transition-delay: calc(var(--reveal-i, 0) * 70ms);
+  will-change: opacity, transform;
+}
+
+[data-reveal].is-in {
+  opacity: 1;
+  transform: none;
+}
+
+/* No-JS fallback: never leave content hidden. */
+.no-js [data-reveal] {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-reveal],
+  [data-reveal].is-in {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+
+  html {
+    scroll-behavior: auto;
+  }
 }
