@@ -14,6 +14,11 @@ const blog = defineCollection({
       updatedDate: z.coerce.date().optional(),
       heroImage: image().optional(),
       draft: z.boolean().default(false),
+      // Optional FAQ: renders a visible FAQ section AND emits FAQPage JSON-LD
+      // (single source of truth — schema and visible Q&A never drift).
+      faq: z
+        .array(z.object({ q: z.string(), a: z.string() }))
+        .optional(),
     }),
 });
 

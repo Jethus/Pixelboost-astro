@@ -3,6 +3,15 @@ title: "What is a Google Lighthouse score, and what does yours mean?"
 description: "Google grades every website on speed, accessibility, SEO, and best practices. Here's what those scores actually mean for your business, in plain English."
 pubDate: 2026-05-01
 draft: false
+faq:
+  - q: "What is a good Google Lighthouse score?"
+    a: "90 to 100 is the target for all four categories. For Performance specifically, 90+ means visitors won't notice the load, 50 to 89 is noticeable, and below 50 is costing you customers. A perfect 100 is hard to reach and not necessary."
+  - q: "Does a Lighthouse score affect Google ranking?"
+    a: "Not directly — the lab score itself isn't a ranking factor. But it's built from the same speed and usability signals Google does use (Core Web Vitals from real visitors). A low Lighthouse score usually means a slow real-world site, which Google does push down."
+  - q: "Why is my Lighthouse score so low?"
+    a: "Usually the platform. Wix, WordPress themes, and stacked plugins, chatbots, and sliders add weight that drags the score down. Most Wix and WordPress sites land at 40 to 65 on mobile. A custom-built site sends only what the page needs and clears 90+."
+  - q: "How do I check my Lighthouse score for free?"
+    a: "Paste your URL into Google's free PageSpeed Insights tool and read the Mobile tab — that's where most of your visitors are and where sites are slowest. Or use the free audit on this site for a plain-English report on what's failing."
 ---
 
 If you've ever run your website through a speed checker or used an audit tool, you've probably seen scores like "Performance: 43" or "Accessibility: 78." Maybe you noticed they were lower than you'd like. Maybe you had no idea what they meant.
