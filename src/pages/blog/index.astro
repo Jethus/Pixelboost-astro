@@ -5,6 +5,7 @@ import Header from "../../components/Header.astro";
 import Footer from "../../components/Footer.astro";
 import BlogCard from "../../components/ui/BlogCard.astro";
 import Eyebrow from "../../components/ui/Eyebrow.astro";
+import ClosingCTA from "../../components/ClosingCTA.astro";
 
 // ~200 wpm; strip markdown/frontmatter noise to a rough word count.
 const readTime = (body: string | undefined) => {
@@ -33,7 +34,7 @@ const featuredDate = featured?.data.pubDate.toLocaleDateString("en-CA", {
 
   <main>
 
-    <section class="section-card surface-paper">
+    <section class="section-card surface-paper blog-hero">
       <Eyebrow label="Blog" />
       <h1 class="blog-hero-h1">Practical web advice for small businesses.</h1>
       <p class="section-subhead">
@@ -79,6 +80,8 @@ const featuredDate = featured?.data.pubDate.toLocaleDateString("en-CA", {
         </>
       )}
     </section>
+
+    <ClosingCTA />
 
   </main>
 
@@ -179,9 +182,17 @@ const featuredDate = featured?.data.pubDate.toLocaleDateString("en-CA", {
   @media (max-width: 900px) { .blog-grid { grid-template-columns: repeat(2, 1fr); } }
   @media (max-width: 560px) { .blog-grid { grid-template-columns: 1fr; } }
 
+  .blog-hero {
+    padding-top: clamp(40px, 5vw, 64px);
+    padding-bottom: clamp(40px, 5vw, 64px);
+  }
+
   .blog-hero-h1 {
     margin: 0 0 20px 0;
     max-width: 18ch;
+    font-size: clamp(34px, 5vw, 56px);
+    line-height: 1.04;
+    letter-spacing: -0.03em;
   }
 
   .blog-empty { color: var(--color-ink-500); }
