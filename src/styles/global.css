@@ -217,6 +217,24 @@
   text-decoration: none;
 }
 
+@utility btn-ink {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--color-ink);
+  color: var(--color-paper);
+  border: 0;
+  border-radius: 9999px;
+  padding: 15px 24px;
+  font-weight: 600;
+  font-size: 15.5px;
+  text-decoration: none;
+}
+
+/* Size + layout modifiers, shared by every button. */
+@utility btn-sm    { padding: 11px 20px; font-size: 15px; }
+@utility btn-block { display: flex; width: 100%; justify-content: center; margin-top: auto; }
+
 @utility btn-interactive {
   position: relative;
   overflow: hidden;
@@ -251,43 +269,29 @@
 @utility surface-ink     { background: var(--color-ink); color: var(--color-paper); }
 @utility surface-mint    { background: var(--color-mint-100); }
 
-@keyframes btn-active-bounce {
-  0% {
-    transform: translateY(-1px);
-  }
-  55% {
-    transform: translateY(2px);
-  }
-  100% {
-    transform: translateY(1px);
-  }
-}
-
 /* Per-variant fill + hover-text. The wipe colour (--btn-fill) must contrast
-   with the button's own resting background. */
-.btn-mint          { --btn-fill: var(--color-ink);   --btn-hover-text: var(--color-mint-500); }
-.btn-outline       { --btn-fill: var(--color-ink);   --btn-hover-text: var(--color-paper); }
-.btn-outline-light { --btn-fill: var(--color-paper); --btn-hover-text: var(--color-ink); }
-.nav-cta           { --btn-fill: var(--color-ink);   --btn-hover-text: var(--color-mint-500); }
-.mobile-cta        { --btn-fill: var(--color-mint-500); --btn-hover-text: var(--color-ink); }
+   with the button's resting background. These are the LIGHT-surface defaults
+   (button sits on paper): they wipe to a dark fill. */
+.btn-mint          { --btn-fill: var(--color-ink);      --btn-hover-text: var(--color-paper); }
+.btn-ink           { --btn-fill: var(--color-mint-500); --btn-hover-text: var(--color-ink); }
+.btn-outline       { --btn-fill: var(--color-ink);      --btn-hover-text: var(--color-paper); }
+.btn-outline-light { --btn-fill: var(--color-paper);    --btn-hover-text: var(--color-ink); }
 
-/* On dark surfaces, a mint button wiping to ink would be invisible — wipe to
-   paper (light) with ink text instead, so it reads as "lighting up". */
-.cta-section .btn-mint,
-.surface-ink .btn-mint {
+/* One modifier for ANY button on a dark surface (dark card or dark section):
+   wiping to ink would be invisible, so wipe to paper with ink text instead.
+   Add `btn-on-dark` to the button — single source of truth for this. */
+.btn-on-dark {
   --btn-fill: var(--color-paper);
   --btn-hover-text: var(--color-ink);
 }
 
+/* No lift — the colour wipe is the whole effect now. */
 .btn-interactive:hover {
-  transform: translateY(-1px);
   color: var(--btn-hover-text);
-  box-shadow: var(--btn-hover-shadow, 0 10px 22px -14px rgba(15, 26, 20, 0.45));
 }
 
 .btn-interactive:active {
-  animation: btn-active-bounce 0.24s cubic-bezier(0.34, 1.56, 0.64, 1) both;
-  box-shadow: var(--btn-active-shadow, 0 4px 12px -12px rgba(15, 26, 20, 0.4));
+  transform: scale(0.97);
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -22,10 +22,27 @@
       "Bash(dir C:\\\\repos\\\\pixelboost-astro\\\\dist *)",
       "Bash(node *)",
       "Bash(sed -n '30,42p' src/components/Comparison.astro)",
-      "Bash(sed -n '1,15p' src/components/ClosingCTA.astro)"
+      "Bash(sed -n '1,15p' src/components/ClosingCTA.astro)",
+      "Bash(npm ls *)",
+      "Bash(npm view *)",
+      "Bash(npx @astrojs/upgrade)",
+      "WebFetch(domain:raw.githubusercontent.com)",
+      "Bash(git -C C:\\\\repos\\\\pixelboost-astro status --short)",
+      "Bash(git -C C:\\\\repos\\\\pixelboost-astro diff --stat)",
+      "WebFetch(domain:www.cloudflare.com)",
+      "Bash(awk 'NR>=2 && /^title:/{t=$0} NR>=2 && /^description:/{d=$0} /^---$/ && NR>1{exit} {print NR\": \"$0}' __TRACKED_VAR__.md)",
+      "Bash(git check-ignore *)",
+      "Bash(grep -rn \"\\\\.claude\" .gitignore)",
+      "Bash(grep -rho '.\\\\{0,80\\\\}mint-50.\\\\{0,40\\\\}' dist/_astro/Footer.BjNJtg6d.css)",
+      "Bash(pkill -f \"astro preview\")",
+      "Bash(pkill -f \"node.*preview\")",
+      "mcp__plugin_chrome-devtools-mcp_chrome-devtools__list_console_messages",
+      "PowerShell($r = try { \\(Invoke-WebRequest http://localhost:4321 -UseBasicParsing -TimeoutSec 2\\).StatusCode } catch { $_.Exception.Message }; $r)",
+      "mcp__plugin_chrome-devtools-mcp_chrome-devtools__hover"
     ]
   },
   "enabledPlugins": {
-    "chrome-devtools-mcp@claude-plugins-official": true
+    "chrome-devtools-mcp@claude-plugins-official": true,
+    "cloudflare@claude-plugins-official": true
   }
 }

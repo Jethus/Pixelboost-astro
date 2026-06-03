@@ -24,6 +24,7 @@ Three Markdown collections are defined in `src/content.config.ts`: `blog` (`src/
 - **Service icons**: `Features.astro` has a hardcoded `iconMap` mapping service slugs to inline SVG strings — add entries here when creating new services
 - **Dynamic routes**: Services have detail pages via `src/pages/services/[slug].astro`, and blog posts via `src/pages/blog/[slug].astro`, both using `getStaticPaths()`. Portfolio items are display-only (no detail pages)
 - **Blog read-time**: `blog/index.astro` computes read-time from `post.body` word count (~200 wpm) and passes it to `BlogCard` / the featured card — no `readTime` frontmatter field exists
+- **Reuse components and primitives** — before building UI, check `src/components/` (and `src/components/ui/`) for an existing pattern and reuse it. When the same element appears in two places (e.g. the FAQ accordion in `FAQ.astro` and `BlogFAQ.astro`), they must look and behave identically; if a context needs a variant, make a prop-driven sibling that reuses the same markup/styles rather than hand-rolling new markup. Don't duplicate a pattern that already exists.
 - **No emojis in UI** — always use inline SVG icons instead
 
 ### Astro 6 features in use
