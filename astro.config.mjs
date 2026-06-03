@@ -14,7 +14,7 @@ export default defineConfig({
   vite: {
     plugins: [tailwindcss()],
   },
-  security: { csp: true },
+  security: { csp: false },
   experimental: {
     rustCompiler: true,
     queuedRendering: { enabled: true },

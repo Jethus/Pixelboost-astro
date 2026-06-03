@@ -2,6 +2,10 @@ name = "pixelboost-astro"
 main = "src/worker/index.js"
 compatibility_date = "2026-06-03"
 workers_dev = true
+routes = [
+  { pattern = "pixelboost.ca/*", zone_name = "pixelboost.ca" },
+  { pattern = "www.pixelboost.ca/*", zone_name = "pixelboost.ca" },
+]
 
 # Required Worker secrets:
 # - PSI_API_KEY: Google PageSpeed Insights key for /api/audit
