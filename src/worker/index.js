@@ -1,6 +1,6 @@
 import { EmailMessage } from "cloudflare:email";
 
-import { buildPageSpeedUrl, psiScore } from "./audit-utils.js";
+import { buildPageSpeedUrl, deriveTracking, psiScore } from "./audit-utils.js";
 import {
   buildContactEmail,
   getContactRedirect,
@@ -21,22 +21,10 @@ const CSP_HEADER = [
   "script-src 'self' 'unsafe-inline' https://challenges.cloudflare.com",
   "style-src 'self' 'unsafe-inline'",
   "img-src 'self' data:",
-  "font-src 'self' https://fonts.gstatic.com",
+  "font-src 'self'",
   "connect-src 'self' https://challenges.cloudflare.com",
   "frame-src https://challenges.cloudflare.com",
 ].join("; ");
-
-const TRACKING_DOMAINS = [
-  "google-analytics.com",
-  "googletagmanager.com",
-  "hotjar.com",
-  "plausible.io",
-  "usefathom.com",
-  "heap.io",
-  "mixpanel.com",
-  "segment.io",
-  "segment.com",
-];
 
 function normalizeMobileMetric(value, good, poor) {
   if (value <= good) return 100;
@@ -54,15 +42,6 @@ function deriveMobile(audits) {
   const clsScore = normalizeMobileMetric(cls, 0.1, 0.25);
 
   return Math.round(fcpScore * 0.3 + tbtScore * 0.4 + clsScore * 0.3);
-}
-
-function deriveTracking(audits) {
-  const items = audits["third-party-summary"]?.details?.items ?? [];
-  const found = items.some((item) => {
-    const entity = (item.entity ?? "").toLowerCase();
-    return TRACKING_DOMAINS.some((domain) => entity.includes(domain));
-  });
-  return found ? 100 : 0;
 }
 
 async function handleAudit(request, env) {

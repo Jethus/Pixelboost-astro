@@ -32,6 +32,11 @@ function grade(n: number): 'good' | 'mid' | 'bad' {
   return n >= 90 ? 'good' : n >= 65 ? 'mid' : 'bad';
 }
 
+function displayScore(key: keyof Scores, value: number): string | number {
+  if (key === 'tracking') return value > 0 ? 'Yes' : 'No';
+  return value;
+}
+
 const GRADE_COLOR = {
   good: 'var(--color-mint-600)',
   mid:  'var(--color-yellow)',
@@ -229,7 +234,7 @@ export default function Audit({
                     ref={el => { scoreNumRefs.current[row.key] = el; }}
                     className="audit-score-num"
                   >
-                    {showScores ? val : '—'}
+                    {showScores ? displayScore(row.key, val) : '—'}
                   </div>
                 </div>
               );
