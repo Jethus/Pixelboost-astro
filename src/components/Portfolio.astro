@@ -30,7 +30,7 @@ const trendingUp = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" 
               <Image src={client.data.image} alt={client.data.title} class="vis-img" width={600} height={375} />
             )}
             <span class="vis-tag">{client.data.tags}</span>
-            <span class="vis-ext-icon" aria-hidden="true">↗</span>
+            <span class="vis-ext-icon" aria-hidden="true"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7"/><path d="M7 7h10v10"/></svg></span>
           </a>
         ) : (
           <div class="vis-block">
@@ -156,7 +156,7 @@ const trendingUp = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" 
   }
 
   a.vis-block:hover .vis-ext-icon { opacity: 1; }
-  a.vis-block { display: block; text-decoration: none; }
+  a.vis-block { display: flex; text-decoration: none; }
 
   .ba-table {
     display: grid; gap: 6px;
