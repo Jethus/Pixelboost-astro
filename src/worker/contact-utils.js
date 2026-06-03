@@ -79,6 +79,43 @@ export function buildContactEmail(submission) {
   };
 }
 
+export function buildReportRequestEmail(email, siteUrl, scores) {
+  const subject = `Site report request: ${siteUrl}`;
+  const scoreLines = [
+    `Speed:         ${scores.perf ?? '—'}`,
+    `Accessibility: ${scores.a11y ?? '—'}`,
+    `SEO:           ${scores.seo ?? '—'}`,
+    `Mobile:        ${scores.mobile ?? '—'}`,
+    `Tracking:      ${scores.tracking > 0 ? 'Yes' : 'No'}`,
+  ].join('\r\n');
+
+  const body = [
+    'Someone requested a full report after running the site scan.',
+    '',
+    `Their email: ${email}`,
+    `Scanned URL: ${siteUrl}`,
+    '',
+    'Scores:',
+    scoreLines,
+    '',
+    'Reply directly to follow up.',
+  ].join('\r\n');
+
+  const raw = [
+    `From: ${FROM_EMAIL}`,
+    `To: ${CONTACT_EMAIL}`,
+    `Reply-To: ${stripHeaderValue(email)}`,
+    `Subject: ${subject}`,
+    'MIME-Version: 1.0',
+    'Content-Type: text/plain; charset=UTF-8',
+    'Content-Transfer-Encoding: 8bit',
+    '',
+    body,
+  ].join('\r\n');
+
+  return { from: FROM_EMAIL, to: CONTACT_EMAIL, raw };
+}
+
 export function getContactRedirect(requestUrl, state) {
   const url = new URL("/contact", requestUrl);
   url.searchParams.set(state, "1");

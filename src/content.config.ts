@@ -37,6 +37,7 @@ const portfolio = defineCollection({
   schema: ({ image }) =>
     z.object({
       title: z.string(),
+      order: z.number(),
       tags: z.string(),
       image: image(),
       imageMobile: image().optional(),

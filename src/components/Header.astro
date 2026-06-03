@@ -7,13 +7,13 @@ const isActive = (href: string) => pathname === href || (href !== '/' && pathnam
 <header id="site-header">
   <nav id="site-nav" aria-label="Main navigation">
     <a href="/" class="nav-logo">
-      <img src={logoBlack.src} alt="Pixelboost" width="1048" height="226" />
+      <img src={logoBlack.src} alt="Pixelboost" width="1048" height="226" loading="eager" />
     </a>
 
     <div id="nav-links" class="nav-links">
       <a href="/about"   class:list={["nav-link", isActive('/about') && "nav-active"]}>About</a>
       <a href="/blog"    class:list={["nav-link", isActive('/blog') && "nav-active"]}>Blog</a>
-      <a href="/contact" class="btn-mint btn-sm btn-interactive nav-cta">
+      <a href="/contact" class="btn-mint btn-sm btn-interactive nav-cta plausible-event-name=Get+In+Touch+Clicked plausible-event-location=header">
         Get in touch
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
       </a>
@@ -30,7 +30,7 @@ const isActive = (href: string) => pathname === href || (href !== '/' && pathnam
     <div class="mobile-nav__links">
       <a href="/about"   class:list={["mobile-link", isActive('/about') && "mobile-link--active"]}>About</a>
       <a href="/blog"    class:list={["mobile-link", isActive('/blog') && "mobile-link--active"]}>Blog</a>
-      <a href="/contact" class="btn-mint btn-block btn-interactive mobile-cta">Get in touch</a>
+      <a href="/contact" class="btn-mint btn-block btn-interactive mobile-cta plausible-event-name=Get+In+Touch+Clicked plausible-event-location=header-mobile">Get in touch</a>
     </div>
   </div>
 </header>
@@ -44,11 +44,6 @@ const isActive = (href: string) => pathname === href || (href !== '/' && pathnam
     padding: 10px 14px 10px 22px;
     box-shadow: var(--shadow-nav);
     max-width: 1200px; margin: 0 auto;
-    transition: box-shadow 0.25s ease, padding 0.25s ease;
-  }
-  #site-nav.scrolled {
-    box-shadow: 0 4px 28px -4px rgba(15,26,20,0.28), 0 1px 0 rgba(15,26,20,0.08);
-    padding-top: 8px; padding-bottom: 8px;
   }
 
   .nav-logo { display: flex; align-items: center; }
@@ -93,13 +88,6 @@ const isActive = (href: string) => pathname === href || (href !== '/' && pathnam
 </style>
 
 <script>
-  // Scroll-aware nav elevation + class-driven mobile menu (CSP-safe: no inline
-  // styles, no is:inline — Astro bundles & hashes this module script).
-  const nav = document.getElementById('site-nav');
-  const onScroll = () => nav?.classList.toggle('scrolled', window.scrollY > 60);
-  window.addEventListener('scroll', onScroll, { passive: true });
-  onScroll();
-
   const toggle = document.getElementById('nav-toggle');
   const mobileMenu = document.getElementById('mobile-nav');
 

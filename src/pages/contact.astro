@@ -6,6 +6,7 @@ import Eyebrow from "../components/ui/Eyebrow.astro";
 
 const sent = Astro.url.searchParams.has("sent");
 const error = Astro.url.searchParams.has("error");
+const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY ?? "";
 ---
 
 <BaseLayout
@@ -54,7 +55,7 @@ const error = Astro.url.searchParams.has("error");
             </span>
             <div>
               <p class="contact-label">Based in</p>
-              <p class="contact-value contact-value-muted">Whitby, Ontario — serving the GTA and Durham Region</p>
+              <p class="contact-value contact-value-muted">Toronto, Ontario — serving the GTA and Durham Region</p>
             </div>
           </div>
         </div>
@@ -93,10 +94,10 @@ const error = Astro.url.searchParams.has("error");
           </div>
 
           <div class="turnstile-wrap">
-            <div class="cf-turnstile" data-turnstile-sitekey data-sitekey=""></div>
+            <div class="cf-turnstile" data-turnstile-sitekey data-sitekey={turnstileSiteKey}></div>
           </div>
 
-          <button type="submit" class="submit-btn btn-interactive">Send message <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></button>
+          <button type="submit" class="submit-btn btn-mint btn-interactive">Send message <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></button>
         </form>
 
       </div>
@@ -106,6 +107,17 @@ const error = Astro.url.searchParams.has("error");
 
   <Footer />
   <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+  <script is:inline>
+    var site = sessionStorage.getItem('pb_audit_url');
+    var email = sessionStorage.getItem('pb_audit_email');
+    if (site) { var w = document.getElementById('website'); if (w) w.value = site; }
+    if (email) { var em = document.getElementById('email'); if (em) em.value = email; }
+  </script>
+  {sent && (
+    <script is:inline>
+      (window.plausible || function(){}).call(window, "Contact Form Submitted");
+    </script>
+  )}
 </BaseLayout>
 
 <style>
@@ -230,17 +242,7 @@ const error = Astro.url.searchParams.has("error");
 
   .submit-btn {
     align-self: flex-start;
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    background: var(--color-mint-500);
-    color: var(--color-ink);
-    border: 0;
-    border-radius: 9999px;
-    padding: 14px 24px;
     font-family: inherit;
-    font-size: 15px;
-    font-weight: 600;
     cursor: pointer;
   }
 

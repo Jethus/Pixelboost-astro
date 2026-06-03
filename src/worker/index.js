@@ -3,6 +3,7 @@ import { EmailMessage } from "cloudflare:email";
 import { buildPageSpeedUrl, deriveTracking, psiScore } from "./audit-utils.js";
 import {
   buildContactEmail,
+  buildReportRequestEmail,
   getContactRedirect,
   validateTurnstileToken,
   validateContactSubmission,
@@ -89,6 +90,35 @@ async function handleAudit(request, env) {
   );
 }
 
+async function handleReportRequest(request, env) {
+  let body;
+  try {
+    body = await request.json();
+  } catch {
+    return Response.json({ error: "Invalid JSON" }, { status: 400, headers: JSON_HEADERS });
+  }
+
+  const { email, siteUrl, scores } = body;
+  if (!email || !siteUrl || !scores) {
+    return Response.json({ error: "Missing fields" }, { status: 400, headers: JSON_HEADERS });
+  }
+
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    return Response.json({ error: "Invalid email" }, { status: 400, headers: JSON_HEADERS });
+  }
+
+  const emailData = buildReportRequestEmail(email, siteUrl, scores);
+  const message = new EmailMessage(emailData.from, emailData.to, emailData.raw);
+
+  try {
+    await env.CONTACT_EMAIL.send(message);
+  } catch {
+    return Response.json({ error: "Failed to send" }, { status: 500, headers: JSON_HEADERS });
+  }
+
+  return Response.json({ ok: true }, { headers: JSON_HEADERS });
+}
+
 async function handleContact(request, env) {
   let formData;
   try {
@@ -134,6 +164,10 @@ export default {
 
     if (request.method === "POST" && url.pathname === "/contact") {
       return handleContact(request, env);
+    }
+
+    if (request.method === "POST" && url.pathname === "/api/report-request") {
+      return handleReportRequest(request, env);
     }
 
     const response = await env.ASSETS.fetch(request);

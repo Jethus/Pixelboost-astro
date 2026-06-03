@@ -6,22 +6,22 @@ const rows: AuditRow[] = [
   {
     key: "perf",
     label: "Speed",
-    sub: "How fast pages load on a phone",
-  },
-  {
-    key: "a11y",
-    label: "Accessibility",
-    sub: "Can everyone actually use your site?",
-  },
-  {
-    key: "seo",
-    label: "SEO basics",
-    sub: "Can Google find and read it?",
+    sub: "How fast pages load",
   },
   {
     key: "mobile",
     label: "Mobile experience",
     sub: "Tap targets, layout, readability",
+  },
+  {
+    key: "seo",
+    label: "SEO basics",
+    sub: "Can search engines find and read it?",
+  },
+  {
+    key: "a11y",
+    label: "Accessibility",
+    sub: "Can everyone actually use your site?",
   },
   {
     key: "tracking",
@@ -35,7 +35,7 @@ const rows: AuditRow[] = [
   client:visible
   eyebrow="Free, no email required"
   headline="Run a free scan of your site."
-  body="I'll check mobile speed, accessibility, SEO basics, and whether you're tracking leads. You'll get a plain-English scorecard showing what's working, what's broken, and what I'd fix first."
+  body="Enter your URL and get a scorecard in seconds. It will show you what's working, what's broken, and what to fix first."
   footnote="Real speed, accessibility, and usability checks. The score is one benchmark; the customer experience still matters."
   verdictIdle="Enter your URL above to run a real scan."
   verdictDone="Want the full breakdown sent to your inbox?"
@@ -235,6 +235,17 @@ const rows: AuditRow[] = [
 
   .audit-error-msg {
     color: var(--color-red);
+  }
+
+  @keyframes audit-sweep {
+    0%   { transform: translateX(-300%); opacity: 0; }
+    10%  { opacity: 1; }
+    90%  { opacity: 1; }
+    100% { transform: translateX(400%); opacity: 0; }
+  }
+
+  @keyframes audit-spin {
+    to { transform: rotate(360deg); }
   }
 
   .audit-email-section {

@@ -40,6 +40,20 @@ const pageTitle = title === SITE_TITLE ? title : `${title} | ${SITE_TITLE}`;
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={image ? new URL(image.src, Astro.url) : new URL("/og-image.png", Astro.url)} />
 
+    <!-- Plausible -->
+    <script
+      defer
+      data-domain="pixelboost.ca"
+      src="https://data.pixelboost.dev/js/script.hash.outbound-links.pageview-props.tagged-events.scroll.js"
+    ></script>
+    <script>
+      window.plausible =
+        window.plausible ||
+        function () {
+          (window.plausible.q = window.plausible.q || []).push(arguments);
+        };
+    </script>
+
     <script type="application/ld+json" set:html={JSON.stringify({
       "@context": "https://schema.org",
       "@type": "LocalBusiness",
@@ -50,14 +64,14 @@ const pageTitle = title === SITE_TITLE ? title : `${title} | ${SITE_TITLE}`;
       "email": "hello@pixelboost.ca",
       "address": {
         "@type": "PostalAddress",
-        "addressLocality": "Whitby",
+        "addressLocality": "Toronto",
         "addressRegion": "ON",
         "addressCountry": "CA"
       },
       "areaServed": [
         { "@type": "City", "name": "Toronto" },
         { "@type": "City", "name": "Oshawa" },
-        { "@type": "City", "name": "Whitby" },
+        { "@type": "City", "name": "Toronto" },
         { "@type": "City", "name": "Ajax" },
         { "@type": "City", "name": "Pickering" },
         { "@type": "AdministrativeArea", "name": "Durham Region" },

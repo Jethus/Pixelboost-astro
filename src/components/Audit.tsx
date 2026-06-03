@@ -32,6 +32,36 @@ function grade(n: number): 'good' | 'mid' | 'bad' {
   return n >= 90 ? 'good' : n >= 65 ? 'mid' : 'bad';
 }
 
+function verdictFromScores(scores: Scores): { text: string; cta: string } {
+  const vals = [scores.perf, scores.a11y, scores.seo, scores.mobile];
+  const bad = vals.filter(v => v < 65).length;
+  const good = vals.filter(v => v >= 90).length;
+  const hasTracking = scores.tracking >= 100;
+
+  if (good === 4 && hasTracking) {
+    return {
+      text: "Your site looks great.",
+      cta: "If you ever want a second set of eyes or want to discuss anything, feel free to reach out.",
+    };
+  }
+  if (good === 4 && !hasTracking) {
+    return {
+      text: "Strong scores — but no analytics detected.",
+      cta: "You're flying blind on where your customers come from. I can fix that.",
+    };
+  }
+  if (bad >= 3) {
+    return {
+      text: "A few things here worth addressing.",
+      cta: "These scores are costing you customers. I can walk you through what I'd fix first.",
+    };
+  }
+  return {
+    text: "Some room to improve.",
+    cta: "5 fixes could save ~1 in 2 visitors.",
+  };
+}
+
 function displayScore(key: keyof Scores, value: number): string | number {
   if (key === 'tracking') return value > 0 ? 'Yes' : 'No';
   return value;
@@ -62,6 +92,7 @@ export default function Audit({
 }: AuditContent) {
   const [url, setUrl] = useState('');
   const [state, setState] = useState<AuditState>('idle');
+  const [reportState, setReportState] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle');
   const [scores, setScores] = useState<Scores>({ perf: 0, a11y: 0, seo: 0, mobile: 0, tracking: 0 });
   // Scores actually shown — count up from 0 to `scores` for a "results landing" feel.
   const [displayScores, setDisplayScores] = useState<Scores>({ perf: 0, a11y: 0, seo: 0, mobile: 0, tracking: 0 });
@@ -132,8 +163,10 @@ export default function Audit({
     if (!url.trim() || state === 'scanning') return;
     const normalized = url.startsWith('http') ? url : `https://${url}`;
     setScannedUrl(normalized);
+    sessionStorage.setItem('pb_audit_url', normalized);
     setScores({ perf: 0, a11y: 0, seo: 0, mobile: 0, tracking: 0 });
     setDisplayScores({ perf: 0, a11y: 0, seo: 0, mobile: 0, tracking: 0 });
+    setReportState('idle');
     setState('scanning');
     try {
       const res = await fetch(`/api/audit?url=${encodeURIComponent(normalized)}`);
@@ -147,6 +180,7 @@ export default function Audit({
   };
 
   const showScores = state === 'done';
+  const verdict = state === 'done' ? verdictFromScores(scores) : null;
   const displayUrl = state === 'idle' ? 'yourbusiness.ca' : (scannedUrl || url || 'yourbusiness.ca');
   const headerDate = (() => {
     const now = new Date();
@@ -216,7 +250,7 @@ export default function Audit({
 
           {/* Metric rows */}
           <div className="audit-rows-wrap">
-            {rows.map(row => {
+            {rows.map((row, i) => {
               const val = displayScores[row.key];
               return (
                 <div key={row.key} className="audit-row">
@@ -225,16 +259,35 @@ export default function Audit({
                     <span className="audit-row-sub">{row.sub}</span>
                   </div>
                   <div className="audit-bar-track">
-                    <span
-                      ref={el => { barFillRefs.current[row.key] = el; }}
-                      className="audit-bar-fill"
-                    />
+                    {state === 'scanning'
+                      ? <span style={{
+                          display: 'block',
+                          height: '100%',
+                          width: '50%',
+                          background: 'linear-gradient(90deg, transparent, var(--color-mint-500), transparent)',
+                          borderRadius: '4px',
+                          animation: `audit-sweep 1.4s ease-in-out ${i * 0.22}s infinite`,
+                          animationFillMode: 'both',
+                        }} />
+                      : <span ref={el => { barFillRefs.current[row.key] = el; }} className="audit-bar-fill" />
+                    }
                   </div>
                   <div
                     ref={el => { scoreNumRefs.current[row.key] = el; }}
                     className="audit-score-num"
                   >
-                    {showScores ? displayScore(row.key, val) : '—'}
+                    {state === 'scanning'
+                      ? <span aria-hidden="true" style={{
+                          display: 'inline-block',
+                          width: '18px',
+                          height: '18px',
+                          border: '2.5px solid #d4cfc6',
+                          borderTopColor: 'var(--color-mint-600)',
+                          borderRadius: '50%',
+                          animation: 'audit-spin 0.7s linear infinite',
+                          verticalAlign: 'middle',
+                        }} />
+                      : showScores ? displayScore(row.key, val) : '—'}
                   </div>
                 </div>
               );
@@ -244,8 +297,8 @@ export default function Audit({
           {/* Card footer / verdict */}
           <div className="audit-verdict">
             <p className="audit-verdict-text">
-              {state === 'done'
-                ? <>{verdictDone} <strong className="audit-verdict-strong">5 fixes could save ~1 in 2 visitors.</strong></>
+              {state === 'done' && verdict
+                ? <>{verdict.text} <strong className="audit-verdict-strong">{verdict.cta}</strong></>
                 : state === 'scanning'
                   ? 'Scanning your site…'
                   : state === 'error'
@@ -261,20 +314,44 @@ export default function Audit({
               <p className="audit-email-copy">
                 {emailCopy}
               </p>
-              <form className="audit-email-form" onSubmit={e => e.preventDefault()}>
-                <input
-                  type="email"
-                  placeholder="you@yourbusiness.ca"
-                  aria-label="Your email address"
-                  className="audit-email-input"
-                />
-                <button
-                  type="submit"
-                  className="btn-interactive audit-email-btn"
-                >
-                  Send my report
-                  <svg className="audit-btn-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.25" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
-                </button>
+              <form className="audit-email-form" onSubmit={async e => {
+                e.preventDefault();
+                const input = (e.currentTarget as HTMLFormElement).querySelector('input[type="email"]') as HTMLInputElement;
+                const emailVal = input?.value?.trim();
+                if (!emailVal || reportState === 'sending') return;
+                sessionStorage.setItem('pb_audit_email', emailVal);
+                setReportState('sending');
+                try {
+                  const res = await fetch('/api/report-request', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email: emailVal, siteUrl: scannedUrl, scores }),
+                  });
+                  setReportState(res.ok ? 'sent' : 'error');
+                } catch {
+                  setReportState('error');
+                }
+              }}>
+                {reportState === 'sent' ? (
+                  <p className="audit-email-copy" style={{ margin: 0, fontWeight: 600 }}>Got it — I'll send your breakdown shortly.</p>
+                ) : (
+                  <>
+                    <input
+                      type="email"
+                      placeholder="you@yourbusiness.ca"
+                      aria-label="Your email address"
+                      className="audit-email-input"
+                    />
+                    <button
+                      type="submit"
+                      disabled={reportState === 'sending'}
+                      className="btn-interactive audit-email-btn"
+                    >
+                      {reportState === 'sending' ? 'Sending…' : reportState === 'error' ? 'Try again' : 'Send my report'}
+                      <svg className="audit-btn-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.25" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                    </button>
+                  </>
+                )}
               </form>
               <a
                 href="/contact"

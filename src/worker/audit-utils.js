@@ -54,17 +54,6 @@ const CONVERSION_PIXEL_MATCHERS = [
   "reddit pixel",
 ];
 
-const FORM_OR_CTA_MATCHERS = [
-  "form",
-  "button",
-  "contact",
-  "book",
-  "quote",
-  "call",
-  "cta",
-  "submit",
-  "lead",
-];
 
 export function buildPageSpeedUrl(targetUrl, apiKey) {
   const url = new URL("https://www.googleapis.com/pagespeedonline/v5/runPagespeed");
@@ -85,30 +74,19 @@ export function psiScore(categories, key) {
 
 export function getTrackingSignals(audits) {
   const thirdPartyText = collectAuditItemText(audits["third-party-summary"]);
-  const domText = collectAuditItemText(audits["dom-size"]);
-
-  const analyticsInstalled = includesAny(thirdPartyText, ANALYTICS_MATCHERS);
-  const tagManagerInstalled = includesAny(thirdPartyText, TAG_MANAGER_MATCHERS);
-  const conversionPixelInstalled = includesAny(thirdPartyText, CONVERSION_PIXEL_MATCHERS);
-  const clickableLeadLinksPresent =
-    domText.includes("tel:") ||
-    domText.includes("mailto:") ||
-    domText.includes("phone") ||
-    domText.includes("email");
-  const formOrCtaPresent = includesAny(domText, FORM_OR_CTA_MATCHERS);
 
   return {
-    analyticsInstalled,
-    tagManagerInstalled,
-    conversionPixelInstalled,
-    clickableLeadLinksPresent,
-    formOrCtaPresent,
+    analyticsInstalled: includesAny(thirdPartyText, ANALYTICS_MATCHERS),
+    tagManagerInstalled: includesAny(thirdPartyText, TAG_MANAGER_MATCHERS),
+    conversionPixelInstalled: includesAny(thirdPartyText, CONVERSION_PIXEL_MATCHERS),
   };
 }
 
 export function deriveTracking(audits) {
   const signals = getTrackingSignals(audits);
-  return Object.values(signals).some(Boolean) ? 100 : 0;
+  if (signals.analyticsInstalled) return 100;
+  if (signals.tagManagerInstalled || signals.conversionPixelInstalled) return 50;
+  return 0;
 }
 
 function collectAuditItemText(audit) {
