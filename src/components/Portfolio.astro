@@ -20,13 +20,29 @@ const trendingUp = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" 
       <div class="work-card" data-reveal>
         {client.data.url ? (
           <a href={client.data.url} target="_blank" rel="noopener noreferrer" class="vis-block" aria-label={`Visit ${client.data.title}`}>
-            <Image src={client.data.image} alt={client.data.title} class="vis-img" width={600} height={375} />
+            {client.data.imageMobile ? (
+              <>
+                <Image src={client.data.image} alt={`${client.data.title} desktop`} class="vis-img vis-img-desktop" width={468} height={375} />
+                <span class="vis-divider" aria-hidden="true" />
+                <Image src={client.data.imageMobile} alt={`${client.data.title} mobile`} class="vis-img vis-img-mobile" width={132} height={375} />
+              </>
+            ) : (
+              <Image src={client.data.image} alt={client.data.title} class="vis-img" width={600} height={375} />
+            )}
             <span class="vis-tag">{client.data.tags}</span>
             <span class="vis-ext-icon" aria-hidden="true">↗</span>
           </a>
         ) : (
           <div class="vis-block">
-            <Image src={client.data.image} alt={client.data.title} class="vis-img" width={600} height={375} />
+            {client.data.imageMobile ? (
+              <>
+                <Image src={client.data.image} alt={`${client.data.title} desktop`} class="vis-img vis-img-desktop" width={468} height={375} />
+                <span class="vis-divider" aria-hidden="true" />
+                <Image src={client.data.imageMobile} alt={`${client.data.title} mobile`} class="vis-img vis-img-mobile" width={132} height={375} />
+              </>
+            ) : (
+              <Image src={client.data.image} alt={client.data.title} class="vis-img" width={600} height={375} />
+            )}
             <span class="vis-tag">{client.data.tags}</span>
           </div>
         )}
@@ -87,13 +103,34 @@ const trendingUp = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" 
   .vis-block {
     aspect-ratio: 16/10; border-radius: 12px; background: var(--color-ink);
     position: relative; overflow: hidden;
+    display: flex;
   }
 
+  /* Single-image fallback */
   .vis-img {
     position: absolute; inset: 0;
     width: 100%; height: 100%;
-    object-fit: cover; object-position: center;
+    object-fit: cover; object-position: top center;
     display: block;
+  }
+
+  /* Split layout — desktop+mobile side by side */
+  .vis-img-desktop {
+    position: relative; inset: auto;
+    flex: 1; width: auto; height: 100%;
+    object-fit: cover; object-position: top center;
+  }
+
+  .vis-divider {
+    width: 1px; flex-shrink: 0;
+    background: var(--color-line);
+    align-self: stretch;
+  }
+
+  .vis-img-mobile {
+    position: relative; inset: auto;
+    width: 22%; flex-shrink: 0; height: 100%;
+    object-fit: cover; object-position: top center;
   }
 
   .vis-block::after {
