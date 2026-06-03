@@ -4,10 +4,9 @@ dist/
 .astro/
 .vscode/
 
-.claude/*
-# but track checked-in project skills
-!.claude/skills/
+.claude/
 .agents/
+.review/
 
 docs/
 
