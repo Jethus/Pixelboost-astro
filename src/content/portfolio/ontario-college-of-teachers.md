@@ -1,20 +1,18 @@
 ---
 title: Ontario College of Teachers FAQ
-tags: Regulatory / Education
-image: ../../assets/webp/oct.webp
+tags: Regulatory / UX
+image: ../../assets/portfolio/oct-faq-desktop.webp
+imageMobile: ../../assets/portfolio/oct-faq-mobile.webp
 url: https://www.oct.ca
 location: Toronto, ON
-summary: Provincial regulatory body. Rebuilt the FAQ experience to reduce support call volume.
+summary: Led the redesign of OCT's public FAQ — structured content to reduce call volume and improve findability for teachers navigating certification.
 outcome: "Reduced support calls by clarifying the application process"
 stats:
   - label: Lighthouse
     before: "62"
-    after: "100"
-  - label: Accessibility
+    after: "98"
+  - label: Core Web Vitals
     before: "Fail"
-    after: "WCAG AA"
-  - label: Tracking
-    before: "GA3"
-    after: "Plausible"
-kpi: "Support call volume down 35% post-launch"
+    after: "Passed"
+kpi: "Support ticket volume down over 50% post-launch"
 ---

@@ -1,10 +1,11 @@
 ---
 title: Lunar Rhythm Gardens
 tags: Agriculture / Local Markets
-image: ../../assets/jpg/lunar-farm.jpg
+image: ../../assets/portfolio/lunar-desktop.webp
+imageMobile: ../../assets/portfolio/lunar-mobile.webp
 url: https://lunarrhythmgardens.ca
 location: Prince Edward Island
-summary: Family farm selling at local markets. Built an online order flow that actually converts.
+summary: Family farm CSA. Refreshed from a basic wordpress template.
 outcome: "Increased local online orders by 40% in the first season"
 stats:
   - label: Lighthouse
@@ -13,8 +14,5 @@ stats:
   - label: Load time
     before: "4.4s"
     after: "1.0s"
-  - label: Online orders/wk
-    before: "6"
-    after: "22"
-kpi: "Online orders up 40% in the first season"
+kpi: "Online orders up in the first season"
 ---
