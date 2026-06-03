@@ -38,7 +38,13 @@
       "Bash(pkill -f \"node.*preview\")",
       "mcp__plugin_chrome-devtools-mcp_chrome-devtools__list_console_messages",
       "PowerShell($r = try { \\(Invoke-WebRequest http://localhost:4321 -UseBasicParsing -TimeoutSec 2\\).StatusCode } catch { $_.Exception.Message }; $r)",
-      "mcp__plugin_chrome-devtools-mcp_chrome-devtools__hover"
+      "mcp__plugin_chrome-devtools-mcp_chrome-devtools__hover",
+      "mcp__ide__getDiagnostics",
+      "WebFetch(domain:codestitch.app)",
+      "WebFetch(domain:oakharborwebdesigns.com)",
+      "mcp__plugin_chrome-devtools-mcp_chrome-devtools__list_pages",
+      "Bash(git -C \"C:\\\\repos\\\\pixelboost-astro\" add src/components/Portfolio.astro)",
+      "Bash(git -C \"C:\\\\repos\\\\pixelboost-astro\" commit -m \"feat: split desktop+mobile screenshot layout for portfolio cards\")"
     ]
   },
   "enabledPlugins": {

@@ -1,9 +1,10 @@
 ---
 title: Crescendo Stage
+order: 3
 tags: Finance / Automation
 image: ../../assets/portfolio/cs-desktop.webp
 imageMobile: ../../assets/portfolio/cs-mobile.webp
-url: https://crescendostage.com
+url: https://crescendostage.com/
 location: Ottawa, ON
 summary: Finance automations. Redesigned for a fresh look in time for a trade show, and so it'd work with any device.
 outcome: "Automated workflows, reducing manual processing time by 60%"

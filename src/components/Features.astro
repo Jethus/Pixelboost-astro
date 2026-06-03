@@ -2,24 +2,24 @@
 import SectionHeader from "./ui/SectionHeader.astro";
 const pillars = [
   {
-    title: "Opens fast on a phone.",
-    pitch: "Your site should load in about a second, even on slow data, so people don't give up and leave.",
-    proof: "I aim for 95+ on Google's speed score and show you the result before launch.",
+    title: "Customers reach your contact page.",
+    pitch: "A slow page loses people in the first second before they've read a single word about you. A fast site means they stay long enough to read your offer.",
+    validation: "I performance test and aim for 95+ on Google's speed score. I show you the results.",
   },
   {
-    title: "Easy for every customer to use.",
-    pitch: "Clear text, buttons that are easy to tap, and a layout that doesn't break — on any phone or screen.",
-    proof: "Built to Ontario's AODA accessibility standard and checked by hand, not just automated tools.",
+    title: "You know which calls are coming from your site.",
+    pitch: "Right now you might be guessing whether your site is bringing in work. Simple tracking tells you which pages and searches are actually sending people your way.",
+    validation: "Private analytics — no data selling, no confusing dashboard. Just the numbers that matter to your business.",
   },
   {
-    title: "See what's actually bringing in customers.",
-    pitch: "Know which pages, Google searches, and ads are sending you calls and enquiries — so you stop guessing.",
-    proof: "Simple, private analytics. No data selling, no confusing dashboard.",
+    title: "Your site stays current without you chasing anyone.",
+    pitch: "Hours change. Services change. You shouldn't need a back-and-forth every time. Just send the update and it's handled.",
+    validation: "Small updates are included in the monthly plan. Done within the week.",
   },
   {
-    title: "I'm still your developer after launch.",
-    pitch: "Need hours changed, a service added, or a photo swapped? Just send it.",
-    proof: "Small updates are included in the monthly plan. Most are done within the week.",
+    title: "Every customer can use your site, no matter what device they're on.",
+    pitch: "If your layout breaks, text is too small to read, or buttons are hard to tap then people leave without telling you why. A properly built site just works.",
+    validation: "Built to Ontario's accessibility standard. Checked with automated tools, verified by hand.",
   },
 ];
 
@@ -27,8 +27,8 @@ const pillars = [
 
 <section class="section-card surface-paper">
   <div data-reveal>
-    <SectionHeader eyebrow="What you actually get" subhead="Better design, faster pages, clearer analytics, and someone to call when the site needs changing.">
-      What I fix when I rebuild your site.
+    <SectionHeader eyebrow="What you get" subhead="Better design, faster pages, clear analytics, and someone you can rely on and call when the site needs updating.">
+      What's different after we launch.
     </SectionHeader>
   </div>
 
@@ -39,9 +39,9 @@ const pillars = [
         <div class="fix-body">
           <h3 class="fix-title">{p.title}</h3>
           <p class="fix-pitch">{p.pitch}</p>
-          <p class="fix-proof">
-            <span class="fix-proof-tag">Proof</span>
-            <span class="fix-proof-text">{p.proof}</span>
+          <p class="fix-validation">
+            <span class="fix-validation-tag">Validation</span>
+            <span class="fix-validation-text">{p.validation}</span>
           </p>
         </div>
       </li>
@@ -94,7 +94,7 @@ const pillars = [
     max-width: 60ch;
   }
 
-  .fix-proof {
+  .fix-validation {
     margin: 4px 0 0 0;
     display: flex;
     align-items: baseline;
@@ -102,7 +102,7 @@ const pillars = [
     flex-wrap: wrap;
   }
 
-  .fix-proof-tag {
+  .fix-validation-tag {
     flex-shrink: 0;
     font-size: 10.5px;
     font-weight: 700;
@@ -116,7 +116,7 @@ const pillars = [
     line-height: 1.4;
   }
 
-  .fix-proof-text {
+  .fix-validation-text {
     font-size: 13px;
     color: var(--color-ink-500);
     line-height: 1.5;

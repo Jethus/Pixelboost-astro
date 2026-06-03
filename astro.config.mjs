@@ -8,13 +8,9 @@ import tailwindcss from "@tailwindcss/vite";
 export default defineConfig({
   site: "https://pixelboost.ca",
   integrations: [mdx(), sitemap(), react()],
-  // Prism, not Shiki: Shiki emits inline styles per token, which violate
-  // our strict CSP (security.csp). Prism uses classes — CSP-safe.
-  markdown: { syntaxHighlight: "prism" },
   vite: {
     plugins: [tailwindcss()],
   },
-  security: { csp: false },
   experimental: {
     rustCompiler: true,
     queuedRendering: { enabled: true },

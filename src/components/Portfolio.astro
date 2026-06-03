@@ -3,7 +3,9 @@ import { getCollection } from "astro:content";
 import { Image } from "astro:assets";
 import SectionHeader from "./ui/SectionHeader.astro";
 
-const clientsDocs = await getCollection("portfolio");
+const clientsDocs = (await getCollection("portfolio")).sort(
+  (a, b) => a.data.order - b.data.order,
+);
 
 const trendingUp = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>`;
 ---
@@ -20,28 +22,22 @@ const trendingUp = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" 
       <div class="work-card" data-reveal>
         {client.data.url ? (
           <a href={client.data.url} target="_blank" rel="noopener noreferrer" class="vis-block" aria-label={`Visit ${client.data.title}`}>
-            {client.data.imageMobile ? (
-              <>
-                <Image src={client.data.image} alt={`${client.data.title} desktop`} class="vis-img vis-img-desktop" width={468} height={375} />
-                <span class="vis-divider" aria-hidden="true" />
-                <Image src={client.data.imageMobile} alt={`${client.data.title} mobile`} class="vis-img vis-img-mobile" width={132} height={375} />
-              </>
-            ) : (
-              <Image src={client.data.image} alt={client.data.title} class="vis-img" width={600} height={375} />
+            <Image src={client.data.image} alt={client.data.imageMobile ? `${client.data.title} desktop` : client.data.title} class="vis-img" width={600} height={338} />
+            {client.data.imageMobile && (
+              <span class="vis-phone">
+                <Image src={client.data.imageMobile} alt={`${client.data.title} mobile`} class="vis-phone-img" width={240} height={522} />
+              </span>
             )}
             <span class="vis-tag">{client.data.tags}</span>
             <span class="vis-ext-icon" aria-hidden="true"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7"/><path d="M7 7h10v10"/></svg></span>
           </a>
         ) : (
           <div class="vis-block">
-            {client.data.imageMobile ? (
-              <>
-                <Image src={client.data.image} alt={`${client.data.title} desktop`} class="vis-img vis-img-desktop" width={468} height={375} />
-                <span class="vis-divider" aria-hidden="true" />
-                <Image src={client.data.imageMobile} alt={`${client.data.title} mobile`} class="vis-img vis-img-mobile" width={132} height={375} />
-              </>
-            ) : (
-              <Image src={client.data.image} alt={client.data.title} class="vis-img" width={600} height={375} />
+            <Image src={client.data.image} alt={client.data.imageMobile ? `${client.data.title} desktop` : client.data.title} class="vis-img" width={600} height={338} />
+            {client.data.imageMobile && (
+              <span class="vis-phone">
+                <Image src={client.data.imageMobile} alt={`${client.data.title} mobile`} class="vis-phone-img" width={240} height={522} />
+              </span>
             )}
             <span class="vis-tag">{client.data.tags}</span>
           </div>
@@ -101,36 +97,42 @@ const trendingUp = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" 
   }
 
   .vis-block {
-    aspect-ratio: 16/10; border-radius: 12px; background: var(--color-ink);
+    border-radius: 12px; background: var(--color-paper);
     position: relative; overflow: hidden;
-    display: flex;
+    aspect-ratio: 16/9;
+    display: block;
   }
 
-  /* Single-image fallback */
+  /* Desktop screenshot is 16:9 — box matches, so it shows end-to-end, no crop */
   .vis-img {
     position: absolute; inset: 0;
     width: 100%; height: 100%;
     object-fit: cover; object-position: top center;
     display: block;
+    border-radius: 12px;
   }
 
-  /* Split layout — desktop+mobile side by side */
-  .vis-img-desktop {
-    position: relative; inset: auto;
-    flex: 1; width: auto; height: 100%;
+  /* Phone overlay — mobile screenshot floating bottom-right */
+  .vis-phone {
+    position: absolute;
+    right: 14px;
+    bottom: -8px;
+    width: 26%;
+    aspect-ratio: 9/16;
+    z-index: 3;
+    border-radius: 14px;
+    overflow: hidden;
+    background: var(--color-paper);
+    border: 3px solid var(--color-paper);
+    box-shadow: 0 10px 28px rgba(15,26,20,0.28),
+                0 2px 6px rgba(15,26,20,0.18);
+  }
+
+  .vis-phone-img {
+    display: block;
+    width: 100%; height: 100%;
     object-fit: cover; object-position: top center;
-  }
-
-  .vis-divider {
-    width: 1px; flex-shrink: 0;
-    background: var(--color-line);
-    align-self: stretch;
-  }
-
-  .vis-img-mobile {
-    position: relative; inset: auto;
-    width: 22%; flex-shrink: 0; height: 100%;
-    object-fit: cover; object-position: top center;
+    border-radius: 11px;
   }
 
   .vis-block::after {
@@ -156,7 +158,7 @@ const trendingUp = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" 
   }
 
   a.vis-block:hover .vis-ext-icon { opacity: 1; }
-  a.vis-block { display: flex; text-decoration: none; }
+  a.vis-block { text-decoration: none; }
 
   .ba-table {
     display: grid; gap: 6px;
