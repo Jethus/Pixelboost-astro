@@ -5,6 +5,8 @@
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
+    "deploy": "npm run build && wrangler deploy",
+    "preview:worker": "npm run build && wrangler dev",
     "preview": "astro preview",
     "astro": "astro"
   },

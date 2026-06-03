@@ -3,6 +3,9 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
 import Eyebrow from "../components/ui/Eyebrow.astro";
+
+const sent = Astro.url.searchParams.has("sent");
+const error = Astro.url.searchParams.has("error");
 ---
 
 <BaseLayout
@@ -56,8 +59,18 @@ import Eyebrow from "../components/ui/Eyebrow.astro";
           </div>
         </div>
 
-        <form class="contact-form" name="contact" method="POST" data-netlify="true">
-          <input type="hidden" name="form-name" value="contact" />
+        <form class="contact-form" name="contact" method="POST" action="/contact">
+          {sent && (
+            <p class="form-status form-status-success" role="status">
+              Thanks. Your message has been sent.
+            </p>
+          )}
+
+          {error && (
+            <p class="form-status form-status-error" role="alert">
+              Something went wrong. Please email hello@pixelboost.ca directly.
+            </p>
+          )}
 
           <div class="field-group">
             <label for="name" class="field-label">Your name</label>
@@ -79,6 +92,10 @@ import Eyebrow from "../components/ui/Eyebrow.astro";
             <textarea id="message" name="message" required rows="5" placeholder="Tell me a bit about your business and what you're looking for..." class="field-input field-textarea"></textarea>
           </div>
 
+          <div class="turnstile-wrap">
+            <div class="cf-turnstile" data-turnstile-sitekey data-sitekey=""></div>
+          </div>
+
           <button type="submit" class="submit-btn btn-interactive">Send message <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></button>
         </form>
 
@@ -88,6 +105,7 @@ import Eyebrow from "../components/ui/Eyebrow.astro";
   </main>
 
   <Footer />
+  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 </BaseLayout>
 
 <style>
@@ -145,6 +163,27 @@ import Eyebrow from "../components/ui/Eyebrow.astro";
     gap: 20px;
   }
 
+  .form-status {
+    margin: 0;
+    padding: 12px 14px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1.4;
+  }
+
+  .form-status-success {
+    background: var(--color-mint-100);
+    border: 1px solid var(--color-mint-200);
+    color: var(--color-mint-700);
+  }
+
+  .form-status-error {
+    background: #fff2f0;
+    border: 1px solid #ffd2cc;
+    color: #8f1f12;
+  }
+
   .field-group {
     display: flex;
     flex-direction: column;
@@ -181,6 +220,12 @@ import Eyebrow from "../components/ui/Eyebrow.astro";
     resize: vertical;
     min-height: 130px;
     line-height: 1.6;
+  }
+
+  .turnstile-wrap {
+    min-height: 65px;
+    display: flex;
+    align-items: center;
   }
 
   .submit-btn {

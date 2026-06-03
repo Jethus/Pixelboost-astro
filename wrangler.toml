@@ -1,0 +1,18 @@
+name = "pixelboost-astro"
+main = "src/worker/index.js"
+compatibility_date = "2026-06-03"
+workers_dev = true
+
+# Required Worker secrets:
+# - PSI_API_KEY: Google PageSpeed Insights key for /api/audit
+# - TURNSTILE_SITE_KEY: public Turnstile widget sitekey injected into /contact
+# - TURNSTILE_SECRET: private Turnstile Siteverify secret for POST /contact
+
+[assets]
+directory = "./dist"
+binding = "ASSETS"
+not_found_handling = "404-page"
+
+[[send_email]]
+name = "CONTACT_EMAIL"
+destination_address = "hello@pixelboost.ca"
