@@ -1,5 +1,6 @@
 import { EmailMessage } from "cloudflare:email";
 
+import { buildPageSpeedUrl, psiScore } from "./audit-utils.js";
 import {
   buildContactEmail,
   getContactRedirect,
@@ -11,6 +12,19 @@ const JSON_HEADERS = {
   "Content-Type": "application/json",
   "Access-Control-Allow-Origin": "*",
 };
+
+const CSP_HEADER = [
+  "default-src 'self'",
+  "base-uri 'self'",
+  "object-src 'none'",
+  "frame-ancestors 'none'",
+  "script-src 'self' 'unsafe-inline' https://challenges.cloudflare.com",
+  "style-src 'self' 'unsafe-inline'",
+  "img-src 'self' data:",
+  "font-src 'self' https://fonts.gstatic.com",
+  "connect-src 'self' https://challenges.cloudflare.com",
+  "frame-src https://challenges.cloudflare.com",
+].join("; ");
 
 const TRACKING_DOMAINS = [
   "google-analytics.com",
@@ -51,10 +65,6 @@ function deriveTracking(audits) {
   return found ? 100 : 0;
 }
 
-function psiScore(categories, key) {
-  return Math.round((categories[key]?.score ?? 0) * 100);
-}
-
 async function handleAudit(request, env) {
   const { searchParams } = new URL(request.url);
   const rawUrl = searchParams.get("url");
@@ -72,7 +82,7 @@ async function handleAudit(request, env) {
     return Response.json({ error: "Invalid URL" }, { status: 400, headers: JSON_HEADERS });
   }
 
-  const psiEndpoint = `https://www.googleapis.com/pagespeedonline/v5/runPagespeed?url=${encodeURIComponent(targetUrl)}&strategy=mobile&key=${env.PSI_API_KEY}`;
+  const psiEndpoint = buildPageSpeedUrl(targetUrl, env.PSI_API_KEY);
 
   let psiRes;
   try {
@@ -148,11 +158,12 @@ export default {
     }
 
     const response = await env.ASSETS.fetch(request);
+    const contentType = response.headers.get("Content-Type") || "";
 
     if (
       request.method === "GET" &&
       (url.pathname === "/contact" || url.pathname === "/contact/") &&
-      response.headers.get("Content-Type")?.includes("text/html")
+      contentType.includes("text/html")
     ) {
       return new HTMLRewriter()
         .on("[data-turnstile-sitekey]", {
@@ -160,9 +171,23 @@ export default {
             element.setAttribute("data-sitekey", env.TURNSTILE_SITE_KEY || "");
           },
         })
-        .transform(response);
+        .transform(withSecurityHeaders(response));
+    }
+
+    if (request.method === "GET" && contentType.includes("text/html")) {
+      return withSecurityHeaders(response);
     }
 
     return response;
   },
 };
+
+function withSecurityHeaders(response) {
+  const headers = new Headers(response.headers);
+  headers.set("Content-Security-Policy", CSP_HEADER);
+  return new Response(response.body, {
+    status: response.status,
+    statusText: response.statusText,
+    headers,
+  });
+}
