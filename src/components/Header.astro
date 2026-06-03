@@ -13,7 +13,7 @@ const isActive = (href: string) => pathname === href || (href !== '/' && pathnam
     <div id="nav-links" class="nav-links">
       <a href="/about"   class:list={["nav-link", isActive('/about') && "nav-active"]}>About</a>
       <a href="/blog"    class:list={["nav-link", isActive('/blog') && "nav-active"]}>Blog</a>
-      <a href="/contact" class="nav-cta btn-interactive">
+      <a href="/contact" class="btn-mint btn-sm btn-interactive nav-cta">
         Get in touch
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
       </a>
@@ -30,7 +30,7 @@ const isActive = (href: string) => pathname === href || (href !== '/' && pathnam
     <div class="mobile-nav__links">
       <a href="/about"   class:list={["mobile-link", isActive('/about') && "mobile-link--active"]}>About</a>
       <a href="/blog"    class:list={["mobile-link", isActive('/blog') && "mobile-link--active"]}>Blog</a>
-      <a href="/contact" class="mobile-cta btn-interactive">Get in touch</a>
+      <a href="/contact" class="btn-mint btn-block btn-interactive mobile-cta">Get in touch</a>
     </div>
   </div>
 </header>
@@ -60,13 +60,6 @@ const isActive = (href: string) => pathname === href || (href !== '/' && pathnam
   .nav-link:hover { color: var(--color-mint-600); }
   .nav-active { font-weight: 700; }
 
-  .nav-cta {
-    display: inline-flex; align-items: center; gap: 8px;
-    background: var(--color-mint-500); color: var(--color-ink);
-    border: 0; border-radius: 9999px; padding: 11px 20px;
-    font-weight: 600; font-size: 15px; text-decoration: none;
-  }
-
   .nav-toggle {
     display: none; flex-direction: column; align-items: center; justify-content: center;
     gap: 5px; width: 40px; height: 32px; background: none; border: none; cursor: pointer;
@@ -91,11 +84,7 @@ const isActive = (href: string) => pathname === href || (href !== '/' && pathnam
     padding: 10px 0; border-bottom: 1px solid var(--color-line); color: inherit;
   }
   .mobile-link--active { font-weight: 700; }
-  .mobile-cta {
-    margin-top: 12px; display: block; text-align: center;
-    background: var(--color-ink); color: var(--color-paper);
-    border-radius: 9999px; padding: 12px 20px; font-weight: 600;
-  }
+  .mobile-cta { margin-top: 12px; }
 
   @media (max-width: 768px) {
     .nav-links { display: none; }

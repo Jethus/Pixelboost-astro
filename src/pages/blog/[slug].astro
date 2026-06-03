@@ -4,6 +4,7 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 import Header from "../../components/Header.astro";
 import Footer from "../../components/Footer.astro";
 import BlogFAQ from "../../components/BlogFAQ.astro";
+import ClosingCTA from "../../components/ClosingCTA.astro";
 
 export async function getStaticPaths() {
   const posts = await getCollection("blog");
@@ -91,6 +92,8 @@ const faqLd = faq && {
         </a>
       </div>
     </section>
+
+    <ClosingCTA />
 
   </main>
 
