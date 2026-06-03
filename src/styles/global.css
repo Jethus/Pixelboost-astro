@@ -218,15 +218,33 @@
 }
 
 @utility btn-interactive {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
   transform-origin: center;
   transition:
     transform 0.18s cubic-bezier(0.2, 0.9, 0.2, 1),
     box-shadow 0.18s ease,
-    filter 0.18s ease,
-    background-color 0.18s ease,
-    color 0.18s ease;
+    color 0.2s ease;
   will-change: transform;
+  /* Per-variant fill defaults; surfaces can override --btn-fill / --btn-hover-text. */
+  --btn-fill: var(--color-ink);
+  --btn-hover-text: var(--color-mint-500);
 }
+
+/* Left→right colour wipe. The ::before grows from the left on hover; the
+   button's text/icon sit above it via the positive stacking context. */
+.btn-interactive::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--btn-fill);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 0.32s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.btn-interactive:hover::before { transform: scaleX(1); }
 
 @utility surface-paper   { background: var(--color-paper); }
 @utility surface-paper-2 { background: var(--color-paper-2); }
@@ -245,25 +263,26 @@
   }
 }
 
-.btn-interactive:hover {
-  transform: translateY(-1px);
-  box-shadow: var(--btn-hover-shadow, 0 10px 22px -14px rgba(15, 26, 20, 0.45));
+/* Per-variant fill + hover-text. The wipe colour (--btn-fill) must contrast
+   with the button's own resting background. */
+.btn-mint          { --btn-fill: var(--color-ink);   --btn-hover-text: var(--color-mint-500); }
+.btn-outline       { --btn-fill: var(--color-ink);   --btn-hover-text: var(--color-paper); }
+.btn-outline-light { --btn-fill: var(--color-paper); --btn-hover-text: var(--color-ink); }
+.nav-cta           { --btn-fill: var(--color-ink);   --btn-hover-text: var(--color-mint-500); }
+.mobile-cta        { --btn-fill: var(--color-mint-500); --btn-hover-text: var(--color-ink); }
+
+/* On dark surfaces, a mint button wiping to ink would be invisible — wipe to
+   paper (light) with ink text instead, so it reads as "lighting up". */
+.cta-section .btn-mint,
+.surface-ink .btn-mint {
+  --btn-fill: var(--color-paper);
+  --btn-hover-text: var(--color-ink);
 }
 
-/* Hover colour-shift per variant — fill to a contrasting colour. */
-.btn-mint.btn-interactive:hover {
-  background: var(--color-ink);
-  color: var(--color-mint-500);
-}
-.btn-outline.btn-interactive:hover {
-  background: var(--color-ink);
-  color: var(--color-paper);
-  border-color: var(--color-ink);
-}
-.btn-outline-light.btn-interactive:hover {
-  background: var(--color-paper);
-  color: var(--color-ink);
-  border-color: var(--color-paper);
+.btn-interactive:hover {
+  transform: translateY(-1px);
+  color: var(--btn-hover-text);
+  box-shadow: var(--btn-hover-shadow, 0 10px 22px -14px rgba(15, 26, 20, 0.45));
 }
 
 .btn-interactive:active {
