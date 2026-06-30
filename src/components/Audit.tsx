@@ -73,8 +73,11 @@ export default function Audit({
   rows,
 }: AuditContent) {
   const [url, setUrl] = useState('');
+  const [email, setEmail] = useState('');
+  const [scannedEmail, setScannedEmail] = useState('');
+  const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const emailInvalid = email.trim() !== '' && !EMAIL_RE.test(email.trim());
   const [state, setState] = useState<AuditState>('idle');
-  const [reportState, setReportState] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle');
   const [scores, setScores] = useState<Scores>({ perf: 0, a11y: 0, seo: 0, mobile: 0, tracking: 0, lcp: null, trackingTools: [] });
   // Scores actually shown — count up from 0 to `scores` for a "results landing" feel.
   const [displayScores, setDisplayScores] = useState<Scores>({ perf: 0, a11y: 0, seo: 0, mobile: 0, tracking: 0, lcp: null, trackingTools: [] });
@@ -141,16 +144,20 @@ export default function Audit({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!url.trim() || state === 'scanning') return;
+    if (!url.trim() || emailInvalid || state === 'scanning') return;
     const normalized = url.startsWith('http') ? url : `https://${url}`;
     setScannedUrl(normalized);
+    setScannedEmail(email.trim());
     sessionStorage.setItem('pb_audit_url', normalized);
     setScores({ perf: 0, a11y: 0, seo: 0, mobile: 0, tracking: 0, lcp: null, trackingTools: [] });
     setDisplayScores({ perf: 0, a11y: 0, seo: 0, mobile: 0, tracking: 0, lcp: null, trackingTools: [] });
-    setReportState('idle');
     setState('scanning');
     try {
-      const res = await fetch(`/api/audit?url=${encodeURIComponent(normalized)}`);
+      const res = await fetch('/api/audit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ url: normalized, email: email.trim() }),
+      });
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const data: Scores = await res.json();
       setScores(data);
@@ -201,6 +208,14 @@ export default function Audit({
               onFocus={e => { e.currentTarget.style.borderColor = 'var(--color-mint-500)'; e.currentTarget.style.boxShadow = '0 0 0 4px var(--color-mint-100)'; }}
               onBlur={e =>  { e.currentTarget.style.borderColor = 'var(--color-ink)';      e.currentTarget.style.boxShadow = 'none'; }}
             />
+            <input
+              type="email"
+              placeholder="Email (optional) — I'll send the full report + my top 3 fixes"
+              value={email}
+              onChange={e => setEmail(e.target.value)}
+              aria-label="Your email (optional)"
+              className="audit-url-input audit-email-optional"
+            />
             <button
               type="submit"
               className="btn-mint btn-on-dark btn-interactive audit-scan-btn"
@@ -209,6 +224,9 @@ export default function Audit({
               <svg className="audit-btn-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.25" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
             </button>
           </form>
+          {emailInvalid && (
+            <p className="audit-email-error" role="alert">That email doesn't look right — check it, or leave it blank.</p>
+          )}
 
           <div className="audit-footnote-wrap">
             <span className="audit-footnote-label">Technical</span>
@@ -289,57 +307,13 @@ export default function Audit({
             </p>
           </div>
 
-          {/* Email capture — shown after scan */}
+          {/* Delivery confirmation / nudge — shown after scan */}
           {state === 'done' && (
             <div className="audit-email-section">
-              <p className="audit-email-copy">
-                {emailCopy}
-              </p>
-              <form className="audit-email-form" onSubmit={async e => {
-                e.preventDefault();
-                const input = (e.currentTarget as HTMLFormElement).querySelector('input[type="email"]') as HTMLInputElement;
-                const emailVal = input?.value?.trim();
-                if (!emailVal || reportState === 'sending') return;
-                sessionStorage.setItem('pb_audit_email', emailVal);
-                setReportState('sending');
-                try {
-                  const res = await fetch('/api/report-request', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ email: emailVal, siteUrl: scannedUrl, scores }),
-                  });
-                  setReportState(res.ok ? 'sent' : 'error');
-                } catch {
-                  setReportState('error');
-                }
-              }}>
-                {reportState === 'sent' ? (
-                  <p className="audit-email-copy" style={{ margin: 0, fontWeight: 600 }}>Got it — I'll send your breakdown shortly.</p>
-                ) : (
-                  <>
-                    <input
-                      type="email"
-                      placeholder="you@yourbusiness.ca"
-                      aria-label="Your email address"
-                      className="audit-email-input"
-                    />
-                    <button
-                      type="submit"
-                      disabled={reportState === 'sending'}
-                      className="btn-interactive audit-email-btn"
-                    >
-                      {reportState === 'sending' ? 'Sending…' : reportState === 'error' ? 'Try again' : 'Send my report'}
-                      <svg className="audit-btn-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.25" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
-                    </button>
-                  </>
-                )}
-              </form>
-              <a
-                href="/contact"
-                className="audit-call-link"
-              >
-                {callCopy}
-              </a>
+              {scannedEmail
+                ? <p className="audit-email-copy">Full report sent to <strong>{scannedEmail}</strong>.</p>
+                : <p className="audit-email-copy">Want this report and my top 3 fixes in your inbox? Add your email above and run it again.</p>}
+              <a href="/contact" className="audit-call-link">{callCopy}</a>
             </div>
           )}
         </div>
