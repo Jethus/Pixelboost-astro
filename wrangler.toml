@@ -9,6 +9,7 @@ routes = [
 
 # Required Worker secrets:
 # - PSI_API_KEY: Google PageSpeed Insights key for /api/audit
+# - JMAP_FASTMAIL_API: Fastmail API token (mail-send scope) for sending audit result + lead emails via JMAP
 # - TURNSTILE_SITE_KEY: public Turnstile widget sitekey injected into /contact
 # - TURNSTILE_SECRET: private Turnstile Siteverify secret for POST /contact
 
