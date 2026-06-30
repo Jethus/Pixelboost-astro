@@ -5,7 +5,7 @@ import {
   buildPageSpeedUrl,
   deriveLcp,
   deriveTracking,
-  getTrackingSignals,
+  getTrackingTools,
   psiScore,
 } from "../src/worker/audit-utils.js";
 
@@ -31,69 +31,38 @@ test("psiScore leaves missing category scores at zero", () => {
   assert.equal(psiScore({}, "seo"), 0);
 });
 
-test("getTrackingSignals detects analytics, tag managers, and conversion pixels from Lighthouse third parties", () => {
-  const signals = getTrackingSignals({
-    "third-party-summary": {
-      details: {
-        items: [
-          { entity: "Google Analytics" },
-          { entity: "Google Tag Manager" },
-          { entity: "Meta Pixel" },
-        ],
-      },
-    },
-  });
+function networkAudit(urls) {
+  return { "network-requests": { details: { items: urls.map((url) => ({ url })) } } };
+}
 
-  assert.deepEqual(signals, {
-    analyticsInstalled: true,
-    tagManagerInstalled: true,
-    conversionPixelInstalled: true,
-    clickableLeadLinksPresent: false,
-    formOrCtaPresent: false,
-  });
+test("getTrackingTools detects Google Tag Manager from a request URL", () => {
+  const tools = getTrackingTools(networkAudit([
+    "https://www.googletagmanager.com/gtm.js?id=GTM-ABC123",
+    "https://example.com/style.css",
+  ]));
+  assert.deepEqual(tools, ["Google Tag Manager"]);
 });
 
-test("getTrackingSignals detects phone links, email links, forms, and CTA links from DOM stats", () => {
-  const signals = getTrackingSignals({
-    "dom-size": {
-      details: {
-        items: [
-          { selector: 'a[href^="tel:"]' },
-          { selector: 'a[href^="mailto:"]' },
-          { selector: "form.contact-form" },
-          { selector: 'a[href="/contact"]' },
-        ],
-      },
-    },
-  });
-
-  assert.deepEqual(signals, {
-    analyticsInstalled: false,
-    tagManagerInstalled: false,
-    conversionPixelInstalled: false,
-    clickableLeadLinksPresent: true,
-    formOrCtaPresent: true,
-  });
+test("getTrackingTools detects multiple distinct tools, deduped and in catalogue order", () => {
+  const tools = getTrackingTools(networkAudit([
+    "https://connect.facebook.net/en_US/fbevents.js",
+    "https://www.google-analytics.com/analytics.js",
+    "https://www.google-analytics.com/collect",
+    "https://plausible.io/js/script.js",
+  ]));
+  assert.deepEqual(tools, ["Google Analytics", "Meta Pixel", "Plausible"]);
 });
 
-test("deriveTracking returns yes when any lead tracking signal is present", () => {
-  assert.equal(deriveTracking({
-    "third-party-summary": {
-      details: {
-        items: [{ entity: "plausible.io" }],
-      },
-    },
-  }), 100);
+test("getTrackingTools returns empty when no tracking requests present", () => {
+  assert.deepEqual(getTrackingTools(networkAudit([
+    "https://example.com/app.js",
+    "https://cdn.jsdelivr.net/bootstrap.css",
+  ])), []);
 });
 
-test("deriveTracking returns no when no lead tracking signals are present", () => {
-  assert.equal(deriveTracking({
-    "third-party-summary": {
-      details: {
-        items: [{ entity: "Bootstrap CDN" }],
-      },
-    },
-  }), 0);
+test("deriveTracking returns 100 when a tool is found, 0 otherwise", () => {
+  assert.equal(deriveTracking(networkAudit(["https://plausible.io/js/script.js"])), 100);
+  assert.equal(deriveTracking(networkAudit(["https://example.com/app.js"])), 0);
 });
 
 test("deriveLcp returns rounded LCP milliseconds from the Lighthouse audit", () => {

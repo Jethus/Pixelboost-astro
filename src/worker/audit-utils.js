@@ -1,57 +1,22 @@
 const PAGE_SPEED_CATEGORIES = ["performance", "accessibility", "seo"];
 
-const ANALYTICS_MATCHERS = [
-  "google analytics",
-  "google-analytics.com",
-  "googletagmanager.com/gtag",
-  "ga.js",
-  "analytics.js",
-  "plausible",
-  "plausible.io",
-  "fathom",
-  "usefathom.com",
-  "heap",
-  "heap.io",
-  "mixpanel",
-  "mixpanel.com",
-  "segment",
-  "segment.io",
-  "segment.com",
-  "matomo",
-  "matomo.org",
-  "posthog",
-  "posthog.com",
-];
-
-const TAG_MANAGER_MATCHERS = [
-  "google tag manager",
-  "googletagmanager.com/gtm",
-  "gtm.js",
-  "tealium",
-  "tealiumiq",
-  "adobe launch",
-  "assets.adobedtm.com",
-];
-
-const CONVERSION_PIXEL_MATCHERS = [
-  "meta pixel",
-  "facebook pixel",
-  "connect.facebook.net",
-  "facebook.com/tr",
-  "google ads",
-  "googleadservices.com",
-  "doubleclick.net",
-  "linkedin insight",
-  "snap pixel",
-  "tiktok pixel",
-  "analytics.tiktok.com",
-  "bat.bing.com",
-  "microsoft advertising",
-  "pinterest tag",
-  "ct.pinterest.com",
-  "twitter ads",
-  "static.ads-twitter.com",
-  "reddit pixel",
+const TRACKING_TOOLS = [
+  { name: "Google Analytics",   patterns: ["google-analytics.com", "googletagmanager.com/gtag", "/gtag/js", "/ga.js", "/analytics.js"] },
+  { name: "Google Tag Manager", patterns: ["googletagmanager.com/gtm", "/gtm.js"] },
+  { name: "Meta Pixel",         patterns: ["connect.facebook.net", "facebook.com/tr"] },
+  { name: "Plausible",          patterns: ["plausible.io"] },
+  { name: "Fathom",             patterns: ["usefathom.com"] },
+  { name: "Matomo",             patterns: ["/matomo.js", "/matomo.php", "/piwik.js", "/piwik.php"] },
+  { name: "PostHog",            patterns: ["posthog.com"] },
+  { name: "Hotjar",             patterns: ["hotjar.com"] },
+  { name: "Mixpanel",           patterns: ["mixpanel.com"] },
+  { name: "Heap",               patterns: ["heap.io"] },
+  { name: "Segment",            patterns: ["segment.io", "segment.com"] },
+  { name: "LinkedIn Insight",   patterns: ["snap.licdn.com"] },
+  { name: "TikTok Pixel",       patterns: ["analytics.tiktok.com"] },
+  { name: "Microsoft Ads",      patterns: ["bat.bing.com"] },
+  { name: "Pinterest Tag",      patterns: ["ct.pinterest.com"] },
+  { name: "Reddit Pixel",       patterns: ["redditstatic.com/ads"] },
 ];
 
 
@@ -77,28 +42,20 @@ export function deriveLcp(audits) {
   return typeof v === "number" ? Math.round(v) : null;
 }
 
-export function getTrackingSignals(audits) {
-  const thirdPartyText = collectAuditItemText(audits["third-party-summary"]);
+function collectRequestUrls(audits) {
+  const items = audits["network-requests"]?.details?.items ?? [];
+  return items
+    .map((item) => (typeof item.url === "string" ? item.url.toLowerCase() : ""))
+    .join("\n");
+}
 
-  return {
-    analyticsInstalled: includesAny(thirdPartyText, ANALYTICS_MATCHERS),
-    tagManagerInstalled: includesAny(thirdPartyText, TAG_MANAGER_MATCHERS),
-    conversionPixelInstalled: includesAny(thirdPartyText, CONVERSION_PIXEL_MATCHERS),
-  };
+export function getTrackingTools(audits) {
+  const haystack = collectRequestUrls(audits);
+  return TRACKING_TOOLS
+    .filter((tool) => tool.patterns.some((p) => haystack.includes(p)))
+    .map((tool) => tool.name);
 }
 
 export function deriveTracking(audits) {
-  const signals = getTrackingSignals(audits);
-  if (signals.analyticsInstalled) return 100;
-  if (signals.tagManagerInstalled || signals.conversionPixelInstalled) return 50;
-  return 0;
-}
-
-function collectAuditItemText(audit) {
-  const items = audit?.details?.items ?? [];
-  return items.map((item) => Object.values(item).join(" ")).join(" ").toLowerCase();
-}
-
-function includesAny(value, matchers) {
-  return matchers.some((matcher) => value.includes(matcher));
+  return getTrackingTools(audits).length > 0 ? 100 : 0;
 }
