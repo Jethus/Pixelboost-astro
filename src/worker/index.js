@@ -1,6 +1,6 @@
 import { EmailMessage } from "cloudflare:email";
 
-import { buildPageSpeedUrl, deriveTracking, psiScore } from "./audit-utils.js";
+import { buildPageSpeedUrl, deriveLcp, deriveTracking, getTrackingTools, psiScore } from "./audit-utils.js";
 import {
   buildContactEmail,
   buildReportRequestEmail,
@@ -85,6 +85,8 @@ async function handleAudit(request, env) {
       seo: psiScore(categories, "seo"),
       mobile: deriveMobile(audits),
       tracking: deriveTracking(audits),
+      trackingTools: getTrackingTools(audits),
+      lcp: deriveLcp(audits),
     },
     { headers: JSON_HEADERS },
   );
