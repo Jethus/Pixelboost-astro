@@ -3,6 +3,7 @@ import { test } from "node:test";
 
 import {
   buildPageSpeedUrl,
+  deriveLcp,
   deriveTracking,
   getTrackingSignals,
   psiScore,
@@ -93,4 +94,16 @@ test("deriveTracking returns no when no lead tracking signals are present", () =
       },
     },
   }), 0);
+});
+
+test("deriveLcp returns rounded LCP milliseconds from the Lighthouse audit", () => {
+  assert.equal(
+    deriveLcp({ "largest-contentful-paint": { numericValue: 6234.7 } }),
+    6235,
+  );
+});
+
+test("deriveLcp returns null when LCP audit is missing", () => {
+  assert.equal(deriveLcp({}), null);
+  assert.equal(deriveLcp({ "largest-contentful-paint": {} }), null);
 });
