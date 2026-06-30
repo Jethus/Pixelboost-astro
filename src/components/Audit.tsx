@@ -8,10 +8,14 @@ interface Scores {
   seo: number;
   mobile: number;
   tracking: number;
+  lcp: number | null;
+  trackingTools: string[];
 }
 
+type MetricKey = 'perf' | 'mobile' | 'seo' | 'a11y' | 'tracking';
+
 export interface AuditRow {
-  key: keyof Scores;
+  key: MetricKey;
   label: string;
   sub: string;
 }
@@ -32,38 +36,79 @@ function grade(n: number): 'good' | 'mid' | 'bad' {
   return n >= 90 ? 'good' : n >= 65 ? 'mid' : 'bad';
 }
 
-function verdictFromScores(scores: Scores): { text: string; cta: string } {
-  const vals = [scores.perf, scores.a11y, scores.seo, scores.mobile];
-  const bad = vals.filter(v => v < 65).length;
-  const good = vals.filter(v => v >= 90).length;
-  const hasTracking = scores.tracking >= 100;
+const METRIC_LABELS: Record<'perf' | 'mobile' | 'seo' | 'a11y', string> = {
+  perf: 'Speed',
+  mobile: 'Mobile experience',
+  seo: 'SEO basics',
+  a11y: 'Accessibility',
+};
 
-  if (good === 4 && hasTracking) {
-    return {
-      text: "Your site looks great.",
-      cta: "If you ever want a second set of eyes or want to discuss anything, feel free to reach out.",
-    };
-  }
-  if (good === 4 && !hasTracking) {
-    return {
-      text: "Strong scores — but no analytics detected.",
-      cta: "You're flying blind on where your customers come from. I can fix that.",
-    };
-  }
-  if (bad >= 3) {
-    return {
-      text: "A few things here worth addressing.",
-      cta: "These scores are costing you customers. I can walk you through what I'd fix first.",
-    };
-  }
-  return {
-    text: "Some room to improve.",
-    cta: "5 fixes could save ~1 in 2 visitors.",
-  };
+type Band = 'bad' | 'mid';
+
+// metric × band → verdict line. Speed/bad is special-cased to inject the LCP number.
+const VERDICT_LINES: Record<'perf' | 'mobile' | 'seo' | 'a11y', Record<Band, string>> = {
+  perf: {
+    bad: 'Your site is slow on phones — people leave before it loads.',
+    mid: 'A bit slow on phones. Shaving a second off load time keeps more visitors around.',
+  },
+  mobile: {
+    bad: "Hard to use on a phone — and that's where most of your customers are.",
+    mid: 'The mobile experience has rough edges. Worth tightening for phone visitors.',
+  },
+  seo: {
+    bad: "Search engines struggle to read this site — you're hard to find on Google.",
+    mid: 'Search basics are mostly there, with a few gaps holding back your ranking.',
+  },
+  a11y: {
+    bad: "Parts of the site are unusable for some visitors — and that's a legal risk in Ontario.",
+    mid: 'A few accessibility gaps. Easy wins that widen who can use your site.',
+  },
+};
+
+function bandFor(n: number): Band | 'good' {
+  return n < 65 ? 'bad' : n < 90 ? 'mid' : 'good';
 }
 
-function displayScore(key: keyof Scores, value: number): string | number {
-  if (key === 'tracking') return value > 0 ? 'Yes' : 'No';
+function trackingCta(scores: Scores): string {
+  if (scores.tracking >= 100 && scores.trackingTools.length > 0) {
+    return `You're running ${scores.trackingTools[0]} — good, you can see where customers come from.`;
+  }
+  return 'No analytics detected — you’re flying blind on where customers come from.';
+}
+
+function verdictFromScores(scores: Scores): { text: string; cta: string } {
+  const metrics: Exclude<MetricKey, 'tracking'>[] = ['perf', 'mobile', 'seo', 'a11y'];
+  // Lowest score wins "worst"; ties resolve by metrics[] order.
+  const worst = metrics.reduce((a, b) => (scores[b] < scores[a] ? b : a));
+  const band = bandFor(scores[worst]);
+
+  if (band === 'good') {
+    return {
+      text: `Strong scores. Biggest opportunity: ${METRIC_LABELS[worst]}.`,
+      cta: trackingCta(scores),
+    };
+  }
+
+  let text: string;
+  if (worst === 'perf' && band === 'bad' && scores.lcp != null) {
+    const secs = (scores.lcp / 1000).toFixed(1);
+    text = `Loads in ${secs}s on mobile — Google wants under 2.5s. Visitors leave before it loads.`;
+  } else {
+    text = VERDICT_LINES[worst][band];
+  }
+
+  return { text, cta: trackingCta(scores) };
+}
+
+function displayScore(key: keyof Scores, value: number, scores: Scores): string | number {
+  if (key === 'tracking') {
+    if (value > 0 && scores.trackingTools.length > 0) {
+      const shown = scores.trackingTools.slice(0, 2).join(', ');
+      const extra = scores.trackingTools.length - 2;
+      return extra > 0 ? `Yes — ${shown} +${extra} more` : `Yes — ${shown}`;
+    }
+    return value > 0 ? 'Yes' : 'No';
+  }
   return value;
 }
 
@@ -93,9 +138,9 @@ export default function Audit({
   const [url, setUrl] = useState('');
   const [state, setState] = useState<AuditState>('idle');
   const [reportState, setReportState] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle');
-  const [scores, setScores] = useState<Scores>({ perf: 0, a11y: 0, seo: 0, mobile: 0, tracking: 0 });
+  const [scores, setScores] = useState<Scores>({ perf: 0, a11y: 0, seo: 0, mobile: 0, tracking: 0, lcp: null, trackingTools: [] });
   // Scores actually shown — count up from 0 to `scores` for a "results landing" feel.
-  const [displayScores, setDisplayScores] = useState<Scores>({ perf: 0, a11y: 0, seo: 0, mobile: 0, tracking: 0 });
+  const [displayScores, setDisplayScores] = useState<Scores>({ perf: 0, a11y: 0, seo: 0, mobile: 0, tracking: 0, lcp: null, trackingTools: [] });
   const [scannedUrl, setScannedUrl] = useState('');
   const rafRef = useRef<number | null>(null);
 
@@ -113,19 +158,18 @@ export default function Audit({
       return;
     }
 
-    const keys: (keyof Scores)[] = ['perf', 'a11y', 'seo', 'mobile', 'tracking'];
+    const keys: MetricKey[] = ['perf', 'a11y', 'seo', 'mobile', 'tracking'];
     const duration = 1000;
     const start = performance.now();
 
     const tick = (now: number) => {
       const t = Math.min((now - start) / duration, 1);
       const eased = 1 - Math.pow(1 - t, 3); // easeOutCubic
-      setDisplayScores(
-        keys.reduce((acc, k) => {
-          acc[k] = Math.round(scores[k] * eased);
-          return acc;
-        }, {} as Scores),
-      );
+      setDisplayScores(prev => {
+        const next = { ...prev, lcp: scores.lcp, trackingTools: scores.trackingTools };
+        keys.forEach(k => { next[k] = Math.round(scores[k] * eased); });
+        return next;
+      });
       if (t < 1) rafRef.current = requestAnimationFrame(tick);
       else setDisplayScores(scores);
     };
@@ -164,8 +208,8 @@ export default function Audit({
     const normalized = url.startsWith('http') ? url : `https://${url}`;
     setScannedUrl(normalized);
     sessionStorage.setItem('pb_audit_url', normalized);
-    setScores({ perf: 0, a11y: 0, seo: 0, mobile: 0, tracking: 0 });
-    setDisplayScores({ perf: 0, a11y: 0, seo: 0, mobile: 0, tracking: 0 });
+    setScores({ perf: 0, a11y: 0, seo: 0, mobile: 0, tracking: 0, lcp: null, trackingTools: [] });
+    setDisplayScores({ perf: 0, a11y: 0, seo: 0, mobile: 0, tracking: 0, lcp: null, trackingTools: [] });
     setReportState('idle');
     setState('scanning');
     try {
@@ -287,7 +331,7 @@ export default function Audit({
                           animation: 'audit-spin 0.7s linear infinite',
                           verticalAlign: 'middle',
                         }} />
-                      : showScores ? displayScore(row.key, val) : '—'}
+                      : showScores ? displayScore(row.key, val, scores) : '—'}
                   </div>
                 </div>
               );
