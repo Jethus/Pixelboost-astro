@@ -112,14 +112,14 @@ async function sendResultEmails(env, { email, siteUrl, scores }) {
   try {
     await sendViaFastmail(env, buildLeadNotificationEmail(email, siteUrl, scores));
   } catch (e) {
-    console.error("lead notification failed", e);
+    console.error("lead notification failed", siteUrl, e);
   }
   // Prospect report — only when an email was provided.
   if (email) {
     try {
       await sendViaFastmail(env, buildProspectReportEmail(email, siteUrl, scores));
     } catch (e) {
-      console.error("prospect report failed", e);
+      console.error("prospect report failed", siteUrl, e);
     }
   }
 }
