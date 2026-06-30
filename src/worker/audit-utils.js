@@ -59,3 +59,26 @@ export function getTrackingTools(audits) {
 export function deriveTracking(audits) {
   return getTrackingTools(audits).length > 0 ? 100 : 0;
 }
+
+export async function fetchPsiWithRetry(endpoint, fetchImpl = fetch, opts = {}) {
+  const retries = opts.retries ?? 2;
+  const backoffsMs = opts.backoffsMs ?? [500, 1500];
+  const sleep = opts.sleep ?? ((ms) => new Promise((r) => setTimeout(r, ms)));
+
+  let lastResponse;
+  let lastError;
+  for (let attempt = 0; attempt <= retries; attempt++) {
+    if (attempt > 0) {
+      await sleep(backoffsMs[attempt - 1] ?? backoffsMs[backoffsMs.length - 1]);
+    }
+    try {
+      const res = await fetchImpl(endpoint);
+      if (res.status < 500) return res; // 2xx/3xx/4xx are final
+      lastResponse = res;               // 5xx → retry
+    } catch (err) {
+      lastError = err;                  // network throw → retry
+    }
+  }
+  if (lastResponse) return lastResponse;
+  throw lastError;
+}
