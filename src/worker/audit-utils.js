@@ -72,6 +72,11 @@ export function psiScore(categories, key) {
   return Math.round((categories[key]?.score ?? 0) * 100);
 }
 
+export function deriveLcp(audits) {
+  const v = audits["largest-contentful-paint"]?.numericValue;
+  return typeof v === "number" ? Math.round(v) : null;
+}
+
 export function getTrackingSignals(audits) {
   const thirdPartyText = collectAuditItemText(audits["third-party-summary"]);
 
