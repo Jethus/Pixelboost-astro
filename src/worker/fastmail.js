@@ -45,7 +45,8 @@ async function jmapPost(fetchImpl, apiUrl, token, methodCalls) {
   });
 
   if (!res.ok) {
-    throw new Error(`Fastmail JMAP POST failed: HTTP ${res.status}`);
+    const body = await res.text().catch(() => "");
+    throw new Error(`Fastmail JMAP POST failed: HTTP ${res.status} ${body.slice(0, 500)}`.trim());
   }
 
   const data = await res.json();
@@ -75,7 +76,10 @@ export async function sendViaFastmail(env, message, fetchImpl = fetch) {
     headers: { Authorization: `Bearer ${token}` },
   });
   if (!sessionRes.ok) {
-    throw new Error(`Fastmail JMAP session request failed: HTTP ${sessionRes.status}`);
+    const body = await sessionRes.text().catch(() => "");
+    throw new Error(
+      `Fastmail JMAP session request failed: HTTP ${sessionRes.status} ${body.slice(0, 500)}`.trim(),
+    );
   }
   const session = await sessionRes.json();
   const apiUrl = session.apiUrl;
@@ -89,6 +93,8 @@ export async function sendViaFastmail(env, message, fetchImpl = fetch) {
   // 2. Resolve the sending identity and the Drafts mailbox in one round-trip.
   const firstResponses = await jmapPost(fetchImpl, apiUrl, token, [
     ["Identity/get", { accountId, ids: null }, "0"],
+    // Relies on the server-side "drafts" role, not a folder named "Drafts" — an
+    // account can show a Drafts folder yet have no mailbox carrying the role.
     ["Mailbox/query", { accountId, filter: { role: "drafts" } }, "1"],
   ]);
 
@@ -108,6 +114,8 @@ export async function sendViaFastmail(env, message, fetchImpl = fetch) {
   }
 
   // 3. Create the draft and submit it.
+  // `to`/`replyTo` are bare addresses by builder contract (only `from` carries a
+  // possible "Name <addr>" form, hence the asymmetry — those are not parsed).
   const draft = {
     from: [fromAddress],
     to: [{ email: to }],
