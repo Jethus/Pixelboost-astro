@@ -180,6 +180,42 @@ test("throws when Email/set returns notCreated", async () => {
   await assert.rejects(() => sendViaFastmail(env, message, fetchImpl), /notCreated|invalidProperties/i);
 });
 
+test("throws when session lacks the mail capability account", async () => {
+  const message = { from: FROM, to: "o@x.ca", subject: "S", text: "B" };
+  const badSession = jsonResponse({
+    apiUrl: "https://api.fastmail.com/jmap/api/",
+    primaryAccounts: {}, // no urn:ietf:params:jmap:mail
+  });
+  const fetchImpl = makeFetch([badSession]);
+  await assert.rejects(() => sendViaFastmail(env, message, fetchImpl), /missing apiUrl or mail account/i);
+});
+
+test("throws when POST#1 returns no identities", async () => {
+  const message = { from: FROM, to: "o@x.ca", subject: "S", text: "B" };
+  const noIdentities = jsonResponse({
+    methodResponses: [
+      ["Identity/get", { accountId: "u123", list: [] }, "0"],
+      ["Mailbox/query", { accountId: "u123", ids: ["mbDrafts"] }, "1"],
+    ],
+    sessionState: "abc",
+  });
+  const fetchImpl = makeFetch([jsonResponse(SESSION), noIdentities]);
+  await assert.rejects(() => sendViaFastmail(env, message, fetchImpl), /no sending identities/i);
+});
+
+test("throws when POST#1 resolves no Drafts mailbox", async () => {
+  const message = { from: FROM, to: "o@x.ca", subject: "S", text: "B" };
+  const noDrafts = jsonResponse({
+    methodResponses: [
+      ["Identity/get", { accountId: "u123", list: [{ id: "i1", email: "hello@pixelboost.ca" }] }, "0"],
+      ["Mailbox/query", { accountId: "u123", ids: [] }, "1"],
+    ],
+    sessionState: "abc",
+  });
+  const fetchImpl = makeFetch([jsonResponse(SESSION), noDrafts]);
+  await assert.rejects(() => sendViaFastmail(env, message, fetchImpl), /could not resolve a Drafts mailbox/i);
+});
+
 test("throws when EmailSubmission/set returns notCreated", async () => {
   const message = { from: FROM, to: "o@x.ca", subject: "S", text: "B" };
   const secondPost = jsonResponse({
