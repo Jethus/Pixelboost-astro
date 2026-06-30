@@ -1,6 +1,6 @@
 import { EmailMessage } from "cloudflare:email";
 
-import { buildPageSpeedUrl, deriveLcp, deriveTracking, getTrackingTools, psiScore } from "./audit-utils.js";
+import { buildPageSpeedUrl, deriveLcp, deriveTracking, fetchPsiWithRetry, getTrackingTools, psiScore } from "./audit-utils.js";
 import {
   buildContactEmail,
   buildReportRequestEmail,
@@ -66,7 +66,7 @@ async function handleAudit(request, env) {
 
   let psiRes;
   try {
-    psiRes = await fetch(psiEndpoint);
+    psiRes = await fetchPsiWithRetry(psiEndpoint);
   } catch {
     return Response.json({ error: "Failed to reach PSI API" }, { status: 502, headers: JSON_HEADERS });
   }
