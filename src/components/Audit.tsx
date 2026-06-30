@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { verdictFromScores } from '../shared/verdict.js';
 
 type AuditState = 'idle' | 'scanning' | 'done' | 'error';
 
@@ -34,70 +35,6 @@ export interface AuditContent {
 
 function grade(n: number): 'good' | 'mid' | 'bad' {
   return n >= 90 ? 'good' : n >= 65 ? 'mid' : 'bad';
-}
-
-const METRIC_LABELS: Record<'perf' | 'mobile' | 'seo' | 'a11y', string> = {
-  perf: 'Speed',
-  mobile: 'Mobile experience',
-  seo: 'SEO basics',
-  a11y: 'Accessibility',
-};
-
-type Band = 'bad' | 'mid';
-
-// metric × band → verdict line. Speed/bad is special-cased to inject the LCP number.
-const VERDICT_LINES: Record<'perf' | 'mobile' | 'seo' | 'a11y', Record<Band, string>> = {
-  perf: {
-    bad: 'Your site is slow on phones — people leave before it loads.',
-    mid: 'A bit slow on phones. Shaving a second off load time keeps more visitors around.',
-  },
-  mobile: {
-    bad: "Hard to use on a phone — and that's where most of your customers are.",
-    mid: 'The mobile experience has rough edges. Worth tightening for phone visitors.',
-  },
-  seo: {
-    bad: "Search engines struggle to read this site — you're hard to find on Google.",
-    mid: 'Search basics are mostly there, with a few gaps holding back your ranking.',
-  },
-  a11y: {
-    bad: "Parts of the site are unusable for some visitors — and that's a legal risk in Ontario.",
-    mid: 'A few accessibility gaps. Easy wins that widen who can use your site.',
-  },
-};
-
-function bandFor(n: number): Band | 'good' {
-  return n < 65 ? 'bad' : n < 90 ? 'mid' : 'good';
-}
-
-function trackingCta(scores: Scores): string {
-  if (scores.tracking >= 100 && scores.trackingTools.length > 0) {
-    return `You're running ${scores.trackingTools[0]} — good, you can see where customers come from.`;
-  }
-  return 'No analytics detected — you’re flying blind on where customers come from.';
-}
-
-function verdictFromScores(scores: Scores): { text: string; cta: string } {
-  const metrics: Exclude<MetricKey, 'tracking'>[] = ['perf', 'mobile', 'seo', 'a11y'];
-  // Lowest score wins "worst"; ties resolve by metrics[] order.
-  const worst = metrics.reduce((a, b) => (scores[b] < scores[a] ? b : a));
-  const band = bandFor(scores[worst]);
-
-  if (band === 'good') {
-    return {
-      text: `Strong scores. Biggest opportunity: ${METRIC_LABELS[worst]}.`,
-      cta: trackingCta(scores),
-    };
-  }
-
-  let text: string;
-  if (worst === 'perf' && band === 'bad' && scores.lcp != null) {
-    const secs = (scores.lcp / 1000).toFixed(1);
-    text = `Loads in ${secs}s on mobile — Google wants under 2.5s. Visitors leave before it loads.`;
-  } else {
-    text = VERDICT_LINES[worst][band];
-  }
-
-  return { text, cta: trackingCta(scores) };
 }
 
 function displayScore(key: keyof Scores, value: number, scores: Scores): string | number {
