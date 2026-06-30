@@ -82,7 +82,7 @@ export function buildContactEmail(submission) {
 }
 
 function trackingLine(scores) {
-  if (scores.tracking > 0 && scores.trackingTools.length > 0) {
+  if (scores.tracking > 0 && scores.trackingTools?.length > 0) {
     return `Yes — ${scores.trackingTools.join(', ')}`;
   }
   return 'No';
@@ -100,7 +100,7 @@ function scoreLines(scores) {
 
 export function buildProspectReportEmail(email, siteUrl, scores) {
   const to = stripHeaderValue(email);
-  const subject = `Your site report: ${siteUrl}`;
+  const subject = `Your site report: ${stripHeaderValue(siteUrl)}`;
   const verdict = verdictFromScores(scores);
 
   const text = [
@@ -122,7 +122,8 @@ export function buildProspectReportEmail(email, siteUrl, scores) {
 
 export function buildLeadNotificationEmail(email, siteUrl, scores) {
   const replyTo = email ? stripHeaderValue(email) : undefined;
-  const subject = replyTo ? `Site scan: ${siteUrl}` : `Site scan: ${siteUrl} (anonymous)`;
+  const safeUrl = stripHeaderValue(siteUrl);
+  const subject = replyTo ? `Site scan: ${safeUrl}` : `Site scan: ${safeUrl} (anonymous)`;
   const verdict = verdictFromScores(scores);
 
   const text = [
@@ -138,9 +139,9 @@ export function buildLeadNotificationEmail(email, siteUrl, scores) {
     verdict.cta,
   ].join('\n');
 
-  const email_ = { from: FROM_EMAIL, to: CONTACT_EMAIL, subject, text };
-  if (replyTo) email_.replyTo = replyTo;
-  return email_;
+  const message = { from: FROM_EMAIL, to: CONTACT_EMAIL, subject, text };
+  if (replyTo) message.replyTo = replyTo;
+  return message;
 }
 
 export function getContactRedirect(requestUrl, state) {

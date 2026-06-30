@@ -11,6 +11,7 @@ test("prospect report is addressed to the prospect and contains scores + verdict
   assert.match(m.text, /Speed/);
   assert.match(m.text, /Loads in 6\.2s on mobile/);     // verdict text (perf worst + lcp)
   assert.match(m.text, /Google Tag Manager/);           // verdict cta names the tool
+  assert.ok(!m.replyTo);                                 // prospect email has no replyTo by design
 });
 
 test("lead notification goes to the owner and includes the prospect email + replyTo when present", () => {
