@@ -105,19 +105,9 @@ function scoreLines(scores) {
   ];
 }
 
-// Bare host for subject lines: "https://example.com/path" -> "example.com".
-// Falls back to the sanitized input if it isn't a parseable URL.
-function siteHost(siteUrl) {
-  try {
-    return new URL(siteUrl).host;
-  } catch {
-    return stripHeaderValue(siteUrl);
-  }
-}
-
 export function buildProspectReportEmail(email, siteUrl, scores) {
   const to = stripHeaderValue(email);
-  const subject = `Site audit: ${siteHost(siteUrl)}`;
+  const subject = `Your site report: ${stripHeaderValue(siteUrl)}`;
   const verdict = verdictFromScores(scores);
 
   const text = [
