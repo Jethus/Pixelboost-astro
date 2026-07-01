@@ -42,6 +42,5 @@ Or use the free audit at the top of this page — I'll check your speed, [access
 
 The honest answer is that most Wix and WordPress speed problems can't be fully fixed without changing the underlying platform. You can optimize images, add a caching plugin, switch to faster hosting — and get modest improvement. But you're still fighting against the platform's baseline weight.
 
-A custom-built static site, by comparison, sends exactly what the page needs and nothing else. No plugin bloat, no platform overhead. That's why the sites I build consistently score 95+ on Google's speed test — not because of tricks, but because there's nothing extra to slow them down. (More on how I approach [speed and performance](/services/speed-performance).)
-
+A custom-built static site, by comparison, sends exactly what the page needs and nothing else. No plugin bloat, no platform overhead. That's why the sites I build consistently score 95+ on Google's speed test — not because of tricks, but because there's nothing extra to slow them down.
 If your site is slow and you're tired of it costing you customers, [start with a free audit](/#audit). I'll tell you what's hurting you and whether a rebuild actually makes sense — sometimes it doesn't, and I'll tell you that too.

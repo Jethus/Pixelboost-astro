@@ -34,7 +34,7 @@ Faster pages mean more visitors stay long enough to read your offer, find your p
 
 Most small business owners can't answer a simple question: which of your leads came from your website versus word of mouth versus that ad you're paying for? A custom build lets you install proper analytics from the start, so you can see which pages and searches are actually sending you customers — and stop guessing.
 
-That single change often pays for the site. Once you can see that (say) your "areas we serve" page drives most of your calls, you know where to spend your time and money. ([Here's how I set up analytics](/services/analytics) so it's readable, not a confusing dashboard.)
+That single change often pays for the site. Once you can see that (say) your "areas we serve" page drives most of your calls, you know where to spend your time and money. I set up analytics so it's readable, not a confusing dashboard.
 
 ## It grows and changes without a fight
 
