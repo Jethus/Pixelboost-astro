@@ -97,21 +97,32 @@ function trackingLine(scores) {
 
 function scoreLines(scores) {
   return [
-    `Speed:         ${scores.perf ?? '—'}`,
-    `Mobile:        ${scores.mobile ?? '—'}`,
-    `SEO:           ${scores.seo ?? '—'}`,
-    `Accessibility: ${scores.a11y ?? '—'}`,
-    `Lead tracking: ${trackingLine(scores)}`,
+    `- Speed: ${scores.perf ?? '—'}`,
+    `- Mobile: ${scores.mobile ?? '—'}`,
+    `- SEO: ${scores.seo ?? '—'}`,
+    `- Accessibility: ${scores.a11y ?? '—'}`,
+    `- Lead tracking: ${trackingLine(scores)}`,
   ];
+}
+
+// Bare host for display: "https://example.com/path" -> "example.com".
+// Falls back to the sanitized input if it isn't a parseable URL.
+function siteHost(siteUrl) {
+  try {
+    return new URL(siteUrl).host;
+  } catch {
+    return stripHeaderValue(siteUrl);
+  }
 }
 
 export function buildProspectReportEmail(email, siteUrl, scores) {
   const to = stripHeaderValue(email);
-  const subject = `Your site report: ${stripHeaderValue(siteUrl)}`;
+  const host = siteHost(siteUrl);
+  const subject = `Your site report: ${host}`;
   const verdict = verdictFromScores(scores);
 
   const text = [
-    `Here's how ${siteUrl} did when I scanned it:`,
+    `Here's how ${host} did when I scanned it:`,
     '',
     ...scoreLines(scores),
     '',
