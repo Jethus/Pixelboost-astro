@@ -33,14 +33,14 @@ Over a year, at even a modest conversion rate, that's real money.
 
 ## How to check your site's speed right now
 
-Google has a free tool called [PageSpeed Insights](https://pagespeed.web.dev/) — paste your URL in and it'll give you a score from 0–100, separately for mobile and desktop. Below 50 on mobile is a problem. Below 70 means visitors are likely feeling it.
+Google has a free tool called [PageSpeed Insights](https://pagespeed.web.dev/) — paste your URL in and it'll give you a score from 0–100, separately for mobile and desktop. Below 50 on mobile is a problem. Below 70 means visitors are likely feeling it. (Not sure what those numbers mean? Here's [what a Google Lighthouse score actually tells you](/blog/what-is-google-lighthouse-score).)
 
-Or use the free audit at the top of this page — I'll check your speed, accessibility, and whether you're even tracking where your leads come from.
+Or use the free audit at the top of this page — I'll check your speed, [accessibility](/blog/web-accessibility-small-business-ontario), and whether you're even tracking where your leads come from.
 
 ## What actually fixes it
 
 The honest answer is that most Wix and WordPress speed problems can't be fully fixed without changing the underlying platform. You can optimize images, add a caching plugin, switch to faster hosting — and get modest improvement. But you're still fighting against the platform's baseline weight.
 
-A custom-built static site, by comparison, sends exactly what the page needs and nothing else. No plugin bloat, no platform overhead. That's why the sites I build consistently score 95+ on Google's speed test — not because of tricks, but because there's nothing extra to slow them down.
+A custom-built static site, by comparison, sends exactly what the page needs and nothing else. No plugin bloat, no platform overhead. That's why the sites I build consistently score 95+ on Google's speed test — not because of tricks, but because there's nothing extra to slow them down. (More on how I approach [speed and performance](/services/speed-performance).)
 
 If your site is slow and you're tired of it costing you customers, [start with a free audit](/#audit). I'll tell you what's hurting you and whether a rebuild actually makes sense — sometimes it doesn't, and I'll tell you that too.
