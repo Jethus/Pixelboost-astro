@@ -150,6 +150,7 @@ export default function Audit({
     setScannedUrl(normalized);
     setScannedEmail(email.trim());
     sessionStorage.setItem('pb_audit_url', normalized);
+    if (email.trim()) sessionStorage.setItem('pb_audit_email', email.trim());
     setScores({ perf: 0, a11y: 0, seo: 0, mobile: 0, tracking: 0, lcp: null, trackingTools: [] });
     setDisplayScores({ perf: 0, a11y: 0, seo: 0, mobile: 0, tracking: 0, lcp: null, trackingTools: [] });
     setState('scanning');
