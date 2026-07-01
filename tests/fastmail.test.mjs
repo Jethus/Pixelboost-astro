@@ -114,6 +114,9 @@ test("happy path: session uses Bearer, Email/set carries correct shape, resolves
   assert.deepEqual(draft.replyTo, [{ email: "lead@shop.ca" }]);
   // mailbox set to resolved drafts id
   assert.equal(draft.mailboxIds.mbDrafts, true);
+  // must NOT carry the $draft keyword — Fastmail refuses to submit a $draft
+  // email (it lands in notCreated and the draft lingers unsent).
+  assert.ok(!draft.keywords?.$draft, "submitted email must not have the $draft keyword");
 
   // EmailSubmission references the created draft via creation-id back-reference + concrete identity
   const submission = findMethodCall(secondPost.body, "EmailSubmission/set");

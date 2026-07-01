@@ -116,13 +116,17 @@ export async function sendViaFastmail(env, message, fetchImpl = fetch) {
   // 3. Create the draft and submit it.
   // `to`/`replyTo` are bare addresses by builder contract (only `from` carries a
   // possible "Name <addr>" form, hence the asymmetry — those are not parsed).
+  // NOTE: the email must NOT carry the $draft keyword — Fastmail's
+  // EmailSubmission/set refuses to send a $draft email (it lands in
+  // notCreated and the draft lingers). We create it in the Drafts mailbox
+  // (a mailbox is required for submission) without $draft, submit it, then
+  // destroy it on success.
   const draft = {
     from: [fromAddress],
     to: [{ email: to }],
     subject,
     bodyValues: { body: { value: text, charset: "utf-8" } },
     textBody: [{ partId: "body", type: "text/plain" }],
-    keywords: { $draft: true },
     mailboxIds: { [draftMailboxId]: true },
   };
   if (replyTo) {
