@@ -28,7 +28,6 @@ export interface AuditContent {
   footnote: string;
   verdictIdle: string;
   verdictDone: string;
-  emailCopy: string;
   callCopy: string;
   rows: AuditRow[];
 }
@@ -70,7 +69,6 @@ export default function Audit({
   footnote,
   verdictIdle,
   verdictDone,
-  emailCopy,
   callCopy,
   rows,
 }: AuditContent) {
