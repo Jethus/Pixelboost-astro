@@ -2,6 +2,13 @@ import { verdictFromScores } from "../shared/verdict.js";
 
 const CONTACT_EMAIL = "hello@pixelboost.ca";
 const FROM_EMAIL = "Pixelboost Website <hello@pixelboost.ca>";
+// Audit emails send via Fastmail JMAP, which requires the From address to be a
+// VERIFIED sending identity on the account. hello@pixelboost.ca is NOT one (only
+// josh@pixelboost.ca is), so audit emails send from josh@ — sending from an
+// unverified identity is rejected with `forbiddenFrom`. The contact form keeps
+// FROM_EMAIL (hello@) because it goes through the Cloudflare send_email binding,
+// not Fastmail.
+const AUDIT_FROM_EMAIL = "Josh from Pixelboost <josh@pixelboost.ca>";
 
 function formValue(formData, key) {
   const value = formData.get(key);
@@ -98,9 +105,19 @@ function scoreLines(scores) {
   ];
 }
 
+// Bare host for subject lines: "https://example.com/path" -> "example.com".
+// Falls back to the sanitized input if it isn't a parseable URL.
+function siteHost(siteUrl) {
+  try {
+    return new URL(siteUrl).host;
+  } catch {
+    return stripHeaderValue(siteUrl);
+  }
+}
+
 export function buildProspectReportEmail(email, siteUrl, scores) {
   const to = stripHeaderValue(email);
-  const subject = `Your site report: ${stripHeaderValue(siteUrl)}`;
+  const subject = `Site audit: ${siteHost(siteUrl)}`;
   const verdict = verdictFromScores(scores);
 
   const text = [
@@ -117,7 +134,7 @@ export function buildProspectReportEmail(email, siteUrl, scores) {
     '— Josh, Pixelboost',
   ].join('\n');
 
-  return { from: FROM_EMAIL, to, subject, text };
+  return { from: AUDIT_FROM_EMAIL, to, subject, text };
 }
 
 export function buildLeadNotificationEmail(email, siteUrl, scores) {
@@ -139,7 +156,7 @@ export function buildLeadNotificationEmail(email, siteUrl, scores) {
     verdict.cta,
   ].join('\n');
 
-  const message = { from: FROM_EMAIL, to: CONTACT_EMAIL, subject, text };
+  const message = { from: AUDIT_FROM_EMAIL, to: CONTACT_EMAIL, subject, text };
   if (replyTo) message.replyTo = replyTo;
   return message;
 }
