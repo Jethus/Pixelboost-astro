@@ -38,10 +38,11 @@ function grade(n: number): 'good' | 'mid' | 'bad' {
 
 function displayScore(key: keyof Scores, value: number, scores: Scores): string | number {
   if (key === 'tracking') {
-    if (value > 0 && scores.trackingTools.length > 0) {
-      const shown = scores.trackingTools.slice(0, 2).join(', ');
-      const extra = scores.trackingTools.length - 2;
-      return extra > 0 ? `Yes — ${shown} +${extra} more` : `Yes — ${shown}`;
+    const count = scores.trackingTools.length;
+    if (value > 0 && count > 0) {
+      // Keep the column short: name the single tool, else just the count.
+      // The verdict line below the scorecard names the primary tool in full.
+      return count === 1 ? `Yes — ${scores.trackingTools[0]}` : `Yes — ${count} tools`;
     }
     return value > 0 ? 'Yes' : 'No';
   }
