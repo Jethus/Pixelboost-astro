@@ -1,7 +1,8 @@
 ---
 title: "Web accessibility for Ontario small businesses: AODA basics"
 description: "Ontario's AODA accessibility law applies to your website, and most small business owners don't know it. Here's what it requires and what to do about it."
-pubDate: 2026-05-01
+pubDate: 2026-05-05
+updatedDate: 2026-06-30
 draft: false
 ---
 
