@@ -264,38 +264,11 @@ const rows: AuditRow[] = [
     line-height: 1.5;
   }
 
-  .audit-email-form {
-    display: flex;
-    gap: 8px;
-    flex-wrap: wrap;
-  }
-
-  .audit-email-input {
-    flex: 1;
-    min-width: 160px;
-    font-family: inherit;
-    font-size: 14px;
-    padding: 10px 16px;
-    background: var(--color-paper-2);
-    border: 1.5px solid var(--color-line);
-    border-radius: 9999px;
-    outline: none;
-    color: var(--color-ink);
-  }
-
-  .audit-email-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    background: var(--color-mint-500);
-    color: var(--color-ink);
-    border: 0;
-    border-radius: 9999px;
-    padding: 10px 18px;
-    font-weight: 600;
-    font-size: 13.5px;
-    font-family: inherit;
-    cursor: pointer;
+  .audit-email-optional { margin-top: 8px; }
+  .audit-email-error {
+    color: var(--color-red);
+    font-size: 13px;
+    margin: 8px 0 0;
   }
 
   .audit-call-link {

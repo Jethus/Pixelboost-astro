@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { verdictFromScores } from '../shared/verdict.js';
 
 type AuditState = 'idle' | 'scanning' | 'done' | 'error';
 
@@ -36,70 +37,6 @@ function grade(n: number): 'good' | 'mid' | 'bad' {
   return n >= 90 ? 'good' : n >= 65 ? 'mid' : 'bad';
 }
 
-const METRIC_LABELS: Record<'perf' | 'mobile' | 'seo' | 'a11y', string> = {
-  perf: 'Speed',
-  mobile: 'Mobile experience',
-  seo: 'SEO basics',
-  a11y: 'Accessibility',
-};
-
-type Band = 'bad' | 'mid';
-
-// metric × band → verdict line. Speed/bad is special-cased to inject the LCP number.
-const VERDICT_LINES: Record<'perf' | 'mobile' | 'seo' | 'a11y', Record<Band, string>> = {
-  perf: {
-    bad: 'Your site is slow on phones — people leave before it loads.',
-    mid: 'A bit slow on phones. Shaving a second off load time keeps more visitors around.',
-  },
-  mobile: {
-    bad: "Hard to use on a phone — and that's where most of your customers are.",
-    mid: 'The mobile experience has rough edges. Worth tightening for phone visitors.',
-  },
-  seo: {
-    bad: "Search engines struggle to read this site — you're hard to find on Google.",
-    mid: 'Search basics are mostly there, with a few gaps holding back your ranking.',
-  },
-  a11y: {
-    bad: "Parts of the site are unusable for some visitors — and that's a legal risk in Ontario.",
-    mid: 'A few accessibility gaps. Easy wins that widen who can use your site.',
-  },
-};
-
-function bandFor(n: number): Band | 'good' {
-  return n < 65 ? 'bad' : n < 90 ? 'mid' : 'good';
-}
-
-function trackingCta(scores: Scores): string {
-  if (scores.tracking >= 100 && scores.trackingTools.length > 0) {
-    return `You're running ${scores.trackingTools[0]} — good, you can see where customers come from.`;
-  }
-  return 'No analytics detected — you’re flying blind on where customers come from.';
-}
-
-function verdictFromScores(scores: Scores): { text: string; cta: string } {
-  const metrics: Exclude<MetricKey, 'tracking'>[] = ['perf', 'mobile', 'seo', 'a11y'];
-  // Lowest score wins "worst"; ties resolve by metrics[] order.
-  const worst = metrics.reduce((a, b) => (scores[b] < scores[a] ? b : a));
-  const band = bandFor(scores[worst]);
-
-  if (band === 'good') {
-    return {
-      text: `Strong scores. Biggest opportunity: ${METRIC_LABELS[worst]}.`,
-      cta: trackingCta(scores),
-    };
-  }
-
-  let text: string;
-  if (worst === 'perf' && band === 'bad' && scores.lcp != null) {
-    const secs = (scores.lcp / 1000).toFixed(1);
-    text = `Loads in ${secs}s on mobile — Google wants under 2.5s. Visitors leave before it loads.`;
-  } else {
-    text = VERDICT_LINES[worst][band];
-  }
-
-  return { text, cta: trackingCta(scores) };
-}
-
 function displayScore(key: keyof Scores, value: number, scores: Scores): string | number {
   if (key === 'tracking') {
     if (value > 0 && scores.trackingTools.length > 0) {
@@ -124,6 +61,8 @@ const BAR_COLOR = {
   bad:  'var(--color-red)',
 };
 
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
 export default function Audit({
   eyebrow,
   headline,
@@ -136,8 +75,10 @@ export default function Audit({
   rows,
 }: AuditContent) {
   const [url, setUrl] = useState('');
+  const [email, setEmail] = useState('');
+  const [scannedEmail, setScannedEmail] = useState('');
+  const emailInvalid = email.trim() !== '' && !EMAIL_RE.test(email.trim());
   const [state, setState] = useState<AuditState>('idle');
-  const [reportState, setReportState] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle');
   const [scores, setScores] = useState<Scores>({ perf: 0, a11y: 0, seo: 0, mobile: 0, tracking: 0, lcp: null, trackingTools: [] });
   // Scores actually shown — count up from 0 to `scores` for a "results landing" feel.
   const [displayScores, setDisplayScores] = useState<Scores>({ perf: 0, a11y: 0, seo: 0, mobile: 0, tracking: 0, lcp: null, trackingTools: [] });
@@ -204,16 +145,21 @@ export default function Audit({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!url.trim() || state === 'scanning') return;
+    if (!url.trim() || emailInvalid || state === 'scanning') return;
     const normalized = url.startsWith('http') ? url : `https://${url}`;
     setScannedUrl(normalized);
+    setScannedEmail(email.trim());
     sessionStorage.setItem('pb_audit_url', normalized);
+    if (email.trim()) sessionStorage.setItem('pb_audit_email', email.trim());
     setScores({ perf: 0, a11y: 0, seo: 0, mobile: 0, tracking: 0, lcp: null, trackingTools: [] });
     setDisplayScores({ perf: 0, a11y: 0, seo: 0, mobile: 0, tracking: 0, lcp: null, trackingTools: [] });
-    setReportState('idle');
     setState('scanning');
     try {
-      const res = await fetch(`/api/audit?url=${encodeURIComponent(normalized)}`);
+      const res = await fetch('/api/audit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ url: normalized, email: email.trim() }),
+      });
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const data: Scores = await res.json();
       setScores(data);
@@ -264,6 +210,16 @@ export default function Audit({
               onFocus={e => { e.currentTarget.style.borderColor = 'var(--color-mint-500)'; e.currentTarget.style.boxShadow = '0 0 0 4px var(--color-mint-100)'; }}
               onBlur={e =>  { e.currentTarget.style.borderColor = 'var(--color-ink)';      e.currentTarget.style.boxShadow = 'none'; }}
             />
+            <input
+              type="email"
+              placeholder="Email (optional) — I'll send the full report + my top 3 fixes"
+              value={email}
+              onChange={e => setEmail(e.target.value)}
+              aria-label="Your email (optional)"
+              aria-invalid={emailInvalid}
+              aria-describedby={emailInvalid ? 'audit-email-error' : undefined}
+              className="audit-url-input audit-email-optional"
+            />
             <button
               type="submit"
               className="btn-mint btn-on-dark btn-interactive audit-scan-btn"
@@ -272,6 +228,9 @@ export default function Audit({
               <svg className="audit-btn-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.25" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
             </button>
           </form>
+          {emailInvalid && (
+            <p id="audit-email-error" className="audit-email-error" role="alert">That email doesn't look right — check it, or leave it blank.</p>
+          )}
 
           <div className="audit-footnote-wrap">
             <span className="audit-footnote-label">Technical</span>
@@ -352,57 +311,13 @@ export default function Audit({
             </p>
           </div>
 
-          {/* Email capture — shown after scan */}
+          {/* Delivery confirmation / nudge — shown after scan */}
           {state === 'done' && (
             <div className="audit-email-section">
-              <p className="audit-email-copy">
-                {emailCopy}
-              </p>
-              <form className="audit-email-form" onSubmit={async e => {
-                e.preventDefault();
-                const input = (e.currentTarget as HTMLFormElement).querySelector('input[type="email"]') as HTMLInputElement;
-                const emailVal = input?.value?.trim();
-                if (!emailVal || reportState === 'sending') return;
-                sessionStorage.setItem('pb_audit_email', emailVal);
-                setReportState('sending');
-                try {
-                  const res = await fetch('/api/report-request', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ email: emailVal, siteUrl: scannedUrl, scores }),
-                  });
-                  setReportState(res.ok ? 'sent' : 'error');
-                } catch {
-                  setReportState('error');
-                }
-              }}>
-                {reportState === 'sent' ? (
-                  <p className="audit-email-copy" style={{ margin: 0, fontWeight: 600 }}>Got it — I'll send your breakdown shortly.</p>
-                ) : (
-                  <>
-                    <input
-                      type="email"
-                      placeholder="you@yourbusiness.ca"
-                      aria-label="Your email address"
-                      className="audit-email-input"
-                    />
-                    <button
-                      type="submit"
-                      disabled={reportState === 'sending'}
-                      className="btn-interactive audit-email-btn"
-                    >
-                      {reportState === 'sending' ? 'Sending…' : reportState === 'error' ? 'Try again' : 'Send my report'}
-                      <svg className="audit-btn-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.25" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
-                    </button>
-                  </>
-                )}
-              </form>
-              <a
-                href="/contact"
-                className="audit-call-link"
-              >
-                {callCopy}
-              </a>
+              {scannedEmail
+                ? <p className="audit-email-copy">Full report sent to <strong>{scannedEmail}</strong>.</p>
+                : <p className="audit-email-copy">Want this report and my top 3 fixes in your inbox? Add your email above and run it again.</p>}
+              <a href="/contact" className="audit-call-link">{callCopy}</a>
             </div>
           )}
         </div>

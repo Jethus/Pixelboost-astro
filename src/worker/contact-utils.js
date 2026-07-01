@@ -1,3 +1,5 @@
+import { verdictFromScores } from "../shared/verdict.js";
+
 const CONTACT_EMAIL = "hello@pixelboost.ca";
 const FROM_EMAIL = "Pixelboost Website <hello@pixelboost.ca>";
 
@@ -79,41 +81,67 @@ export function buildContactEmail(submission) {
   };
 }
 
-export function buildReportRequestEmail(email, siteUrl, scores) {
-  const subject = `Site report request: ${siteUrl}`;
-  const scoreLines = [
-    `Speed:         ${scores.perf ?? '—'}`,
-    `Accessibility: ${scores.a11y ?? '—'}`,
-    `SEO:           ${scores.seo ?? '—'}`,
-    `Mobile:        ${scores.mobile ?? '—'}`,
-    `Tracking:      ${scores.tracking > 0 ? 'Yes' : 'No'}`,
-  ].join('\r\n');
+function trackingLine(scores) {
+  if (scores.tracking > 0 && scores.trackingTools?.length > 0) {
+    return `Yes — ${scores.trackingTools.join(', ')}`;
+  }
+  return 'No';
+}
 
-  const body = [
-    'Someone requested a full report after running the site scan.',
+function scoreLines(scores) {
+  return [
+    `Speed:         ${scores.perf ?? '—'}`,
+    `Mobile:        ${scores.mobile ?? '—'}`,
+    `SEO:           ${scores.seo ?? '—'}`,
+    `Accessibility: ${scores.a11y ?? '—'}`,
+    `Lead tracking: ${trackingLine(scores)}`,
+  ];
+}
+
+export function buildProspectReportEmail(email, siteUrl, scores) {
+  const to = stripHeaderValue(email);
+  const subject = `Your site report: ${stripHeaderValue(siteUrl)}`;
+  const verdict = verdictFromScores(scores);
+
+  const text = [
+    `Here's how ${siteUrl} did when I scanned it:`,
     '',
-    `Their email: ${email}`,
+    ...scoreLines(scores),
+    '',
+    verdict.text,
+    verdict.cta,
+    '',
+    "If you'd like, reply to this email or book a call and I'll walk you through the quickest wins:",
+    'https://pixelboost.ca/contact',
+    '',
+    '— Josh, Pixelboost',
+  ].join('\n');
+
+  return { from: FROM_EMAIL, to, subject, text };
+}
+
+export function buildLeadNotificationEmail(email, siteUrl, scores) {
+  const replyTo = email ? stripHeaderValue(email) : undefined;
+  const safeUrl = stripHeaderValue(siteUrl);
+  const subject = replyTo ? `Site scan: ${safeUrl}` : `Site scan: ${safeUrl} (anonymous)`;
+  const verdict = verdictFromScores(scores);
+
+  const text = [
+    'Someone ran the site scan.',
+    '',
     `Scanned URL: ${siteUrl}`,
+    `Their email: ${replyTo || '(anonymous — no email given)'}`,
     '',
     'Scores:',
-    scoreLines,
+    ...scoreLines(scores),
     '',
-    'Reply directly to follow up.',
-  ].join('\r\n');
+    `Verdict: ${verdict.text}`,
+    verdict.cta,
+  ].join('\n');
 
-  const raw = [
-    `From: ${FROM_EMAIL}`,
-    `To: ${CONTACT_EMAIL}`,
-    `Reply-To: ${stripHeaderValue(email)}`,
-    `Subject: ${subject}`,
-    'MIME-Version: 1.0',
-    'Content-Type: text/plain; charset=UTF-8',
-    'Content-Transfer-Encoding: 8bit',
-    '',
-    body,
-  ].join('\r\n');
-
-  return { from: FROM_EMAIL, to: CONTACT_EMAIL, raw };
+  const message = { from: FROM_EMAIL, to: CONTACT_EMAIL, subject, text };
+  if (replyTo) message.replyTo = replyTo;
+  return message;
 }
 
 export function getContactRedirect(requestUrl, state) {
