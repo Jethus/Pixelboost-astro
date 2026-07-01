@@ -22,16 +22,6 @@ const blog = defineCollection({
     }),
 });
 
-const services = defineCollection({
-  loader: glob({ pattern: "**/*.md", base: "./src/content/services" }),
-  schema: () =>
-    z.object({
-      tab: z.string(),
-      label: z.string(),
-      order: z.number(),
-    }),
-});
-
 const portfolio = defineCollection({
   loader: glob({ pattern: "**/*.md", base: "./src/content/portfolio" }),
   schema: ({ image }) =>
@@ -56,6 +46,5 @@ const portfolio = defineCollection({
 
 export const collections = {
   blog,
-  services,
   portfolio,
 };

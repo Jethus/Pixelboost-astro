@@ -19,7 +19,12 @@ const pageTitle = title === SITE_TITLE ? title : `${title} | ${SITE_NAME}`;
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <meta name="apple-mobile-web-app-title" content="Pixelboost" />
+    <link rel="manifest" href="/site.webmanifest" />
     <link rel="sitemap" href="/sitemap-index.xml" />
     <meta name="generator" content={Astro.generator} />
 
@@ -30,6 +35,7 @@ const pageTitle = title === SITE_TITLE ? title : `${title} | ${SITE_NAME}`;
     <meta name="description" content={description} />
 
     <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={SITE_NAME} />
     <meta property="og:url" content={Astro.url} />
     <meta property="og:title" content={pageTitle} />
     <meta property="og:description" content={description} />
@@ -56,6 +62,13 @@ const pageTitle = title === SITE_TITLE ? title : `${title} | ${SITE_NAME}`;
 
     <script type="application/ld+json" set:html={JSON.stringify({
       "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "Pixelboost",
+      "url": "https://pixelboost.ca"
+    })} />
+
+    <script type="application/ld+json" set:html={JSON.stringify({
+      "@context": "https://schema.org",
       "@type": "LocalBusiness",
       "name": "Pixelboost",
       "description": "Custom web design and development for small businesses in Toronto, Oshawa, and Durham Region.",
@@ -64,7 +77,6 @@ const pageTitle = title === SITE_TITLE ? title : `${title} | ${SITE_NAME}`;
       "email": "hello@pixelboost.ca",
       "address": {
         "@type": "PostalAddress",
-        "addressLocality": "Toronto",
         "addressRegion": "ON",
         "addressCountry": "CA"
       },
@@ -79,7 +91,9 @@ const pageTitle = title === SITE_TITLE ? title : `${title} | ${SITE_NAME}`;
       ],
       "serviceType": ["Web Design", "Web Development", "Website Redesign", "Website Maintenance"],
       "priceRange": "$$",
-      "sameAs": []
+      "sameAs": [
+        "https://maps.app.goo.gl/kqccN21LCLu6ZTek9"
+      ]
     })} />
   </head>
 

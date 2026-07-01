@@ -68,6 +68,6 @@ None of these are hard to fix. They just require someone to actually check for t
 
 If you want to know where your site stands, run it through the free audit at the top of this page. I include an accessibility check as part of every audit — you'll see your score and a plain-English explanation of what's failing. (Accessibility is one of the four things [Google's Lighthouse score](/blog/what-is-google-lighthouse-score) grades, too.)
 
-All sites I build are designed to WCAG 2.1 AA standard from the start — it's not an add-on, it's part of [how I build](/services/accessibility). That means you're covered under AODA, your site works for every customer, and you're not quietly losing business to barriers most owners never see.
+All sites I build are designed to WCAG 2.1 AA standard from the start — it's not an add-on, it's part of how I build. That means you're covered under AODA, your site works for every customer, and you're not quietly losing business to barriers most owners never see.
 
 If you're not sure where your current site stands, [run the free audit](/#audit) — it flags the accessibility issues above in plain English, alongside your speed and SEO scores.
