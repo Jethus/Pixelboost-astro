@@ -3,11 +3,13 @@ import { EmailMessage } from "cloudflare:email";
 import { buildPageSpeedUrl, deriveLcp, deriveTracking, fetchPsiWithRetry, getTrackingTools, psiScore } from "./audit-utils.js";
 import {
   buildContactEmail,
-  buildReportRequestEmail,
+  buildLeadNotificationEmail,
+  buildProspectReportEmail,
   getContactRedirect,
   validateTurnstileToken,
   validateContactSubmission,
 } from "./contact-utils.js";
+import { sendViaFastmail } from "./fastmail.js";
 
 const JSON_HEADERS = {
   "Content-Type": "application/json",
@@ -45,19 +47,31 @@ function deriveMobile(audits) {
   return Math.round(fcpScore * 0.3 + tbtScore * 0.4 + clsScore * 0.3);
 }
 
-async function handleAudit(request, env) {
-  const { searchParams } = new URL(request.url);
-  const rawUrl = searchParams.get("url");
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+async function handleAudit(request, env, ctx) {
+  let body;
+  try {
+    body = await request.json();
+  } catch {
+    return Response.json({ error: "Invalid JSON" }, { status: 400, headers: JSON_HEADERS });
+  }
+
+  const rawUrl = (body.url || "").trim();
+  const email = (body.email || "").trim();
 
   if (!rawUrl) {
-    return Response.json({ error: "Missing url param" }, { status: 400, headers: JSON_HEADERS });
+    return Response.json({ error: "Missing url" }, { status: 400, headers: JSON_HEADERS });
+  }
+  if (email && !EMAIL_RE.test(email)) {
+    return Response.json({ error: "Invalid email" }, { status: 400, headers: JSON_HEADERS });
   }
 
   let targetUrl;
   try {
-    const url = rawUrl.startsWith("http") ? rawUrl : `https://${rawUrl}`;
-    new URL(url);
-    targetUrl = url;
+    const u = rawUrl.startsWith("http") ? rawUrl : `https://${rawUrl}`;
+    new URL(u);
+    targetUrl = u;
   } catch {
     return Response.json({ error: "Invalid URL" }, { status: 400, headers: JSON_HEADERS });
   }
@@ -78,47 +92,36 @@ async function handleAudit(request, env) {
   const data = await psiRes.json();
   const { categories, audits } = data.lighthouseResult;
 
-  return Response.json(
-    {
-      perf: psiScore(categories, "performance"),
-      a11y: psiScore(categories, "accessibility"),
-      seo: psiScore(categories, "seo"),
-      mobile: deriveMobile(audits),
-      tracking: deriveTracking(audits),
-      trackingTools: getTrackingTools(audits),
-      lcp: deriveLcp(audits),
-    },
-    { headers: JSON_HEADERS },
-  );
+  const scores = {
+    perf: psiScore(categories, "performance"),
+    a11y: psiScore(categories, "accessibility"),
+    seo: psiScore(categories, "seo"),
+    mobile: deriveMobile(audits),
+    tracking: deriveTracking(audits),
+    trackingTools: getTrackingTools(audits),
+    lcp: deriveLcp(audits),
+  };
+
+  ctx.waitUntil(sendResultEmails(env, { email, siteUrl: targetUrl, scores }));
+
+  return Response.json(scores, { headers: JSON_HEADERS });
 }
 
-async function handleReportRequest(request, env) {
-  let body;
+async function sendResultEmails(env, { email, siteUrl, scores }) {
+  // Lead notification — always (anonymous scans are still a prospecting signal).
   try {
-    body = await request.json();
-  } catch {
-    return Response.json({ error: "Invalid JSON" }, { status: 400, headers: JSON_HEADERS });
+    await sendViaFastmail(env, buildLeadNotificationEmail(email, siteUrl, scores));
+  } catch (e) {
+    console.error("lead notification failed", siteUrl, e);
   }
-
-  const { email, siteUrl, scores } = body;
-  if (!email || !siteUrl || !scores) {
-    return Response.json({ error: "Missing fields" }, { status: 400, headers: JSON_HEADERS });
+  // Prospect report — only when an email was provided.
+  if (email) {
+    try {
+      await sendViaFastmail(env, buildProspectReportEmail(email, siteUrl, scores));
+    } catch (e) {
+      console.error("prospect report failed", siteUrl, e);
+    }
   }
-
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-    return Response.json({ error: "Invalid email" }, { status: 400, headers: JSON_HEADERS });
-  }
-
-  const emailData = buildReportRequestEmail(email, siteUrl, scores);
-  const message = new EmailMessage(emailData.from, emailData.to, emailData.raw);
-
-  try {
-    await env.CONTACT_EMAIL.send(message);
-  } catch {
-    return Response.json({ error: "Failed to send" }, { status: 500, headers: JSON_HEADERS });
-  }
-
-  return Response.json({ ok: true }, { headers: JSON_HEADERS });
 }
 
 async function handleContact(request, env) {
@@ -157,19 +160,15 @@ async function handleContact(request, env) {
 }
 
 export default {
-  async fetch(request, env) {
+  async fetch(request, env, ctx) {
     const url = new URL(request.url);
 
-    if (request.method === "GET" && url.pathname === "/api/audit") {
-      return handleAudit(request, env);
+    if (request.method === "POST" && url.pathname === "/api/audit") {
+      return handleAudit(request, env, ctx);
     }
 
     if (request.method === "POST" && url.pathname === "/contact") {
       return handleContact(request, env);
-    }
-
-    if (request.method === "POST" && url.pathname === "/api/report-request") {
-      return handleReportRequest(request, env);
     }
 
     const response = await env.ASSETS.fetch(request);
