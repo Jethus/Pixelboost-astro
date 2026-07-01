@@ -1,7 +1,7 @@
 ---
 title: "What is a Google Lighthouse score, and what does yours mean?"
 description: "Google grades every website on speed, accessibility, SEO, and best practices. Here's what those scores actually mean for your business, in plain English."
-pubDate: 2026-05-01
+pubDate: 2026-04-28
 draft: false
 faq:
   - q: "What is a good Google Lighthouse score?"

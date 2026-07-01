@@ -1,7 +1,7 @@
 ---
 title: "Custom website vs template: what's the real difference?"
 description: "Templates are faster and cheaper to start, but the real costs don't show up on the invoice. Here's what you're actually choosing between for your business."
-pubDate: 2026-05-01
+pubDate: 2026-04-14
 draft: false
 ---
 

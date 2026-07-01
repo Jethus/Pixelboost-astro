@@ -1,7 +1,7 @@
 ---
 title: "How much does a website redesign cost in Toronto in 2026?"
 description: "Web design pricing in Toronto varies wildly. Here's what actually drives the cost of a redesign, what you should expect to pay, and how to avoid overpaying."
-pubDate: 2026-05-01
+pubDate: 2026-05-19
 draft: false
 faq:
   - q: "How much does a website redesign cost in Toronto?"

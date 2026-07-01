@@ -1,7 +1,8 @@
 ---
 title: "Why your Wix or WordPress site is slow (and what it costs)"
 description: "A slow website isn't just annoying — it's losing you real customers. Here's why Wix and WordPress sites slow down, and what you can actually do about it."
-pubDate: 2026-05-01
+pubDate: 2026-05-12
+updatedDate: 2026-06-30
 draft: false
 ---
 

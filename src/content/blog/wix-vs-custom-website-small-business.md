@@ -1,7 +1,7 @@
 ---
 title: "Wix vs a custom website: what your business actually needs"
 description: "Wix is cheap and easy to start, but is it good enough for a small business trying to win customers online? Here's an honest, plain-English comparison."
-pubDate: 2026-05-01
+pubDate: 2026-04-21
 draft: false
 ---
 
