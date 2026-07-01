@@ -9,6 +9,9 @@ const FROM_EMAIL = "Pixelboost Website <hello@pixelboost.ca>";
 // FROM_EMAIL (hello@) because it goes through the Cloudflare send_email binding,
 // not Fastmail.
 const AUDIT_FROM_EMAIL = "Josh from Pixelboost <josh@pixelboost.ca>";
+// Audit lead notifications (including anonymous scans) go to josh@ directly,
+// not the shared hello@ inbox — the contact form still uses CONTACT_EMAIL (hello@).
+const LEAD_NOTIFY_TO = "josh@pixelboost.ca";
 
 function formValue(formData, key) {
   const value = formData.get(key);
@@ -157,7 +160,7 @@ export function buildLeadNotificationEmail(email, siteUrl, scores) {
     verdict.cta,
   ].join('\n');
 
-  const message = { from: AUDIT_FROM_EMAIL, to: CONTACT_EMAIL, subject, text };
+  const message = { from: AUDIT_FROM_EMAIL, to: LEAD_NOTIFY_TO, subject, text };
   if (replyTo) message.replyTo = replyTo;
   return message;
 }

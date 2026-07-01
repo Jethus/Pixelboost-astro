@@ -33,11 +33,11 @@ Thumbs.db
 # crash dumps
 *.stackdump
 
-# loose research/screenshot files in root
-*.csv
-*.png
-*.jpg
-image.png
+# loose research/screenshot files in root only (site assets under
+# public/ and src/assets/ are still tracked — leading slash = root-only)
+/*.csv
+/*.png
+/*.jpg
 
 # wrangler (Cloudflare dev)
 .wrangler/
