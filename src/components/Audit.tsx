@@ -61,6 +61,8 @@ const BAR_COLOR = {
   bad:  'var(--color-red)',
 };
 
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
 export default function Audit({
   eyebrow,
   headline,
@@ -75,7 +77,6 @@ export default function Audit({
   const [url, setUrl] = useState('');
   const [email, setEmail] = useState('');
   const [scannedEmail, setScannedEmail] = useState('');
-  const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   const emailInvalid = email.trim() !== '' && !EMAIL_RE.test(email.trim());
   const [state, setState] = useState<AuditState>('idle');
   const [scores, setScores] = useState<Scores>({ perf: 0, a11y: 0, seo: 0, mobile: 0, tracking: 0, lcp: null, trackingTools: [] });
@@ -214,6 +215,8 @@ export default function Audit({
               value={email}
               onChange={e => setEmail(e.target.value)}
               aria-label="Your email (optional)"
+              aria-invalid={emailInvalid}
+              aria-describedby={emailInvalid ? 'audit-email-error' : undefined}
               className="audit-url-input audit-email-optional"
             />
             <button
@@ -225,7 +228,7 @@ export default function Audit({
             </button>
           </form>
           {emailInvalid && (
-            <p className="audit-email-error" role="alert">That email doesn't look right — check it, or leave it blank.</p>
+            <p id="audit-email-error" className="audit-email-error" role="alert">That email doesn't look right — check it, or leave it blank.</p>
           )}
 
           <div className="audit-footnote-wrap">
