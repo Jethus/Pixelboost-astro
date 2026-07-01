@@ -23,6 +23,7 @@ test("lead notification goes to the owner and includes the prospect email + repl
   assert.match(m.text, /shop\.ca/);
   assert.equal(m.replyTo, "owner@shop.ca");
   assert.match(m.from, /josh@pixelboost\.ca/);           // verified sending identity
+  assert.equal(m.to, "josh@pixelboost.ca");              // lead notify goes to josh@, not hello@
 });
 
 test("lead notification marks anonymous when no email given and sets no replyTo", () => {
