@@ -6,33 +6,54 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 - `npm run dev` — Start dev server
 - `npm run build` — Production build to `./dist/`
-- `npm run preview` — Preview production build locally
-- No test runner or linter is configured
+- `npm run preview` — Preview production build locally (static only — no Worker routes)
+- `npm run preview:worker` — Build, then run the Cloudflare Worker locally via `wrangler dev` (needed to exercise `/contact`, `/api/audit`, and CSP headers)
+- `npm run deploy` — Build and deploy to Cloudflare Workers via `wrangler deploy`
+- `node --test` — Run all tests (`node:test` files in `tests/`; there is no npm test script)
+- `node --test tests/<file>.test.mjs` — Run a single test file
+- `npx astro check` — Type-check `.astro` files
+- No linter is configured
 
 ## Architecture
 
-This is a **static marketing site** for pixelboost.ca built on **Astro 6.0** with content-driven design.
+This is a marketing site for pixelboost.ca: a **static Astro build served by a Cloudflare Worker**. `astro build` emits `./dist`, and the Worker (`src/worker/index.js`, configured in `wrangler.toml`) serves those assets via the ASSETS binding, handles the two dynamic endpoints, and sets the **Content-Security-Policy header at the edge** (`CSP_HEADER` in `src/worker/index.js` — not in Astro config, so CSP never applies under `npm run dev`/`preview`; use `preview:worker` to verify it).
+
+### Worker backend (`src/worker/`)
+
+- `POST /contact` — Turnstile verification, then sends the lead email via Fastmail JMAP (`contact-utils.js`, `fastmail.js`). The form lives in `src/pages/contact.astro`.
+- `POST /api/audit` — the free site-scan feature: calls Google PageSpeed Insights, scores perf/mobile/SEO/a11y, detects tracking tools, and emails a report asynchronously (`audit-utils.js`).
+- Required Worker secrets (documented in `wrangler.toml`): `PSI_API_KEY`, `JMAP_FASTMAIL_API`, `TURNSTILE_SITE_KEY`, `TURNSTILE_SECRET`.
+- The audit UI is a React island: `src/components/Audit.astro` wraps `src/components/Audit.tsx`. Verdict/scoring logic shared between the island and the Worker lives in `src/shared/verdict.js`.
 
 ### Content → Component → Page flow
 
-Three Markdown collections are defined in `src/content.config.ts`: `blog` (`src/content/blog/`), `services` (`src/content/services/`), and `portfolio` (`src/content/portfolio/`). There are **no landing-section collections** — landing components inline their own copy in the component file rather than reading from MD.
+Two collections are defined in `src/content.config.ts`:
 
-**Data-driven components fetch their own data.** Components backed by a collection (e.g. `Portfolio.astro`, `Features.astro`) call `getCollection()` internally, then filter/sort/transform at render time. The landing page (`src/pages/index.astro`) just composes components; the `blog/index.astro` page composes `BlogCard` over the `blog` collection.
+- **`blog`** (`src/content/blog/`) — loads `.md` **and `.mdx`**, excluding `_`-prefixed files (so `_template.md` never builds). Frontmatter: `title`, `description`, `pubDate`, optional `updatedDate`/`heroImage`, `draft` (default false), and optional `faq` (array of `{ q, a }`) which renders a visible `BlogFAQ` section **and** emits FAQPage JSON-LD from the same data.
+- **`portfolio`** (`src/content/portfolio/`) — display-only (no detail pages). Frontmatter: `title`, `order`, `tags`, `image`, plus optional `imageMobile`, `url`, `outcome`, `location`, `summary`, `stats` (array of `{label, before, after}`), `kpi`.
+
+There are **no landing-section collections** — landing components (`Hero`, `Problem`, `Features`, `Pricing`, `FAQ`, …) inline their own copy in the component file. Among components, only `Portfolio.astro` calls `getCollection()` (sorted by `order`); the landing page (`src/pages/index.astro`) just composes components. The only dynamic route is `src/pages/blog/[slug].astro` (via `getStaticPaths()`, filtering drafts).
+
+`.pages.yml` configures Pages CMS (pagescms.org) so the blog collection can be edited through a CMS.
+
+### Layout, SEO, and site constants
+
+- `src/layouts/BaseLayout.astro` is the single layout. It emits canonical URLs, OG/Twitter meta (default image `/og-image.png`), favicons/manifest, self-hosted Plausible analytics (`data.pixelboost.dev`), and WebSite + LocalBusiness JSON-LD. `blog/[slug].astro` adds BlogPosting (and FAQPage when `faq` is present).
+- `src/consts.ts` holds `HOME_TITLE`/`SITE_NAME`/`SITE_TITLE`/`SITE_DESCRIPTION`. BaseLayout compares the page title against `SITE_TITLE` to detect the home page: home gets the geo-first title verbatim, every other page gets `"{title} | Pixelboost"`.
+- Sitemap comes from `@astrojs/sitemap` (`/sitemap-index.xml`); `public/robots.txt` is checked in.
 
 ### Key non-obvious patterns
 
-- **Service icons**: `Features.astro` has a hardcoded `iconMap` mapping service slugs to inline SVG strings — add entries here when creating new services
-- **Dynamic routes**: Services have detail pages via `src/pages/services/[slug].astro`, and blog posts via `src/pages/blog/[slug].astro`, both using `getStaticPaths()`. Portfolio items are display-only (no detail pages)
 - **Blog read-time**: `blog/index.astro` computes read-time from `post.body` word count (~200 wpm) and passes it to `BlogCard` / the featured card — no `readTime` frontmatter field exists
-- **Reuse components and primitives** — before building UI, check `src/components/` (and `src/components/ui/`) for an existing pattern and reuse it. When the same element appears in two places (e.g. the FAQ accordion in `FAQ.astro` and `BlogFAQ.astro`), they must look and behave identically; if a context needs a variant, make a prop-driven sibling that reuses the same markup/styles rather than hand-rolling new markup. Don't duplicate a pattern that already exists.
+- **Reuse components and primitives** — before building UI, check `src/components/` and the primitives in `src/components/ui/` (`BlogCard`, `Button`, `Card`, `Eyebrow`, `SectionHeader`) for an existing pattern. When the same element appears in two places (e.g. the FAQ accordion in `FAQ.astro` and `BlogFAQ.astro`), they must look and behave identically; if a context needs a variant, make a prop-driven sibling that reuses the same markup/styles (`BlogFAQ.astro` is the model) rather than hand-rolling new markup.
 - **No emojis in UI** — always use inline SVG icons instead
+- **Tests** (`tests/*.test.mjs`) are plain `node:test` and mostly cover the Worker utilities, the verdict logic, and static invariants of checked-in files (font loading, header nav, image dimensions). Run them after touching `src/worker/` or `src/shared/`.
 
-### Astro 6 features in use
+### Astro features in use
 
-- Rust compiler (`rustCompiler: true`) and queued rendering (experimental)
-- Native font API via `fontProviders.local()` in `astro.config.mjs`
-- Content Security Policy enabled (`security: { csp: true }`) — CSP only applies to the production build (`npm run build` + `preview`), not `dev`. Verify CSP-sensitive changes against a build.
-- React 19 integration available but most components are `.astro`
+- Check `package.json` for the current Astro version. The Rust compiler (`rustCompiler: true`) and queued rendering are enabled under `experimental` in `astro.config.mjs`
+- Integrations: `mdx()`, `sitemap()`, `react()` (React 19, but most components are `.astro`; `Audit.tsx` is the main island)
+- Tailwind CSS v4 via the Vite plugin
 
 ## Brand: audience, voice, content
 
@@ -42,21 +63,21 @@ Three Markdown collections are defined in `src/content.config.ts`: `blog` (`src/
 
 **Content rules.**
 - **No emojis anywhere in the UI** — always use inline SVG icons instead.
-- Blog posts live in `src/content/blog/*.md`; copy `_template.md` for new posts. Frontmatter: `title`, `description`, `pubDate`, optional `updatedDate`/`heroImage`, `draft` (defaults false). `draft: true` hides a post from the index and from `getStaticPaths`.
+- Blog posts live in `src/content/blog/*.md` (or `.mdx`); copy `_template.md` for new posts. `draft: true` hides a post from the index and from `getStaticPaths`. Add a `faq` array when a post should have an FAQ section — it feeds both the visible accordion and the FAQPage structured data.
 - Headlines are sentence case, not Title Case. Keep them benefit-led and specific to a small-business worry.
 
 ## Design System
 
-**Soft paper / mint aesthetic (v2).** Warm off-white "paper" surfaces float as rounded "section cards" (28px radius) on a mint-tinted shell, with a green "mint" brand accent, charcoal "ink" text, soft diffuse shadows, and bold tight-tracked headings. This is calm and editorial — **not** the older neo-brutalist look. (Brutalist utilities — `shadow-brutal`, `border-3`, `rounded-brutal` — still exist in `global.css` but are legacy; don't reach for them in new work.)
+**Soft paper / mint aesthetic (v2).** Warm off-white "paper" surfaces float as rounded "section cards" (28px radius) on a mint-tinted shell, with a green "mint" brand accent, charcoal "ink" text, soft diffuse shadows, and bold tight-tracked headings. This is calm and editorial — **not** the older neo-brutalist look (whose utilities have been removed from `global.css`; don't reintroduce them).
 
 ### Styling stack
 
 - **Tailwind CSS v4** via Vite plugin (`@tailwindcss/vite`)
 - Custom design tokens in `src/styles/global.css` under `@theme`, defined as **hex** values (not OKLCH)
-- Core color tokens: `--color-paper` / `--color-paper-2` (surfaces), `--color-ink` + `--color-ink-700/500/400` (text), `--color-mint-50…700` (brand green, `mint-500` is the primary accent), `--color-line` / `--color-line-2` (borders). Support: `--color-peach`, `--color-red`, `--color-yellow`.
-- Font: a single family, **Plus Jakarta Sans** (`--font-sans`), used for both headings and body.
-- Shared `@utility` classes to prefer over ad-hoc CSS: `section-card` (the page-section pill), `eyebrow-chip` + `eyebrow-dot` (section eyebrows), `section-subhead`, `card-body`, `btn-mint` / `btn-outline` (+ `btn-interactive` for the press animation).
-- **Scroll reveal**: add `data-reveal` to an element (and `--reveal-i` for stagger) — `BaseLayout.astro` wires an `IntersectionObserver` that adds `.is-in`. A `.no-js` body class guarantees content shows without JS.
+- Core color tokens: `--color-paper` / `--color-paper-2` (surfaces), `--color-ink` + `--color-ink-700/500/400` (text), `--color-mint-50/100/200/300/500/600/700` (brand green — note there is **no `mint-400`**; `mint-500` is the primary accent), `--color-line` / `--color-line-2` (borders). Support: `--color-peach`, `--color-red`, `--color-yellow`.
+- Font: a single family, **Plus Jakarta Sans** (`--font-sans`), used for both headings and body. It loads via `@font-face` in `global.css` pointing at `@fontsource-variable/plus-jakarta-sans` — not Astro's font API.
+- Shared `@utility` classes to prefer over ad-hoc CSS: `section-card` (the page-section pill), `eyebrow-chip` + `eyebrow-dot` (section eyebrows), `section-subhead`, `card-body`, buttons `btn-mint` / `btn-outline` / `btn-outline-light` / `btn-ink` (+ size/layout modifiers `btn-sm`, `btn-block`, the press animation `btn-interactive`, and the `.btn-on-dark` class for buttons on dark surfaces), and surface fills `surface-paper` / `surface-paper-2` / `surface-ink` / `surface-mint`.
+- **Scroll reveal**: add `data-reveal` to an element (and `--reveal-i` for stagger) — `BaseLayout.astro` wires an `IntersectionObserver` that adds `.is-in`. A `.no-js` body class guarantees content shows without JS, and `prefers-reduced-motion` is honored.
 
 ### Fluid typography
 

@@ -154,6 +154,14 @@ const faqLd = faq && {
     letter-spacing: -0.02em;
   }
 
+  /* Long-form prose: raise the mobile floor of the fluid scale so body
+     copy reads comfortably on phones (~17px) while keeping the ~20px
+     desktop size. Only the low end of the clamp moves. */
+  .post-body :global(p),
+  .post-body :global(li) {
+    --font-size-min: 17;
+  }
+
   .post-body :global(p) {
     margin-bottom: 1.35rem;
     line-height: 1.75;

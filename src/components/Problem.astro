@@ -110,8 +110,20 @@ const icons = [
       margin-top: 36px;
     }
 
+    /* Icon on its own row so the title and body span the full card width
+       instead of wrapping in a cramped column beside the icon. */
     .problem-item {
+      grid-template-columns: 1fr;
+      row-gap: 12px;
       padding: 20px;
     }
+
+    .icon-tile {
+      grid-column: 1;
+      grid-row: 1;
+    }
+
+    .problem-title { grid-column: 1; grid-row: 2; }
+    .problem-body  { grid-column: 1; grid-row: 3; }
   }
 </style>
