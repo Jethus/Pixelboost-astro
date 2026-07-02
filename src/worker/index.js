@@ -27,11 +27,11 @@ const CSP_HEADER = [
   "base-uri 'self'",
   "object-src 'none'",
   "frame-ancestors 'none'",
-  "script-src 'self' 'unsafe-inline' https://challenges.cloudflare.com https://data.pixelboost.dev",
+  "script-src 'self' 'unsafe-inline' https://challenges.cloudflare.com https://data.pixelboost.dev https://static.cloudflareinsights.com",
   "style-src 'self' 'unsafe-inline'",
   "img-src 'self' data:",
   "font-src 'self'",
-  "connect-src 'self' https://challenges.cloudflare.com https://*.challenges.cloudflare.com https://data.pixelboost.dev",
+  "connect-src 'self' https://challenges.cloudflare.com https://*.challenges.cloudflare.com https://data.pixelboost.dev https://cloudflareinsights.com",
   "frame-src https://challenges.cloudflare.com https://*.challenges.cloudflare.com",
 ].join("; ");
 
