@@ -93,17 +93,17 @@ export function buildContactEmail(submission) {
 
 function trackingLine(scores) {
   if (scores.tracking > 0 && scores.trackingTools?.length > 0) {
-    return `Yes — ${scores.trackingTools.join(', ')}`;
+    return `Yes, ${scores.trackingTools.join(', ')}`;
   }
   return 'No';
 }
 
 function scoreLines(scores) {
   return [
-    `- Speed: ${scores.perf ?? '—'}`,
-    `- Mobile: ${scores.mobile ?? '—'}`,
-    `- SEO: ${scores.seo ?? '—'}`,
-    `- Accessibility: ${scores.a11y ?? '—'}`,
+    `- Speed: ${scores.perf ?? 'n/a'}`,
+    `- Mobile: ${scores.mobile ?? 'n/a'}`,
+    `- SEO: ${scores.seo ?? 'n/a'}`,
+    `- Accessibility: ${scores.a11y ?? 'n/a'}`,
     `- Lead tracking: ${trackingLine(scores)}`,
   ];
 }
@@ -135,7 +135,7 @@ export function buildProspectReportEmail(email, siteUrl, scores) {
     "If you'd like, reply to this email or book a call and I'll walk you through the quickest wins:",
     'https://pixelboost.ca/contact',
     '',
-    '— Josh, Pixelboost',
+    'Josh, Pixelboost',
   ].join('\n');
 
   return { from: AUDIT_FROM_EMAIL, to, subject, text };
@@ -151,7 +151,7 @@ export function buildLeadNotificationEmail(email, siteUrl, scores) {
     'Someone ran the site scan.',
     '',
     `Scanned URL: ${siteUrl}`,
-    `Their email: ${replyTo || '(anonymous — no email given)'}`,
+    `Their email: ${replyTo || '(anonymous, no email given)'}`,
     '',
     'Scores:',
     ...scoreLines(scores),
@@ -163,6 +163,30 @@ export function buildLeadNotificationEmail(email, siteUrl, scores) {
   const message = { from: AUDIT_FROM_EMAIL, to: LEAD_NOTIFY_TO, subject, text };
   if (replyTo) message.replyTo = replyTo;
   return message;
+}
+
+// Lead-notify email for a contact-form submission that included a website —
+// the background scan result. Josh-only: the prospect never asked for a scan,
+// so they are never emailed a report from this path.
+export function buildContactScanEmail(submission, siteUrl, scores) {
+  const replyTo = stripHeaderValue(submission.email);
+  const safeName = stripHeaderValue(submission.name);
+  const subject = `Contact lead site scan: ${siteHost(siteUrl)}`;
+  const verdict = verdictFromScores(scores);
+
+  const text = [
+    `${safeName} (${replyTo}) submitted the contact form and included their website. Here's how it scores:`,
+    '',
+    `Scanned URL: ${siteUrl}`,
+    '',
+    'Scores:',
+    ...scoreLines(scores),
+    '',
+    `Verdict: ${verdict.text}`,
+    verdict.cta,
+  ].join('\n');
+
+  return { from: AUDIT_FROM_EMAIL, to: LEAD_NOTIFY_TO, subject, text, replyTo };
 }
 
 export function getContactRedirect(requestUrl, state) {
