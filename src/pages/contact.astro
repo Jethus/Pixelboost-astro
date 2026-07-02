@@ -4,8 +4,6 @@ import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
 import Eyebrow from "../components/ui/Eyebrow.astro";
 
-const sent = Astro.url.searchParams.has("sent");
-const error = Astro.url.searchParams.has("error");
 const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY ?? "";
 ---
 
@@ -61,17 +59,15 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY ?? "";
         </div>
 
         <form class="contact-form" name="contact" method="POST" action="/contact">
-          {sent && (
-            <p class="form-status form-status-success" role="status">
-              Thanks. Your message has been sent.
-            </p>
-          )}
+          {/* Static build: ?sent / ?error can't be read at build time, so both
+              banners ship hidden and the inline script below reveals one. */}
+          <p id="form-status-sent" class="form-status form-status-success" role="status" hidden>
+            Thanks. Your message has been sent.
+          </p>
 
-          {error && (
-            <p class="form-status form-status-error" role="alert">
-              Something went wrong. Please email hello@pixelboost.ca directly.
-            </p>
-          )}
+          <p id="form-status-error" class="form-status form-status-error" role="alert" hidden>
+            Something went wrong. Please email hello@pixelboost.ca directly.
+          </p>
 
           <div class="field-group">
             <label for="name" class="field-label">Your name</label>
@@ -112,12 +108,18 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY ?? "";
     var email = sessionStorage.getItem('pb_audit_email');
     if (site) { var w = document.getElementById('website'); if (w) w.value = site; }
     if (email) { var em = document.getElementById('email'); if (em) em.value = email; }
-  </script>
-  {sent && (
-    <script is:inline>
+
+    var params = new URLSearchParams(location.search);
+    if (params.has('sent')) {
+      var ok = document.getElementById('form-status-sent');
+      if (ok) ok.hidden = false;
       (window.plausible || function(){}).call(window, "Contact Form Submitted");
-    </script>
-  )}
+    }
+    if (params.has('error')) {
+      var err = document.getElementById('form-status-error');
+      if (err) err.hidden = false;
+    }
+  </script>
 </BaseLayout>
 
 <style>
