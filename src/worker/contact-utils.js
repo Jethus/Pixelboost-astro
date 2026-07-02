@@ -1,6 +1,7 @@
 import { verdictFromScores } from "../shared/verdict.js";
 
-const CONTACT_EMAIL = "hello@pixelboost.ca";
+// TODO: back to hello@pixelboost.ca once it's a real (verified) inbox.
+const CONTACT_EMAIL = "josh@pixelboost.ca";
 const FROM_EMAIL = "Pixelboost Website <hello@pixelboost.ca>";
 // Audit emails send via Fastmail JMAP, which requires the From address to be a
 // VERIFIED sending identity on the account. hello@pixelboost.ca is NOT one (only

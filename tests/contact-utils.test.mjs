@@ -59,7 +59,7 @@ test("buildContactEmail creates a plain text email for the site owner", () => {
   });
 
   assert.equal(email.from, "Pixelboost Website <hello@pixelboost.ca>");
-  assert.equal(email.to, "hello@pixelboost.ca");
+  assert.equal(email.to, "josh@pixelboost.ca");
   assert.equal(email.replyTo, "jane@example.com");
   assert.equal(email.subject, "New Pixelboost contact form submission from Jane Smith");
   assert.match(email.raw, /From: Pixelboost Website <hello@pixelboost\.ca>/);

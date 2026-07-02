@@ -25,4 +25,5 @@ run_worker_first = true
 
 [[send_email]]
 name = "CONTACT_EMAIL"
-destination_address = "hello@pixelboost.ca"
+# TODO: back to hello@pixelboost.ca once it's a real (verified) inbox.
+destination_address = "josh@pixelboost.ca"
