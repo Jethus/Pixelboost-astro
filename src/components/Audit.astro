@@ -2,6 +2,18 @@
 import AuditIsland from "./Audit.tsx";
 import type { AuditRow } from "./Audit.tsx";
 
+interface Props {
+  eyebrow?: string;
+  headline?: string;
+  body?: string;
+}
+
+const {
+  eyebrow = "Free, no email required",
+  headline = "Run a free scan of your site.",
+  body = "Enter your URL and get a scorecard in seconds. It will show you what's working, what's broken, and what to fix first.",
+}: Props = Astro.props;
+
 const rows: AuditRow[] = [
   {
     key: "perf",
@@ -33,9 +45,9 @@ const rows: AuditRow[] = [
 
 <AuditIsland
   client:visible
-  eyebrow="Free, no email required"
-  headline="Run a free scan of your site."
-  body="Enter your URL and get a scorecard in seconds. It will show you what's working, what's broken, and what to fix first."
+  eyebrow={eyebrow}
+  headline={headline}
+  body={body}
   footnote="Real speed, accessibility, and usability checks. The score is one benchmark; the customer experience still matters."
   verdictIdle="Enter your URL above to run a real scan."
   verdictDone="Want the full breakdown sent to your inbox?"
@@ -82,14 +94,13 @@ const rows: AuditRow[] = [
 
   .audit-form {
     display: flex;
+    flex-direction: column;
     gap: 10px;
     margin: 20px 0 14px;
-    flex-wrap: wrap;
   }
 
   .audit-url-input {
-    flex: 1;
-    min-width: 200px;
+    width: 100%;
     font-family: inherit;
     font-size: 15px;
     padding: 14px 18px;
@@ -100,15 +111,22 @@ const rows: AuditRow[] = [
     color: var(--color-ink);
   }
 
+  .audit-url-input:focus {
+    border-color: var(--color-mint-500);
+    box-shadow: 0 0 0 4px var(--color-mint-100);
+  }
+
   .audit-btn-arrow { flex: none; }
   .audit-verdict-arrow { display: inline-block; vertical-align: -2px; }
 
   /* Visuals come from the shared btn-mint utility; <button> just needs these. */
   .audit-scan-btn {
-    padding: 14px 22px;
+    align-self: flex-start;
+    padding: 15px 22px;
     font-size: 14.5px;
     font-family: inherit;
     cursor: pointer;
+    margin-top: 2px;
   }
 
   .audit-footnote-wrap {
@@ -263,7 +281,6 @@ const rows: AuditRow[] = [
     line-height: 1.5;
   }
 
-  .audit-email-optional { margin-top: 8px; }
   .audit-email-error {
     color: var(--color-red);
     font-size: 13px;

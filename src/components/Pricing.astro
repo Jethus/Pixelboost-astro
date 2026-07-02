@@ -3,31 +3,33 @@ import SectionHeader from "./ui/SectionHeader.astro";
 const plans = [
   {
     variant: "monthly",
-    title: "In-house developer",
-    descriptor: "Best if you want the site rebuilt and a developer available for updates, fixes, and improvements.",
+    title: "Monthly",
     price: "$200",
     priceNote: "/ month",
     features: [
-      { text: "Custom design + build (3-4 weeks)", included: true },
-      { text: "Hosting, SSL, domain setup", included: true },
-      { text: "Plausible analytics installed", included: true },
-      { text: "Ongoing maintenance, updates & small changes", included: true },
-      { text: "Cancel anytime after 12 months, take your site with you", included: true },
+      { text: "Design and development", included: true },
+      { text: "Plausible analytics included", included: true },
+      { text: "Hosting included", included: true },
+      { text: "+$100 per page after 5", included: true },
+      { text: "+$250 to add a blog", included: true },
+      { text: "24/7 support", included: true },
+      { text: "Lifetime updates", included: true },
     ],
   },
   {
     variant: "lump",
-    title: "Build & hand-off",
-    descriptor: "Best if you want the site built, launched, and handed over cleanly.",
+    title: "One-off",
     price: "$3,200",
     priceNote: "flat",
     features: [
-      { text: "Same custom design + build", included: true },
-      { text: "Plausible installed and explained", included: true },
-      { text: "Documented and handed off cleanly", included: true },
-      { text: "30 days of post-launch fixes", included: true },
-      { text: "You own the code and content outright", included: true },
-      { text: "Optional: add monthly support later", included: true },
+      { text: "Design and development", included: true },
+      { text: "Plausible analytics included", included: true },
+      { text: "+$25/mo hosting", included: true },
+      { text: "+$50/mo unlimited edits add-on", included: true },
+      { text: "+$100 per page after 5", included: true },
+      { text: "+$250 to add a blog", included: true },
+      { text: "24/7 support", included: false },
+      { text: "Lifetime updates", included: false },
     ],
   },
 ];
@@ -43,29 +45,41 @@ const standard = plans.find(p => p.variant === 'lump')!;
 
   <div class="price-grid">
     <div class="price-card featured">
-      <span class="badge">Most chosen</span>
+      <!-- <span class="badge">Most chosen</span> -->
       <h3 class="plan-name">{featured.title}</h3>
-      <p class="plan-blurb">{featured.descriptor}</p>
-      <div class="plan-price">{featured.price}<small>{featured.priceNote}</small></div>
       <ul class="plan-features">
-        {featured.features.map(f => <li>{f.text}</li>)}
+        {featured.features.map(f => (
+          <li class:list={["feat-row", { "is-off": !f.included }]}>
+            <span class="feat-text">{f.text}</span>
+            {f.included
+              ? <svg class="feat-icon feat-yes" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+              : <svg class="feat-icon feat-no" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m4.9 4.9 14.2 14.2"/></svg>}
+          </li>
+        ))}
       </ul>
-      <a href="#audit" class="btn-mint btn-block btn-on-dark btn-interactive plan-btn">Start with a free audit <svg class="plan-btn-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a>
+      <div class="plan-price">{featured.price}<small>{featured.priceNote}</small></div>
+      <a href="/contact" class="btn-mint btn-block btn-on-dark btn-interactive plan-btn">Get started <svg class="plan-btn-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a>
     </div>
 
     <div class="price-card">
       <h3 class="plan-name">{standard.title}</h3>
-      <p class="plan-blurb">{standard.descriptor}</p>
-      <div class="plan-price">{standard.price}<small>{standard.priceNote}</small></div>
       <ul class="plan-features">
-        {standard.features.map(f => <li>{f.text}</li>)}
+        {standard.features.map(f => (
+          <li class:list={["feat-row", { "is-off": !f.included }]}>
+            <span class="feat-text">{f.text}</span>
+            {f.included
+              ? <svg class="feat-icon feat-yes" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+              : <svg class="feat-icon feat-no" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m4.9 4.9 14.2 14.2"/></svg>}
+          </li>
+        ))}
       </ul>
-      <a href="#audit" class="btn-ink btn-block btn-interactive plan-btn">Talk it through <svg class="plan-btn-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a>
+      <div class="plan-price">{standard.price}<small>{standard.priceNote}</small></div>
+      <a href="/contact" class="btn-ink btn-block btn-interactive plan-btn">Get started <svg class="plan-btn-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a>
     </div>
   </div>
 
   <div class="price-foot">
-    <strong>You own the site after 12 months.</strong> Keep me on monthly, switch to lighter support, or take the site elsewhere. The code, content, and domain are yours.
+    <strong>Fair and simple.</strong> The monthly plan runs for the first year, then it's month-to-month. Cancel anytime after the first year and the site is yours. With the flat rate, the code, content, and domain are yours from day one.
   </div>
 </section>
 
@@ -99,30 +113,41 @@ const standard = plans.find(p => p.variant === 'lump')!;
     background: var(--color-mint-500); color: var(--color-ink);
   }
 
-  .plan-name  { font-size: 15px; font-weight: 700; margin: 0; }
-  .plan-blurb { font-size: 14px; margin: 0; color: var(--color-ink-500); }
-  .featured .plan-blurb { color: rgba(248,245,238,0.65); }
+  .plan-name  {
+    font-size: clamp(24px, 2.4vw, 30px);
+    font-weight: 800; letter-spacing: -0.03em; line-height: 1.1; margin: 0;
+  }
 
   .plan-price {
     font-size: 48px; font-weight: 800; letter-spacing: -0.035em; line-height: 1; margin: 6px 0;
   }
   .plan-price small {
-    font-size: 14px; font-weight: 500; color: var(--color-ink-500);
+    font-size: 14px; font-weight: 500; letter-spacing: -0.04em; color: var(--color-ink-500);
   }
   .featured .plan-price small { color: rgba(248,245,238,0.55); }
 
   .plan-features {
-    margin: 8px 0 0 0; padding: 0; list-style: none; display: grid; gap: 8px;
+    margin: 8px 0 0 0; padding: 0; list-style: none; display: grid; gap: 10px;
   }
-  .plan-features li {
-    display: flex; gap: 10px; font-size: 14.5px; color: var(--color-ink-700); line-height: 1.55;
-  }
-  .plan-features li::before { content: "✓"; color: var(--color-mint-600); font-weight: 700; flex-shrink: 0; }
-  .featured .plan-features li { color: rgba(248,245,238,0.85); }
-  .featured .plan-features li::before { color: var(--color-mint-300); }
 
-  /* Layout/visuals come from the shared btn-* utilities; only tighten the
-     font + padding for the in-card size. */
+  /* Feature row: text left, icon pushed to the right edge */
+  .feat-row {
+    display: flex; align-items: center; gap: 12px;
+    font-size: 14.5px; color: var(--color-ink-700); line-height: 1.4;
+  }
+  .feat-text { flex: 1; }
+  .featured .feat-row { color: rgba(248,245,238,0.85); }
+
+  .feat-icon { flex: none; }
+  .feat-yes { color: var(--color-mint-600); }
+  .featured .feat-yes { color: var(--color-mint-300); }
+  .feat-no  { color: var(--color-ink-400); }
+  .featured .feat-no { color: rgba(248,245,238,0.4); }
+
+  /* Not-included rows read muted */
+  .feat-row.is-off .feat-text { color: var(--color-ink-400); }
+  .featured .feat-row.is-off .feat-text { color: rgba(248,245,238,0.45); }
+
   .plan-btn { padding: 13px 20px; font-size: 14.5px; }
   .plan-btn-arrow { flex: none; }
 
