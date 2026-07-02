@@ -202,6 +202,7 @@ export async function validateTurnstileToken({
   fetchImpl = fetch,
 }) {
   if (!token || !secret) {
+    console.error("turnstile: missing", token ? "secret" : "token");
     return false;
   }
 
@@ -219,8 +220,12 @@ export async function validateTurnstileToken({
     });
 
     const result = await response.json();
+    if (result.success !== true) {
+      console.error("turnstile: siteverify rejected", JSON.stringify(result["error-codes"] ?? result));
+    }
     return result.success === true;
-  } catch {
+  } catch (e) {
+    console.error("turnstile: siteverify unreachable", e);
     return false;
   }
 }
