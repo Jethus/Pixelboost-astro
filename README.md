@@ -1,6 +1,6 @@
 # pixelboost.ca
 
-Marketing site for Pixelboost — custom website design and redesign for small businesses in Toronto and the Durham Region.
+Custom website design and redesign for small businesses in Toronto and the Durham Region.
 
 A static [Astro](https://astro.build) build served by a Cloudflare Worker. The Worker (`src/worker/`) serves the built assets, handles the contact form (`POST /contact`, Turnstile + Fastmail JMAP) and the free site-scan feature (`POST /api/audit`, Google PageSpeed Insights), and sets the Content-Security-Policy header at the edge.
 
