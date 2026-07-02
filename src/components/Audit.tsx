@@ -227,6 +227,10 @@ export default function Audit({
           <form onSubmit={handleSubmit} className="audit-form">
             <input
               type="text"
+              id="audit-url"
+              name="audit-url"
+              inputMode="url"
+              autoComplete="url"
               placeholder="yourbusiness.ca"
               value={url}
               onChange={e => setUrl(e.target.value)}
@@ -235,6 +239,9 @@ export default function Audit({
             />
             <input
               type="email"
+              id="audit-email"
+              name="audit-email"
+              autoComplete="email"
               placeholder="Email (optional)"
               value={email}
               onChange={e => setEmail(e.target.value)}
