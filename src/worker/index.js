@@ -130,6 +130,7 @@ async function handleContact(request, env, ctx) {
 
   const result = validateContactSubmission(formData);
   if (!result.ok) {
+    console.error("contact: validation failed:", result.error);
     return Response.redirect(getContactRedirect(request.url, "error"), 303);
   }
 
@@ -138,7 +139,8 @@ async function handleContact(request, env, ctx) {
 
   try {
     await env.CONTACT_EMAIL.send(message);
-  } catch {
+  } catch (e) {
+    console.error("contact: send_email failed", e);
     return Response.redirect(getContactRedirect(request.url, "error"), 303);
   }
 
