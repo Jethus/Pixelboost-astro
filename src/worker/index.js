@@ -17,17 +17,22 @@ const JSON_HEADERS = {
   "Access-Control-Allow-Origin": "*",
 };
 
+// Turnstile needs the *.challenges.cloudflare.com wildcard in connect-src:
+// its challenge platform fetches per-colo subdomains (e.g. brunhild.…) from
+// page context, and blocking them kills token issuance even though the
+// widget still renders. data.pixelboost.dev is the self-hosted Plausible
+// (script load + event POSTs).
 const CSP_HEADER = [
   "default-src 'self'",
   "base-uri 'self'",
   "object-src 'none'",
   "frame-ancestors 'none'",
-  "script-src 'self' 'unsafe-inline' https://challenges.cloudflare.com",
+  "script-src 'self' 'unsafe-inline' https://challenges.cloudflare.com https://data.pixelboost.dev",
   "style-src 'self' 'unsafe-inline'",
   "img-src 'self' data:",
   "font-src 'self'",
-  "connect-src 'self' https://challenges.cloudflare.com",
-  "frame-src https://challenges.cloudflare.com",
+  "connect-src 'self' https://challenges.cloudflare.com https://*.challenges.cloudflare.com https://data.pixelboost.dev",
+  "frame-src https://challenges.cloudflare.com https://*.challenges.cloudflare.com",
 ].join("; ");
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
