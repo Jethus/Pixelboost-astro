@@ -17,6 +17,11 @@ routes = [
 directory = "./dist"
 binding = "ASSETS"
 not_found_handling = "404-page"
+# Without this, asset-matching requests are served directly and the Worker
+# never runs: POST /contact 405s at the asset layer (dropping every contact
+# lead), the CSP header is never set, and the Turnstile sitekey is never
+# injected. The Worker is designed to front all traffic.
+run_worker_first = true
 
 [[send_email]]
 name = "CONTACT_EMAIL"
