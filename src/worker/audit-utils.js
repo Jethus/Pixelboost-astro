@@ -42,6 +42,24 @@ export function deriveLcp(audits) {
   return typeof v === "number" ? Math.round(v) : null;
 }
 
+export function normalizeMobileMetric(value, good, poor) {
+  if (value <= good) return 100;
+  if (value >= poor) return 0;
+  return Math.round(100 * (1 - (value - good) / (poor - good)));
+}
+
+export function deriveMobile(audits) {
+  const fcp = audits["first-contentful-paint"]?.numericValue ?? 3000;
+  const tbt = audits["total-blocking-time"]?.numericValue ?? 600;
+  const cls = audits["cumulative-layout-shift"]?.numericValue ?? 0.25;
+
+  const fcpScore = normalizeMobileMetric(fcp, 1800, 3000);
+  const tbtScore = normalizeMobileMetric(tbt, 200, 600);
+  const clsScore = normalizeMobileMetric(cls, 0.1, 0.25);
+
+  return Math.round(fcpScore * 0.3 + tbtScore * 0.4 + clsScore * 0.3);
+}
+
 function collectRequestUrls(audits) {
   const items = audits["network-requests"]?.details?.items ?? [];
   return items
@@ -81,4 +99,34 @@ export async function fetchPsiWithRetry(endpoint, fetchImpl = fetch, opts = {}) 
   }
   if (lastResponse) return lastResponse;
   throw lastError;
+}
+
+// Full PSI scan for one URL → the scores object shared by the audit endpoint
+// and the contact-form background scan. Error messages are part of the
+// /api/audit response contract — don't reword them.
+export async function runScan(targetUrl, apiKey, fetchImpl = fetch, retryOpts = {}) {
+  const endpoint = buildPageSpeedUrl(targetUrl, apiKey);
+
+  let res;
+  try {
+    res = await fetchPsiWithRetry(endpoint, fetchImpl, retryOpts);
+  } catch {
+    throw new Error("Failed to reach PSI API");
+  }
+  if (!res.ok) {
+    throw new Error(`PSI API error: ${res.status}`);
+  }
+
+  const data = await res.json();
+  const { categories, audits } = data.lighthouseResult;
+
+  return {
+    perf: psiScore(categories, "performance"),
+    a11y: psiScore(categories, "accessibility"),
+    seo: psiScore(categories, "seo"),
+    mobile: deriveMobile(audits),
+    tracking: deriveTracking(audits),
+    trackingTools: getTrackingTools(audits),
+    lcp: deriveLcp(audits),
+  };
 }

@@ -1,8 +1,9 @@
 import { EmailMessage } from "cloudflare:email";
 
-import { buildPageSpeedUrl, deriveLcp, deriveTracking, fetchPsiWithRetry, getTrackingTools, psiScore } from "./audit-utils.js";
+import { runScan } from "./audit-utils.js";
 import {
   buildContactEmail,
+  buildContactScanEmail,
   buildLeadNotificationEmail,
   buildProspectReportEmail,
   getContactRedirect,
@@ -28,24 +29,6 @@ const CSP_HEADER = [
   "connect-src 'self' https://challenges.cloudflare.com",
   "frame-src https://challenges.cloudflare.com",
 ].join("; ");
-
-function normalizeMobileMetric(value, good, poor) {
-  if (value <= good) return 100;
-  if (value >= poor) return 0;
-  return Math.round(100 * (1 - (value - good) / (poor - good)));
-}
-
-function deriveMobile(audits) {
-  const fcp = audits["first-contentful-paint"]?.numericValue ?? 3000;
-  const tbt = audits["total-blocking-time"]?.numericValue ?? 600;
-  const cls = audits["cumulative-layout-shift"]?.numericValue ?? 0.25;
-
-  const fcpScore = normalizeMobileMetric(fcp, 1800, 3000);
-  const tbtScore = normalizeMobileMetric(tbt, 200, 600);
-  const clsScore = normalizeMobileMetric(cls, 0.1, 0.25);
-
-  return Math.round(fcpScore * 0.3 + tbtScore * 0.4 + clsScore * 0.3);
-}
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -76,31 +59,12 @@ async function handleAudit(request, env, ctx) {
     return Response.json({ error: "Invalid URL" }, { status: 400, headers: JSON_HEADERS });
   }
 
-  const psiEndpoint = buildPageSpeedUrl(targetUrl, env.PSI_API_KEY);
-
-  let psiRes;
+  let scores;
   try {
-    psiRes = await fetchPsiWithRetry(psiEndpoint);
-  } catch {
-    return Response.json({ error: "Failed to reach PSI API" }, { status: 502, headers: JSON_HEADERS });
+    scores = await runScan(targetUrl, env.PSI_API_KEY);
+  } catch (e) {
+    return Response.json({ error: e.message }, { status: 502, headers: JSON_HEADERS });
   }
-
-  if (!psiRes.ok) {
-    return Response.json({ error: `PSI API error: ${psiRes.status}` }, { status: 502, headers: JSON_HEADERS });
-  }
-
-  const data = await psiRes.json();
-  const { categories, audits } = data.lighthouseResult;
-
-  const scores = {
-    perf: psiScore(categories, "performance"),
-    a11y: psiScore(categories, "accessibility"),
-    seo: psiScore(categories, "seo"),
-    mobile: deriveMobile(audits),
-    tracking: deriveTracking(audits),
-    trackingTools: getTrackingTools(audits),
-    lcp: deriveLcp(audits),
-  };
 
   ctx.waitUntil(sendResultEmails(env, { email, siteUrl: targetUrl, scores }));
 
@@ -124,7 +88,24 @@ async function sendResultEmails(env, { email, siteUrl, scores }) {
   }
 }
 
-async function handleContact(request, env) {
+// Background scan of the website a contact-form lead volunteered, so the
+// first reply can open with something concrete about their site. Never
+// allowed to affect the contact flow: any failure (garbage URL, PSI down,
+// email rejected) is logged and swallowed. `website` is unvalidated free
+// text — the new URL() guard rejects garbage before spending a PSI call.
+async function runContactScan(env, submission) {
+  try {
+    const raw = submission.website;
+    const targetUrl = raw.startsWith("http") ? raw : `https://${raw}`;
+    new URL(targetUrl);
+    const scores = await runScan(targetUrl, env.PSI_API_KEY);
+    await sendViaFastmail(env, buildContactScanEmail(submission, targetUrl, scores));
+  } catch (e) {
+    console.error("contact scan failed", submission.website, e);
+  }
+}
+
+async function handleContact(request, env, ctx) {
   let formData;
   try {
     formData = await request.formData();
@@ -156,6 +137,10 @@ async function handleContact(request, env) {
     return Response.redirect(getContactRedirect(request.url, "error"), 303);
   }
 
+  if (result.value.website) {
+    ctx.waitUntil(runContactScan(env, result.value));
+  }
+
   return Response.redirect(getContactRedirect(request.url, "sent"), 303);
 }
 
@@ -168,7 +153,7 @@ export default {
     }
 
     if (request.method === "POST" && url.pathname === "/contact") {
-      return handleContact(request, env);
+      return handleContact(request, env, ctx);
     }
 
     const response = await env.ASSETS.fetch(request);

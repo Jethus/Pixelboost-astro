@@ -4,10 +4,13 @@ import { test } from "node:test";
 import {
   buildPageSpeedUrl,
   deriveLcp,
+  deriveMobile,
   deriveTracking,
   fetchPsiWithRetry,
   getTrackingTools,
+  normalizeMobileMetric,
   psiScore,
+  runScan,
 } from "../src/worker/audit-utils.js";
 
 test("buildPageSpeedUrl requests every score category shown in the audit UI", () => {
@@ -134,4 +137,74 @@ test("fetchPsiWithRetry throws last error if all attempts throw", async () => {
   const { fn, calls } = fakeFetch([{ throw: true }, { throw: true }, { throw: true }]);
   await assert.rejects(() => fetchPsiWithRetry("u", fn, opts), /network/);
   assert.equal(calls.count, 3);
+});
+
+test("normalizeMobileMetric maps good/poor thresholds to 100/0 and midpoints linearly", () => {
+  assert.equal(normalizeMobileMetric(1800, 1800, 3000), 100);
+  assert.equal(normalizeMobileMetric(1500, 1800, 3000), 100);
+  assert.equal(normalizeMobileMetric(3000, 1800, 3000), 0);
+  assert.equal(normalizeMobileMetric(3500, 1800, 3000), 0);
+  assert.equal(normalizeMobileMetric(2400, 1800, 3000), 50);
+});
+
+test("deriveMobile weights FCP/TBT/CLS 30/40/30", () => {
+  // All metrics at their "good" thresholds → perfect score.
+  assert.equal(deriveMobile({
+    "first-contentful-paint": { numericValue: 1800 },
+    "total-blocking-time": { numericValue: 200 },
+    "cumulative-layout-shift": { numericValue: 0.1 },
+  }), 100);
+  // All at midpoints → 50.
+  assert.equal(deriveMobile({
+    "first-contentful-paint": { numericValue: 2400 },
+    "total-blocking-time": { numericValue: 400 },
+    "cumulative-layout-shift": { numericValue: 0.175 },
+  }), 50);
+});
+
+test("deriveMobile falls back to poor-threshold defaults when audits are missing", () => {
+  assert.equal(deriveMobile({}), 0);
+});
+
+const psiFixture = {
+  lighthouseResult: {
+    categories: {
+      performance: { score: 0.9 },
+      accessibility: { score: 0.8 },
+      seo: { score: 1 },
+    },
+    audits: {
+      "largest-contentful-paint": { numericValue: 2500.4 },
+      "first-contentful-paint": { numericValue: 1800 },
+      "total-blocking-time": { numericValue: 200 },
+      "cumulative-layout-shift": { numericValue: 0.1 },
+      "network-requests": { details: { items: [{ url: "https://plausible.io/js/script.js" }] } },
+    },
+  },
+};
+
+test("runScan returns the full scores shape from a PSI response", async () => {
+  const fetchImpl = async () => ({ ok: true, status: 200, json: async () => psiFixture });
+  assert.deepEqual(await runScan("https://example.com", "api-key", fetchImpl), {
+    perf: 90,
+    a11y: 80,
+    seo: 100,
+    mobile: 100,
+    tracking: 100,
+    trackingTools: ["Plausible"],
+    lcp: 2500,
+  });
+});
+
+test("runScan rejects with the PSI status on a non-ok response", async () => {
+  const fetchImpl = async () => ({ ok: false, status: 403 });
+  await assert.rejects(() => runScan("https://example.com", "api-key", fetchImpl), /PSI API error: 403/);
+});
+
+test("runScan rejects with the reach error when every fetch attempt throws", async () => {
+  const fetchImpl = async () => { throw new Error("network"); };
+  await assert.rejects(
+    () => runScan("https://example.com", "api-key", fetchImpl, opts),
+    /Failed to reach PSI API/,
+  );
 });

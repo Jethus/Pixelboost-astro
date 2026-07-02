@@ -3,6 +3,7 @@ import { test } from "node:test";
 
 import {
   buildContactEmail,
+  buildContactScanEmail,
   getContactRedirect,
   validateTurnstileToken,
   validateContactSubmission,
@@ -65,6 +66,36 @@ test("buildContactEmail creates a plain text email for the site owner", () => {
   assert.match(email.raw, /Reply-To: Jane Smith <jane@example\.com>/);
   assert.match(email.raw, /Website: example\.com/);
   assert.match(email.raw, /I need help with a website redesign\./);
+});
+
+test("buildContactScanEmail notifies Josh only, with lead context and scores", () => {
+  const email = buildContactScanEmail(
+    { name: "Jane Smith", email: "jane@example.com", website: "example.com", message: "Help!" },
+    "https://example.com",
+    { perf: 42, mobile: 55, seo: 80, a11y: 70, tracking: 100, trackingTools: ["Plausible"], lcp: 4000 },
+  );
+
+  assert.equal(email.from, "Josh from Pixelboost <josh@pixelboost.ca>");
+  assert.equal(email.to, "josh@pixelboost.ca");
+  assert.equal(email.replyTo, "jane@example.com");
+  assert.equal(email.subject, "Contact lead site scan: example.com");
+  assert.match(email.text, /Jane Smith \(jane@example\.com\) submitted the contact form/);
+  assert.match(email.text, /Scanned URL: https:\/\/example\.com/);
+  assert.match(email.text, /- Speed: 42/);
+  assert.match(email.text, /- Lead tracking: Yes, Plausible/);
+  assert.match(email.text, /Verdict: /);
+});
+
+test("buildContactScanEmail strips CRLF from header-bound values", () => {
+  const email = buildContactScanEmail(
+    { name: "Jane\r\nBcc: evil@example.com", email: "jane@example.com\r\nX-Evil: 1", website: "x", message: "" },
+    "not a url\r\nBcc: evil@example.com",
+    { perf: 0, mobile: 0, seo: 0, a11y: 0, tracking: 0, trackingTools: [], lcp: null },
+  );
+
+  assert.doesNotMatch(email.subject, /[\r\n]/);
+  assert.doesNotMatch(email.replyTo, /[\r\n]/);
+  assert.doesNotMatch(email.text.split("\n")[0], /\r/);
 });
 
 test("getContactRedirect preserves the submitting origin", () => {
