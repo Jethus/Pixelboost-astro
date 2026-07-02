@@ -42,7 +42,7 @@ function displayScore(key: keyof Scores, value: number, scores: Scores): string 
     if (value > 0 && count > 0) {
       // Keep the column short: name the single tool, else just the count.
       // The verdict line below the scorecard names the primary tool in full.
-      return count === 1 ? `Yes — ${scores.trackingTools[0]}` : `Yes — ${count} tools`;
+      return count === 1 ? `Yes, ${scores.trackingTools[0]}` : `Yes, ${count} tools`;
     }
     return value > 0 ? 'Yes' : 'No';
   }
@@ -83,10 +83,31 @@ export default function Audit({
   const [displayScores, setDisplayScores] = useState<Scores>({ perf: 0, a11y: 0, seo: 0, mobile: 0, tracking: 0, lcp: null, trackingTools: [] });
   const [scannedUrl, setScannedUrl] = useState('');
   const rafRef = useRef<number | null>(null);
+  // Latest startScan, for the mount-scoped hero-handoff listener.
+  const startScanRef = useRef<(rawUrl: string) => void>(() => {});
 
   // Refs for CSSOM-driven dynamic styles (bar widths + score colors)
   const barFillRefs = useRef<Record<string, HTMLSpanElement | null>>({});
   const scoreNumRefs = useRef<Record<string, HTMLDivElement | null>>({});
+
+  // Hero mini-form handoff: prefill the input AND start the scan (an explicit
+  // hero submit is intent to scan). sessionStorage covers the not-yet-hydrated
+  // case (client:visible hydrates during the hero's scroll); the custom event
+  // covers hero submits after this island has already mounted. The ref keeps
+  // the persistent event listener pointed at the latest startScan closure so
+  // its scanning/email guards aren't stale.
+  useEffect(() => {
+    const takeHandoff = (value: string) => {
+      sessionStorage.removeItem('pb_hero_url');
+      if (!value) return;
+      setUrl(value);
+      startScanRef.current(value);
+    };
+    takeHandoff(sessionStorage.getItem('pb_hero_url') ?? '');
+    const onPrefill = (e: Event) => takeHandoff((e as CustomEvent<string>).detail);
+    window.addEventListener('pb:prefill-url', onPrefill);
+    return () => window.removeEventListener('pb:prefill-url', onPrefill);
+  }, []);
 
   // Count-up animation toward the real scores once a scan completes.
   useEffect(() => {
@@ -142,10 +163,9 @@ export default function Audit({
     });
   }, [displayScores, state, scores, rows]);
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!url.trim() || emailInvalid || state === 'scanning') return;
-    const normalized = url.startsWith('http') ? url : `https://${url}`;
+  const startScan = async (rawUrl: string) => {
+    if (!rawUrl.trim() || emailInvalid || state === 'scanning') return;
+    const normalized = rawUrl.startsWith('http') ? rawUrl : `https://${rawUrl}`;
     setScannedUrl(normalized);
     setScannedEmail(email.trim());
     sessionStorage.setItem('pb_audit_url', normalized);
@@ -167,6 +187,12 @@ export default function Audit({
       setState('error');
     }
   };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    startScan(url);
+  };
+  startScanRef.current = startScan;
 
   const showScores = state === 'done';
   const verdict = state === 'done' ? verdictFromScores(scores) : null;
@@ -206,18 +232,16 @@ export default function Audit({
               onChange={e => setUrl(e.target.value)}
               aria-label="Your website URL"
               className="audit-url-input"
-              onFocus={e => { e.currentTarget.style.borderColor = 'var(--color-mint-500)'; e.currentTarget.style.boxShadow = '0 0 0 4px var(--color-mint-100)'; }}
-              onBlur={e =>  { e.currentTarget.style.borderColor = 'var(--color-ink)';      e.currentTarget.style.boxShadow = 'none'; }}
             />
             <input
               type="email"
-              placeholder="Email (optional) — I'll send the full report + my top 3 fixes"
+              placeholder="Email (optional)"
               value={email}
               onChange={e => setEmail(e.target.value)}
               aria-label="Your email (optional)"
               aria-invalid={emailInvalid}
               aria-describedby={emailInvalid ? 'audit-email-error' : undefined}
-              className="audit-url-input audit-email-optional"
+              className="audit-url-input"
             />
             <button
               type="submit"
@@ -228,7 +252,7 @@ export default function Audit({
             </button>
           </form>
           {emailInvalid && (
-            <p id="audit-email-error" className="audit-email-error" role="alert">That email doesn't look right — check it, or leave it blank.</p>
+            <p id="audit-email-error" className="audit-email-error" role="alert">That email doesn't look right. Check it, or leave it blank.</p>
           )}
 
           <div className="audit-footnote-wrap">
@@ -247,7 +271,7 @@ export default function Audit({
             <div className="audit-mac-dots">
               {[0,1,2].map(i => <span key={i} className="audit-mac-dot"/>)}
             </div>
-            <div>Site report — {displayUrl} · {headerDate}</div>
+            <div>Site report · {displayUrl} · {headerDate}</div>
           </div>
 
           {/* Metric rows */}
@@ -289,7 +313,7 @@ export default function Audit({
                           animation: 'audit-spin 0.7s linear infinite',
                           verticalAlign: 'middle',
                         }} />
-                      : showScores ? displayScore(row.key, val, scores) : '—'}
+                      : showScores ? displayScore(row.key, val, scores) : '·'}
                   </div>
                 </div>
               );
@@ -304,7 +328,7 @@ export default function Audit({
                 : state === 'scanning'
                   ? 'Scanning your site…'
                   : state === 'error'
-                    ? <span className="audit-error-msg">Couldn't reach that URL — double-check it and try again.</span>
+                    ? <span className="audit-error-msg">Couldn't reach that URL. Double-check it and try again.</span>
                     : <>Verdict <svg className="audit-verdict-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.25" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg> <strong>{verdictIdle}</strong></>
               }
             </p>

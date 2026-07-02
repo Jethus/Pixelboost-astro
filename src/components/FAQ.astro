@@ -1,9 +1,19 @@
 ---
 import SectionHeader from "./ui/SectionHeader.astro";
-const questions = [
+
+interface QA { q: string; a: string; }
+interface Props {
+  heading?: string;
+  /** Q&A list. Defaults to the home copy. */
+  questions?: QA[];
+}
+
+const {
+  heading = "Reasonable questions, plain answers.",
+  questions = [
   {
     q: "How long does a project take?",
-    a: "Most small-business sites take 3-4 weeks from kickoff. Larger sites or projects where I write the content usually take 5-6 weeks. I only take on two projects at a time so timelines stay honest.",
+    a: "Most small-business sites take 4-6 weeks from kickoff. Larger sites or projects where I write the content can take a bit longer. I only take on two projects at a time so timelines stay honest.",
   },
   {
     q: "What's included in the $200/month plan?",
@@ -31,18 +41,19 @@ const questions = [
   },
   {
     q: "How much does a website redesign cost in Toronto?",
-    a: "My monthly plan is $200/month for the build plus ongoing updates. The flat-rate option is $4,800 for a clean hand-off. Both are shown above with no hidden fees.",
+    a: "My monthly plan is $200/month for the build plus ongoing updates. The flat-rate option is $3,200 for a clean hand-off. Both are shown above with no hidden fees.",
   },
   {
     q: "What tools do you actually use?",
     a: "Lighthouse for Google PageSpeed-style scoring, and Plausible for simple privacy-friendly analytics. You get access to the dashboards too.",
   },
-];
+  ],
+}: Props = Astro.props;
 ---
 
 <section id="faq" class="section-card faq-section">
   <SectionHeader eyebrow="FAQ" maxWidth="narrow">
-    Reasonable questions, plain answers.
+    {heading}
   </SectionHeader>
 
   <div class="faq-list">

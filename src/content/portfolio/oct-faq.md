@@ -6,7 +6,7 @@ image: ../../assets/portfolio/oct-faq-desktop.webp
 imageMobile: ../../assets/portfolio/oct-faq-mobile.webp
 url: https://help.oct.ca/hc/en-us
 location: Toronto, ON
-summary: Led the redesign of OCT's public FAQ — structured content to reduce call volume and improve findability for teachers navigating certification.
+summary: Led the redesign of OCT's public FAQ, structured content to reduce call volume and improve findability for teachers navigating certification.
 outcome: "Reduced support calls by clarifying the application process"
 stats:
   - label: Lighthouse

@@ -1,23 +1,38 @@
 ---
 import SectionHeader from "./ui/SectionHeader.astro";
-const cards = [
-  {
-    title: "Small changes cost you time and money.",
-    body: "New hours? A new service? A photo swap? You should be able to send a quick note and have it handled. No waiting or paying every time.",
-  },
-  {
-    title: "You can't see how your customers arrive.",
-    body: "Without any tracking, you're guessing which calls come from your site and which come from word of mouth.",
-  },
-  {
-    title: "Your site is too slow.",
-    body: "A slow page costs you the customer before they've even read a word. Most sites built on Wix or Squarespace score under 50 on mobile.",
-  },
-  {
-    title: "It doesn't look right on phones.",
-    body: "Most customers are browsing on their phone. If your site squishes, overflows, or is hard to tap, they move on, and you never know why.",
-  },
-];
+
+interface Card { title: string; body: string; }
+interface Props {
+  eyebrow?: string;
+  subhead?: string;
+  heading?: string;
+  /** Up to 4 cards; icons are reused by position. Defaults to the home copy. */
+  cards?: Card[];
+}
+
+const {
+  eyebrow = "Why it matters",
+  subhead = "Most people cannot see it. Customers feel it every day.",
+  heading = "Your current site might be quietly costing you customers.",
+  cards = [
+    {
+      title: "Small changes cost you time and money.",
+      body: "New hours? A new service? A photo swap? You should be able to send a quick note and have it handled. No waiting or paying every time.",
+    },
+    {
+      title: "You can't see how your customers arrive.",
+      body: "Without any tracking, you're guessing which calls come from your site and which come from word of mouth.",
+    },
+    {
+      title: "Your site is too slow.",
+      body: "A slow page costs you the customer before they've even read a word. Most sites built on Wix or Squarespace score under 50 on mobile.",
+    },
+    {
+      title: "It doesn't look right on phones.",
+      body: "Most customers are browsing on their phone. If your site squishes, overflows, or is hard to tap, they move on, and you never know why.",
+    },
+  ],
+}: Props = Astro.props;
 
 const icons = [
   `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>`,
@@ -29,8 +44,8 @@ const icons = [
 
 <section id="problem" class="section-card surface-paper-2">
   <div data-reveal>
-    <SectionHeader eyebrow="Why it matters" subhead="Most people cannot see it. Customers feel it every day.">
-      Your current site might be quietly costing you customers.
+    <SectionHeader eyebrow={eyebrow} subhead={subhead}>
+      {heading}
     </SectionHeader>
   </div>
 

@@ -1,0 +1,90 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Header from "../components/Header.astro";
+import Hero from "../components/Hero.astro";
+import Problem from "../components/Problem.astro";
+import Portfolio from "../components/Portfolio.astro";
+import Pricing from "../components/Pricing.astro";
+import FAQ from "../components/FAQ.astro";
+import ClosingCTA from "../components/ClosingCTA.astro";
+import Footer from "../components/Footer.astro";
+
+const problemCards = [
+  {
+    title: "Customers can't find you locally.",
+    body: "When someone in Oshawa or Whitby searches for what you do, a slow or dated site gets buried under competitors who show up faster.",
+  },
+  {
+    title: "You can't see which leads come from your site.",
+    body: "Without tracking, you're guessing whether your website brings in Durham Region customers or whether it's all word of mouth.",
+  },
+  {
+    title: "Your site is too slow on mobile.",
+    body: "Most local customers browse on their phone. A slow page loses them before they've read a word. Many Wix and Squarespace sites score under 50 on mobile.",
+  },
+  {
+    title: "It doesn't look right on phones.",
+    body: "If your site squishes, overflows, or is hard to tap, a customer in Ajax or Pickering moves on, and you never find out why.",
+  },
+];
+
+const faqQuestions = [
+  {
+    q: "Do you work with businesses in Durham Region?",
+    a: "Yes. Durham Region is home base. I work with small businesses across Oshawa, Whitby, Ajax, Pickering, Bowmanville, and Clarington, as well as the wider GTA. Meetings can be in person or remote, whatever's easiest for you.",
+  },
+  {
+    q: "How long does a Durham Region website take to build?",
+    a: "Most small-business sites take 4-6 weeks from kickoff. Larger sites, or projects where I write the content, can take a bit longer. I only take on two projects at a time so timelines stay honest.",
+  },
+  {
+    q: "What does a small business website cost?",
+    a: "My monthly plan is $200/month for the build plus ongoing updates. The flat-rate option is $3,200 for a clean hand-off. Both are shown above, with no hidden fees.",
+  },
+  {
+    q: "I already have a website. Do I need a new one?",
+    a: "Not always. Start with the free scan above. Sometimes the answer is \"your site is mostly fine; fix these 3 things.\" If a redesign genuinely makes sense for your business, we talk it through, and I'll tell you if it doesn't.",
+  },
+  {
+    q: "Who owns the website when it's done?",
+    a: "You do. The code, design, content, domain, and analytics are all yours. You're never locked in.",
+  },
+];
+---
+
+<BaseLayout
+  title="Durham Region web design for small businesses"
+  description="Custom web design for Durham Region small businesses in Oshawa, Whitby, Ajax, and Pickering. Fast, mobile-friendly sites built to bring in local customers."
+>
+  <Header />
+  <main>
+    <Hero
+      scanInput={false}
+      primaryHref="/free-website-audit"
+      title={`Web design for <span class="high">Durham Region</span> small businesses.`}
+      sub="I build fast, custom websites for small businesses across Oshawa, Whitby, Ajax, Pickering, and the rest of Durham Region. Built to load fast, look right on phones, and bring in local customers."
+      note="Free site scan. No email required."
+      secondaryLabel="See recent work"
+      secondaryHref="#work"
+    />
+
+    <Problem
+      eyebrow="Why it matters"
+      subhead="Most owners can't see it. Local customers feel it every day."
+      heading="Your current site might be quietly costing you local customers."
+      cards={problemCards}
+    />
+
+    <Portfolio />
+
+    <Pricing />
+
+    <FAQ
+      heading="Durham Region web design, common questions."
+      questions={faqQuestions}
+    />
+
+    <ClosingCTA />
+  </main>
+  <Footer />
+</BaseLayout>

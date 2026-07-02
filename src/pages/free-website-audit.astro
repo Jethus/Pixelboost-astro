@@ -1,0 +1,218 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Header from "../components/Header.astro";
+import Audit from "../components/Audit.astro";
+import FAQ from "../components/FAQ.astro";
+import ClosingCTA from "../components/ClosingCTA.astro";
+import Footer from "../components/Footer.astro";
+import SectionHeader from "../components/ui/SectionHeader.astro";
+
+const checks = [
+  {
+    title: "Speed",
+    body: "How fast your pages actually load, on mobile and desktop. Slow load times are the number one reason visitors leave before they see what you offer.",
+  },
+  {
+    title: "Mobile experience",
+    body: "Whether your site is easy to read and tap on a phone, where most local customers browse. Squished layouts and tiny buttons cost you business.",
+  },
+  {
+    title: "SEO basics",
+    body: "Whether search engines can find, read, and understand your site. Missing the fundamentals means you're invisible when customers search for you.",
+  },
+  {
+    title: "Accessibility",
+    body: "Whether everyone can use your site, including older visitors and people with disabilities. In Ontario this also ties into AODA requirements.",
+  },
+  {
+    title: "Lead tracking",
+    body: "Whether you can even see where your calls and enquiries come from. Without it, you're guessing which of your marketing actually works.",
+  },
+];
+
+const scoreBands = [
+  {
+    range: "90-100",
+    label: "Strong",
+    body: "Your site is fast and well-built. There may still be small wins, but you're not losing customers to performance.",
+  },
+  {
+    range: "50-89",
+    label: "Feeling it",
+    body: "Visitors are noticing, even if they can't name it. Pages feel sluggish and some will leave before they load. Worth fixing.",
+  },
+  {
+    range: "Under 50",
+    label: "Costing you",
+    body: "Your site is slow enough that you're actively losing customers, especially on mobile. This is where a rebuild usually pays for itself.",
+  },
+];
+
+const auditFaq = [
+  {
+    q: "Is the website audit really free?",
+    a: "Yes. Enter your URL and you get a scorecard in seconds, no payment and no email required to see it. If you want the full breakdown emailed to you, you can add your address, but it's optional.",
+  },
+  {
+    q: "What do I need to run the audit?",
+    a: "Just your website address. Paste the URL, hit scan, and the tool checks your live site's speed, mobile experience, SEO, accessibility, and lead tracking, then shows you a plain-English score for each.",
+  },
+  {
+    q: "How long does the website audit take?",
+    a: "Seconds. The scan runs against your live site and returns a scorecard almost immediately. Reading and understanding it takes a few minutes, and I'm happy to walk you through it on a free call.",
+  },
+  {
+    q: "What happens after I get my score?",
+    a: "That's up to you. Sometimes the answer is \"your site is mostly fine, fix these few things,\" and I'll tell you that. If a redesign genuinely makes sense for your business, we can talk through what it would involve, with no pressure.",
+  },
+  {
+    q: "Does a low score mean I need a new website?",
+    a: "Not always. A low score means visitors are likely feeling the problem, but the fix isn't always a full rebuild. The audit shows you what's wrong; the right response depends on your site and your business.",
+  },
+];
+---
+
+<BaseLayout
+  title="Free website audit for small businesses"
+  description="Run a free website audit in seconds. Check your site's speed, mobile experience, SEO, and accessibility, with a plain-English scorecard. No email required."
+>
+  <Header />
+  <main>
+    <Audit
+      eyebrow="Free website audit"
+      headline="Free website audit for your small business."
+      body="Paste your URL and see exactly where your site stands: speed, mobile, SEO, accessibility, and lead tracking. A plain-English scorecard for Toronto and Durham Region businesses, no email required."
+    />
+
+    <section class="section-card surface-paper">
+      <div data-reveal>
+        <SectionHeader
+          eyebrow="What we check"
+          subhead="Five things that decide whether your website brings in customers or quietly turns them away."
+        >
+          What a free website audit actually checks.
+        </SectionHeader>
+      </div>
+      <ul class="check-list" aria-label="What the audit checks">
+        {checks.map((c, i) => (
+          <li class="check-item" data-reveal style={`--reveal-i:${i + 1}`}>
+            <h3 class="check-title">{c.title}</h3>
+            <p class="check-body">{c.body}</p>
+          </li>
+        ))}
+      </ul>
+    </section>
+
+    <section class="section-card surface-paper-2">
+      <div data-reveal>
+        <SectionHeader
+          eyebrow="What your score means"
+          subhead="Your audit gives each area a score from 0 to 100. Here's how to read it."
+        >
+          What your website score actually tells you.
+        </SectionHeader>
+      </div>
+      <div class="band-list">
+        {scoreBands.map((b, i) => (
+          <div class="band-item" data-reveal style={`--reveal-i:${i + 1}`}>
+            <span class="band-range">{b.range}</span>
+            <span class="band-label">{b.label}</span>
+            <p class="band-body">{b.body}</p>
+          </div>
+        ))}
+      </div>
+      <p class="band-note">
+        Curious what these numbers are built on? Here's <a href="/blog/what-is-google-lighthouse-score">what a Google Lighthouse score actually means</a> and <a href="/blog/how-long-should-a-website-take-to-load">how fast a small business site should load</a>.
+      </p>
+    </section>
+
+    <FAQ
+      heading="Free website audit, common questions."
+      questions={auditFaq}
+    />
+
+    <ClosingCTA />
+  </main>
+  <Footer />
+</BaseLayout>
+
+<style>
+  .check-list {
+    margin-top: 40px;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+  }
+  .check-item {
+    padding: 22px;
+    border: 1px solid var(--color-line);
+    border-radius: 18px;
+    background: rgba(248, 245, 238, 0.48);
+  }
+  .check-title {
+    margin: 0 0 6px 0;
+    font-size: clamp(18px, 1.45vw, 22px);
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    color: var(--color-ink);
+  }
+  .check-body {
+    margin: 0;
+    font-size: clamp(14.5px, 1.1vw, 16.5px);
+    color: var(--color-ink-500);
+    line-height: 1.55;
+    font-weight: 450;
+  }
+
+  .band-list {
+    margin-top: 40px;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+  }
+  .band-item {
+    padding: 24px 22px;
+    border: 1px solid var(--color-line);
+    border-radius: 18px;
+    background: var(--color-paper);
+  }
+  .band-range {
+    display: block;
+    font-size: 28px;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    color: var(--color-mint-700);
+    line-height: 1;
+  }
+  .band-label {
+    display: block;
+    margin: 8px 0 12px;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--color-ink-500);
+  }
+  .band-body {
+    margin: 0;
+    font-size: 14.5px;
+    color: var(--color-ink-500);
+    line-height: 1.55;
+    font-weight: 450;
+  }
+  .band-note {
+    margin: 28px 0 0;
+    font-size: 14.5px;
+    color: var(--color-ink-500);
+    line-height: 1.6;
+  }
+  .band-note a { color: var(--color-mint-700); font-weight: 600; }
+
+  @media (max-width: 720px) {
+    .check-list { grid-template-columns: 1fr; margin-top: 36px; }
+    .band-list { grid-template-columns: 1fr; margin-top: 36px; }
+  }
+</style>
