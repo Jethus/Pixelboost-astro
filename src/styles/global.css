@@ -56,12 +56,6 @@
   --shadow-nav:         0 2px 12px -2px rgba(15,26,20,0.14), 0 1px 0 rgba(15,26,20,0.06);
   --shadow-btn:         0 6px 18px -8px rgba(15,26,20,0.35);
   --shadow-card:        0 20px 60px -20px rgba(0,0,0,0.35);
-  --shadow-brutal:      4px 4px 0px 0px var(--color-ink);
-  --shadow-brutal-hover: 2px 2px 0px 0px var(--color-ink);
-  --shadow-brutal-lg:   6px 6px 0px 0px var(--color-ink);
-
-  /* Radii (extended) */
-  --radius-brutal: 12px;
 }
 
 /* ————————————————————————————————————————————————————————————
@@ -130,16 +124,6 @@
   padding: clamp(56px, 7vw, 96px) clamp(28px, 5vw, 72px);
   min-width: 0;
 }
-
-/* ————————————————————————————————————————————————————————————
-   Neo-brutalist utilities
-   ———————————————————————————————————————————————————————————— */
-
-@utility rounded-brutal      { border-radius: var(--radius-brutal); }
-@utility shadow-brutal       { box-shadow: var(--shadow-brutal); }
-@utility shadow-brutal-hover { box-shadow: var(--shadow-brutal-hover); }
-@utility shadow-brutal-lg    { box-shadow: var(--shadow-brutal-lg); }
-@utility border-3            { border-width: 3px; }
 
 /* ————————————————————————————————————————————————————————————
    Shared component utilities

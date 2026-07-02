@@ -45,10 +45,9 @@ There are **no landing-section collections** — landing components (`Hero`, `Pr
 ### Key non-obvious patterns
 
 - **Blog read-time**: `blog/index.astro` computes read-time from `post.body` word count (~200 wpm) and passes it to `BlogCard` / the featured card — no `readTime` frontmatter field exists
-- **Reuse components and primitives** — before building UI, check `src/components/` and the primitives in `src/components/ui/` (`BlogCard`, `Button`, `Card`, `ComparisonTable`, `Eyebrow`, `SectionHeader`) for an existing pattern. When the same element appears in two places (e.g. the FAQ accordion in `FAQ.astro` and `BlogFAQ.astro`), they must look and behave identically; if a context needs a variant, make a prop-driven sibling that reuses the same markup/styles (`BlogFAQ.astro` is the model) rather than hand-rolling new markup.
+- **Reuse components and primitives** — before building UI, check `src/components/` and the primitives in `src/components/ui/` (`BlogCard`, `Button`, `Card`, `Eyebrow`, `SectionHeader`) for an existing pattern. When the same element appears in two places (e.g. the FAQ accordion in `FAQ.astro` and `BlogFAQ.astro`), they must look and behave identically; if a context needs a variant, make a prop-driven sibling that reuses the same markup/styles (`BlogFAQ.astro` is the model) rather than hand-rolling new markup.
 - **No emojis in UI** — always use inline SVG icons instead
 - **Tests** (`tests/*.test.mjs`) are plain `node:test` and mostly cover the Worker utilities, the verdict logic, and static invariants of checked-in files (font loading, header nav, image dimensions). Run them after touching `src/worker/` or `src/shared/`.
-- **Traps**: `@astrojs/rss` is installed but there is no RSS endpoint; `src/fonts/` contains unused legacy font files (the live font ships via fontsource — see Design System).
 
 ### Astro features in use
 
@@ -69,7 +68,7 @@ There are **no landing-section collections** — landing components (`Hero`, `Pr
 
 ## Design System
 
-**Soft paper / mint aesthetic (v2).** Warm off-white "paper" surfaces float as rounded "section cards" (28px radius) on a mint-tinted shell, with a green "mint" brand accent, charcoal "ink" text, soft diffuse shadows, and bold tight-tracked headings. This is calm and editorial — **not** the older neo-brutalist look. (Brutalist utilities — `shadow-brutal`, `border-3`, `rounded-brutal` — still exist in `global.css` but are legacy; don't reach for them in new work.)
+**Soft paper / mint aesthetic (v2).** Warm off-white "paper" surfaces float as rounded "section cards" (28px radius) on a mint-tinted shell, with a green "mint" brand accent, charcoal "ink" text, soft diffuse shadows, and bold tight-tracked headings. This is calm and editorial — **not** the older neo-brutalist look (whose utilities have been removed from `global.css`; don't reintroduce them).
 
 ### Styling stack
 
