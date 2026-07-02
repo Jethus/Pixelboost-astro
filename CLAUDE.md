@@ -16,7 +16,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Architecture
 
-This is a marketing site for pixelboost.ca: a **static Astro 6 build served by a Cloudflare Worker**. `astro build` emits `./dist`, and the Worker (`src/worker/index.js`, configured in `wrangler.toml`) serves those assets via the ASSETS binding, handles the two dynamic endpoints, and sets the **Content-Security-Policy header at the edge** (`CSP_HEADER` in `src/worker/index.js` — not in Astro config, so CSP never applies under `npm run dev`/`preview`; use `preview:worker` to verify it).
+This is a marketing site for pixelboost.ca: a **static Astro build served by a Cloudflare Worker**. `astro build` emits `./dist`, and the Worker (`src/worker/index.js`, configured in `wrangler.toml`) serves those assets via the ASSETS binding, handles the two dynamic endpoints, and sets the **Content-Security-Policy header at the edge** (`CSP_HEADER` in `src/worker/index.js` — not in Astro config, so CSP never applies under `npm run dev`/`preview`; use `preview:worker` to verify it).
 
 ### Worker backend (`src/worker/`)
 
@@ -50,9 +50,9 @@ There are **no landing-section collections** — landing components (`Hero`, `Pr
 - **Tests** (`tests/*.test.mjs`) are plain `node:test` and mostly cover the Worker utilities, the verdict logic, and static invariants of checked-in files (font loading, header nav, image dimensions). Run them after touching `src/worker/` or `src/shared/`.
 - **Traps**: `@astrojs/rss` is installed but there is no RSS endpoint; `src/fonts/` contains unused legacy font files (the live font ships via fontsource — see Design System).
 
-### Astro 6 features in use
+### Astro features in use
 
-- Astro `^6.4.3` with the Rust compiler (`rustCompiler: true`) and queued rendering (both experimental)
+- Check `package.json` for the current Astro version. The Rust compiler (`rustCompiler: true`) and queued rendering are enabled under `experimental` in `astro.config.mjs`
 - Integrations: `mdx()`, `sitemap()`, `react()` (React 19, but most components are `.astro`; `Audit.tsx` is the main island)
 - Tailwind CSS v4 via the Vite plugin
 
