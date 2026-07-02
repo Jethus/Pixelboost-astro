@@ -38,7 +38,7 @@ import Button from "../components/ui/Button.astro";
     </section>
 
     <!-- Story -->
-    <section class="section-card about-story">
+    <section class="section-card surface-paper-2 about-story">
       <div>
         <h2 class="about-story-h2">How this started</h2>
         <div class="about-story-body">
@@ -123,14 +123,6 @@ import Button from "../components/ui/Button.astro";
           <h3>Ongoing Maintenance</h3>
           <p>Monthly plan clients get updates, edits, and support included. You don't need to stress about the technical side.</p>
         </div>
-        <div class="service-item">
-          <h3>Branding</h3>
-          <p>Logo, colour palette, type: if you need a brand before the site, I can help with that too.</p>
-        </div>
-        <div class="service-item">
-          <h3>Print Design</h3>
-          <p>Business cards, flyers, signage: keep the brand consistent offline too.</p>
-        </div>
       </div>
     </section>
 
@@ -201,7 +193,10 @@ import Button from "../components/ui/Button.astro";
     }
   }
 
-  :global(.about-card) {
+  /* Descendant selector so this outranks the Card primitive's own
+     .card { flex-direction: column } — bare :global(.about-card) ties
+     on specificity and loses on source order. */
+  .about-cards-col :global(.about-card) {
     flex-direction: row;
     gap: 14px;
     align-items: flex-start;
@@ -226,20 +221,22 @@ import Button from "../components/ui/Button.astro";
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.07em;
-    color: var(--color-ink-400);
+    /* ink-500, not ink-400: 11px text on the mint card needs AA (ink-400
+       on mint-50 is 4.2:1, fails; ink-500 is 7.4:1). */
+    color: var(--color-ink-500);
   }
 
   .about-card-value {
     margin: 0;
-    font-size: clamp(14px, 1.1vw, 15.5px);
-    line-height: 1.55;
+    font-size: clamp(14.5px, 1.1vw, 15.5px);
+    line-height: 1.6;
     color: var(--color-ink-700);
     font-weight: 500;
   }
 
   .services-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(2, 1fr);
     gap: 1px;
     background: var(--color-line);
     border: 1px solid var(--color-line);
@@ -261,8 +258,8 @@ import Button from "../components/ui/Button.astro";
 
   .service-item p {
     margin: 0;
-    font-size: clamp(15px, 1.2vw, 17px);
-    color: var(--color-ink-500);
+    font-size: clamp(16px, 1.25vw, 17px);
+    color: var(--color-ink-700);
     line-height: 1.65;
   }
 
@@ -285,7 +282,7 @@ import Button from "../components/ui/Button.astro";
     color: var(--color-ink-500);
     line-height: 1.65;
     margin: 0;
-    font-weight: 450;
+    font-weight: 500;
     max-width: 60ch;
   }
 
@@ -298,9 +295,9 @@ import Button from "../components/ui/Button.astro";
     display: flex;
     flex-direction: column;
     gap: 18px;
-    font-size: clamp(15px, 1.2vw, 17px);
+    font-size: clamp(16px, 1.25vw, 17.5px);
     color: var(--color-ink-700);
-    line-height: 1.7;
+    line-height: 1.75;
   }
 
   .about-story-p { margin: 0; }
@@ -323,7 +320,7 @@ import Button from "../components/ui/Button.astro";
 
   .about-services-lead {
     margin: 0;
-    font-size: clamp(15px, 1.2vw, 17px);
+    font-size: clamp(16px, 1.25vw, 17.5px);
     color: var(--color-ink-700);
     line-height: 1.7;
   }
