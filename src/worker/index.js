@@ -150,6 +150,13 @@ export default {
   async fetch(request, env, ctx) {
     const url = new URL(request.url);
 
+    // Canonical host: strip www so Google never sees duplicate content on
+    // www.pixelboost.ca (wrangler.toml routes both hosts to this Worker).
+    if (url.hostname.startsWith("www.")) {
+      url.hostname = url.hostname.slice(4);
+      return Response.redirect(url.toString(), 301);
+    }
+
     if (request.method === "POST" && url.pathname === "/api/audit") {
       return handleAudit(request, env, ctx);
     }
