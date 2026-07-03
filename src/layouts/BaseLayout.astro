@@ -48,6 +48,7 @@ const pageTitle = title === SITE_TITLE ? title : `${title} | ${SITE_NAME}`;
 
     <!-- Plausible. No .scroll variant — this instance 404s it (HTML + nosniff
          = whole script blocked). Re-add .scroll after upgrading Plausible. -->
+    <link rel="preconnect" href="https://data.pixelboost.dev" />
     <script
       defer
       data-domain="pixelboost.ca"
