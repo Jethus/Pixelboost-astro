@@ -8,7 +8,7 @@ import tailwindcss from "@tailwindcss/vite";
 export default defineConfig({
   site: "https://pixelboost.ca",
   build: {
-    inlineStylesheets: "always",
+    inlineStylesheets: "auto",
   },
   integrations: [mdx(), sitemap(), react()],
   vite: {
