@@ -1,5 +1,3 @@
-import { EmailMessage } from "cloudflare:email";
-
 import { runScan } from "./audit-utils.js";
 import {
   buildContactEmail,
@@ -134,13 +132,10 @@ async function handleContact(request, env, ctx) {
     return Response.redirect(getContactRedirect(request.url, "error"), 303);
   }
 
-  const email = buildContactEmail(result.value);
-  const message = new EmailMessage(email.from, email.to, email.raw);
-
   try {
-    await env.CONTACT_EMAIL.send(message);
+    await sendViaFastmail(env, buildContactEmail(result.value));
   } catch (e) {
-    console.error("contact: send_email failed", e);
+    console.error("contact: fastmail send failed", e);
     return Response.redirect(getContactRedirect(request.url, "error"), 303);
   }
 
