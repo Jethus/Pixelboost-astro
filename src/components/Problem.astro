@@ -6,7 +6,7 @@ interface Props {
   eyebrow?: string;
   subhead?: string;
   heading?: string;
-  /** Up to 4 cards; icons are reused by position. Defaults to the home copy. */
+  /** Checklist rows. Defaults to the home copy. */
   cards?: Card[];
 }
 
@@ -33,112 +33,168 @@ const {
     },
   ],
 }: Props = Astro.props;
-
-const icons = [
-  `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>`,
-  `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>`,
-  `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>`,
-  `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>`,
-];
 ---
 
-<section id="problem" class="section-card surface-paper-2">
+<section id="problem" class="problem-check section-card surface-paper-2">
   <div data-reveal>
     <SectionHeader eyebrow={eyebrow} subhead={subhead}>
       {heading}
     </SectionHeader>
   </div>
 
-  <ul class="problem-list" aria-label="Common website problems">
-    {cards.map((card, i) => (
-      <li class="problem-item" data-reveal>
-        <span class="icon-tile" aria-hidden="true" set:html={icons[i]} />
-        <h3 class="problem-title">{card.title}</h3>
-        <p class="problem-body">{card.body}</p>
-      </li>
+  <div class="check-list" role="group" aria-labelledby="problem-check-legend">
+    <p class="check-legend" id="problem-check-legend">Tick anything that sounds familiar</p>
+    {cards.map((card) => (
+      <label class="check-row" data-reveal>
+        <input type="checkbox" class="check-box" />
+        <span class="check-text">
+          <span class="check-title">{card.title}</span>
+          <span class="check-body">{card.body}</span>
+        </span>
+      </label>
     ))}
-  </ul>
+
+    <div class="check-result">
+      <p class="check-msg" data-check-msg aria-live="polite"></p>
+      <a
+        href="#audit"
+        class="btn-mint btn-interactive check-cta plausible-event-name=Scan+Started plausible-event-location=checklist"
+        data-check-cta
+        hidden
+      >
+        Score my site
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+      </a>
+      <p class="check-nojs">
+        Sound familiar? The <a class="prose-link" href="/free-website-audit">free scan</a> shows what it's costing you. Thirty seconds, no email.
+      </p>
+    </div>
+  </div>
 </section>
 
 <style>
-  .problem-list {
+  .check-list {
     margin-top: 40px;
-    padding: 0;
-    list-style: none;
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 16px;
+    max-width: 840px;
   }
 
-  .problem-item {
-    display: grid;
-    grid-template-columns: 40px minmax(0, 1fr);
-    column-gap: 16px;
-    row-gap: 6px;
-    align-items: start;
-    padding: 22px;
-    border: 1px solid var(--color-line);
-    border-radius: 18px;
-    background: rgba(248, 245, 238, 0.48);
+  .check-legend {
+    margin: 0 0 6px 0;
+    font-size: 11.5px; font-weight: 700; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--color-ink-500);
   }
 
-  .problem-title {
-    grid-column: 2;
-    grid-row: 1;
-    margin: 0;
-    font-size: clamp(18px, 1.45vw, 22px);
-    font-weight: 700;
-    line-height: 1.2;
-    letter-spacing: -0.02em;
-    color: var(--color-ink);
+  .check-row {
+    display: flex; align-items: flex-start; gap: 18px;
+    padding: 22px 6px;
+    border-bottom: 1px solid var(--color-line-2);
+    cursor: pointer;
+    transition: background 0.15s ease;
   }
+  .check-row:hover { background: rgba(248, 245, 238, 0.55); }
 
-  .problem-body {
-    grid-column: 2;
-    grid-row: 2;
-    margin: 0;
-    font-size: clamp(14.5px, 1.1vw, 16.5px);
-    color: var(--color-ink-500);
-    line-height: 1.55;
-    font-weight: 450;
-  }
+  .check-row:nth-of-type(1) { --reveal-i: 1; }
+  .check-row:nth-of-type(2) { --reveal-i: 2; }
+  .check-row:nth-of-type(3) { --reveal-i: 3; }
+  .check-row:nth-of-type(4) { --reveal-i: 4; }
 
-  .icon-tile {
-    grid-column: 1;
-    grid-row: 1 / span 2;
-    width: 40px; height: 40px; border-radius: var(--radius-icon);
-    background: var(--color-mint-100);
-    border: 1px solid var(--color-mint-200);
-    color: var(--color-mint-700);
+  .check-box {
+    appearance: none; -webkit-appearance: none;
+    width: 24px; height: 24px; margin: 2px 0 0 0;
+    border: 1.5px solid var(--color-ink); border-radius: 7px;
+    background: var(--color-paper);
+    flex: none; cursor: pointer;
     display: grid; place-items: center;
-    flex-shrink: 0;
+    transition: background 0.15s ease;
+  }
+  .check-box::after {
+    content: "";
+    width: 12px; height: 7px; margin-top: -3px;
+    border-left: 2.5px solid var(--color-mint-500);
+    border-bottom: 2.5px solid var(--color-mint-500);
+    transform: rotate(-45deg) scale(0);
+    transition: transform 0.15s ease;
+  }
+  .check-box:checked { background: var(--color-ink); }
+  .check-box:checked::after { transform: rotate(-45deg) scale(1); }
+  .check-box:focus-visible {
+    outline: none;
+    border-color: var(--color-mint-500);
+    box-shadow: 0 0 0 4px var(--color-mint-100);
   }
 
-  .problem-item:nth-child(1) { --reveal-i: 1; }
-  .problem-item:nth-child(2) { --reveal-i: 2; }
-  .problem-item:nth-child(3) { --reveal-i: 3; }
-  .problem-item:nth-child(4) { --reveal-i: 4; }
+  .check-text { min-width: 0; }
+  .check-title {
+    display: block;
+    font-size: clamp(17px, 1.4vw, 20px); font-weight: 700;
+    letter-spacing: -0.02em; line-height: 1.25; color: var(--color-ink);
+  }
+  .check-body {
+    display: block; margin-top: 4px;
+    font-size: clamp(14.5px, 1.1vw, 16px); color: var(--color-ink-500);
+    line-height: 1.55; font-weight: 450;
+  }
+
+  .check-result {
+    display: flex; flex-wrap: wrap; align-items: center; gap: 16px 24px;
+    padding-top: 22px;
+    min-height: 32px;
+  }
+  .check-msg {
+    margin: 0;
+    font-size: clamp(15px, 1.2vw, 17px); font-weight: 600;
+    color: var(--color-ink-700); line-height: 1.5;
+    max-width: 46ch;
+  }
+  .check-cta { flex: none; }
+
+  /* Without JS the tally never runs — show a static line instead. */
+  .check-nojs {
+    display: none;
+    margin: 0;
+    font-size: clamp(15px, 1.2vw, 17px); font-weight: 500;
+    color: var(--color-ink-700); line-height: 1.5;
+  }
+  :global(.no-js) .check-nojs { display: block; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .check-box, .check-box::after, .check-row { transition: none; }
+  }
 
   @media (max-width: 640px) {
-    .problem-list {
-      grid-template-columns: 1fr;
-      margin-top: 36px;
-    }
-
-    /* Icon on its own row so the title and body span the full card width
-       instead of wrapping in a cramped column beside the icon. */
-    .problem-item {
-      grid-template-columns: 1fr;
-      row-gap: 12px;
-      padding: 20px;
-    }
-
-    .icon-tile {
-      grid-column: 1;
-      grid-row: 1;
-    }
-
-    .problem-title { grid-column: 1; grid-row: 2; }
-    .problem-body  { grid-column: 1; grid-row: 3; }
+    .check-list { margin-top: 32px; }
+    .check-row { gap: 14px; padding: 18px 2px; }
   }
 </style>
+
+<script>
+  // Self-diagnosis tally: count checked rows, speak to the result line, and
+  // reveal the scan CTA once anything is ticked. The CTA points at the
+  // on-page Audit island when it exists, the audit page otherwise.
+  const WORDS = ["none", "one", "two", "three", "four", "five", "six"];
+
+  document.querySelectorAll<HTMLElement>(".problem-check").forEach((section) => {
+    const boxes = Array.from(section.querySelectorAll<HTMLInputElement>(".check-box"));
+    const msg = section.querySelector<HTMLElement>("[data-check-msg]");
+    const cta = section.querySelector<HTMLAnchorElement>("[data-check-cta]");
+    if (!msg || !cta || boxes.length === 0) return;
+
+    if (!document.getElementById("audit")) cta.href = "/free-website-audit";
+
+    const line = (n: number, total: number): string => {
+      const word = (x: number) => WORDS[x] ?? String(x);
+      if (n === 0) return "None of them? You're in better shape than most sites I scan.";
+      if (n === total) return `All ${word(total)}. The good news: every one of these is fixable. Start with the scan — it takes about 30 seconds.`;
+      if (n === 1) return `One of ${word(total)} is still costing you. The free scan shows how much.`;
+      return `${word(n)[0].toUpperCase()}${word(n).slice(1)} of ${word(total)}. Worth finding out what they're costing you — the scan takes about 30 seconds.`;
+    };
+
+    const update = () => {
+      const n = boxes.filter((b) => b.checked).length;
+      msg.textContent = line(n, boxes.length);
+      cta.hidden = n === 0;
+    };
+
+    boxes.forEach((box) => box.addEventListener("change", update));
+  });
+</script>

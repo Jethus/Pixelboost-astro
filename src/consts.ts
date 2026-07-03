@@ -11,3 +11,14 @@ export const SITE_NAME = "Pixelboost";
 export const SITE_TITLE = HOME_TITLE;
 export const SITE_DESCRIPTION =
   "Custom website design and redesign for small businesses in Toronto and Durham Region. Faster, cleaner sites that turn visitors into leads. Free site scan, no email required.";
+
+// Recent site scans shown in the hero "Recently scanned" strip.
+// PLACEHOLDER DATA — swap each entry for a real (anonymized) scan before
+// this goes live: business type + town, and the mobile performance score
+// from PageSpeed Insights / the audit tool. Keep 3–5 entries.
+export const RECENT_SCANS: { label: string; score: number }[] = [
+  { label: "Landscaper, Ajax", score: 38 },
+  { label: "Dental clinic, Whitby", score: 52 },
+  { label: "Café, Oshawa", score: 44 },
+  { label: "Auto shop, Pickering", score: 41 },
+];
