@@ -5,8 +5,26 @@ import Footer from "../components/Footer.astro";
 import { Image } from "astro:assets";
 import joshPhoto from "../assets/webp/Josh-crop.webp";
 import Eyebrow from "../components/ui/Eyebrow.astro";
-import Card from "../components/ui/Card.astro";
 import Button from "../components/ui/Button.astro";
+
+const facts = [
+  {
+    label: "Based in",
+    value: "Toronto, Ontario. Working with clients across the GTA and Durham Region.",
+  },
+  {
+    label: "Background",
+    value: "Frontend dev with 4+ years experience. TypeScript, React, modern CSS, and a design background before all that.",
+  },
+  {
+    label: "What I actually care about",
+    value: "Sites that perform: fast load times, good Core Web Vitals, clean structure. Every site I ship reflects on me, so I don't cut corners.",
+  },
+  {
+    label: "How I work",
+    value: "Directly with you. No handoffs to junior staff, no project managers in between.",
+  },
+];
 ---
 
 <BaseLayout
@@ -57,44 +75,14 @@ import Button from "../components/ui/Button.astro";
         </div>
       </div>
 
-      <div class="about-cards-col">
-        <Card variant="mint" class="about-card" padding="compact">
-          <span class="about-card-icon">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 1 1 16 0z"/><circle cx="12" cy="10" r="3"/></svg>
-          </span>
-          <div>
-            <p class="about-card-label">Based in</p>
-            <p class="about-card-value">Toronto, Ontario. Working with clients across the GTA and Durham Region</p>
+      <aside class="about-facts" aria-label="Quick facts">
+        {facts.map((fact) => (
+          <div class="about-fact">
+            <p class="about-fact-label">{fact.label}</p>
+            <p class="about-fact-value">{fact.value}</p>
           </div>
-        </Card>
-        <Card variant="mint" class="about-card" padding="compact">
-          <span class="about-card-icon">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
-          </span>
-          <div>
-            <p class="about-card-label">Background</p>
-            <p class="about-card-value">Frontend dev with 4+ years experience. TypeScript, React, modern CSS, and a design background before all that</p>
-          </div>
-        </Card>
-        <Card variant="mint" class="about-card" padding="compact">
-          <span class="about-card-icon">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
-          </span>
-          <div>
-            <p class="about-card-label">What I actually care about</p>
-            <p class="about-card-value">Sites that perform: fast load times, good Core Web Vitals, clean structure. Every site I ship reflects on me, so I don't cut corners.</p>
-          </div>
-        </Card>
-        <Card variant="mint" class="about-card" padding="compact">
-          <span class="about-card-icon">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-          </span>
-          <div>
-            <p class="about-card-label">How I work</p>
-            <p class="about-card-value">Directly with you. No handoffs to junior staff, no project managers in between</p>
-          </div>
-        </Card>
-      </div>
+        ))}
+      </aside>
     </section>
 
     <!-- What I actually do -->
@@ -193,40 +181,31 @@ import Button from "../components/ui/Button.astro";
     }
   }
 
-  /* Descendant selector so this outranks the Card primitive's own
-     .card { flex-direction: column } — bare :global(.about-card) ties
-     on specificity and loses on source order. */
-  .about-cards-col :global(.about-card) {
-    flex-direction: row;
-    gap: 14px;
-    align-items: flex-start;
-  }
-
-  .about-card-icon {
+  /* Magazine-sidebar fact rail: one hairline down the left edge, small-caps
+     labels, generous air — no boxes, no icons. */
+  .about-facts {
+    border-left: 1px solid var(--color-line-2);
+    padding-left: clamp(24px, 3vw, 40px);
     display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 36px;
-    height: 36px;
-    border-radius: 8px;
-    background: var(--color-mint-100);
-    border: 1px solid var(--color-mint-200);
-    color: var(--color-mint-700);
-    flex-shrink: 0;
+    flex-direction: column;
+    gap: 28px;
+    /* Ride along with the story column; 120px clears the sticky header pill.
+       (Inert in the single-column mobile layout — no travel room.) */
+    position: sticky;
+    top: 120px;
   }
 
-  .about-card-label {
-    margin: 0 0 3px 0;
-    font-size: 11px;
+  .about-fact-label {
+    margin: 0 0 4px 0;
+    font-size: 11.5px;
     font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 0.07em;
-    /* ink-500, not ink-400: 11px text on the mint card needs AA (ink-400
-       on mint-50 is 4.2:1, fails; ink-500 is 7.4:1). */
+    letter-spacing: 0.08em;
+    /* ink-500, not ink-400: 11.5px text on paper-2 needs AA contrast. */
     color: var(--color-ink-500);
   }
 
-  .about-card-value {
+  .about-fact-value {
     margin: 0;
     font-size: clamp(14.5px, 1.1vw, 15.5px);
     line-height: 1.6;
@@ -234,19 +213,17 @@ import Button from "../components/ui/Button.astro";
     font-weight: 500;
   }
 
+  /* Ruled two-column list — no boxed grid. */
   .services-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 1px;
-    background: var(--color-line);
-    border: 1px solid var(--color-line);
-    border-radius: 20px;
-    overflow: hidden;
+    gap: 0 clamp(36px, 5vw, 72px);
+    border-top: 1px solid var(--color-line);
   }
 
   .service-item {
-    background: var(--color-paper);
-    padding: 24px 26px;
+    padding: 26px 0;
+    border-bottom: 1px solid var(--color-line);
   }
 
   .service-item h3 {
@@ -263,12 +240,9 @@ import Button from "../components/ui/Button.astro";
     line-height: 1.65;
   }
 
-  @media (max-width: 900px) {
-    .services-grid { grid-template-columns: repeat(2, 1fr); }
-  }
-
   @media (max-width: 560px) {
     .services-grid { grid-template-columns: 1fr; }
+    .service-item:last-child { border-bottom: none; }
   }
 
   .about-hero-h1 {
@@ -301,12 +275,6 @@ import Button from "../components/ui/Button.astro";
   }
 
   .about-story-p { margin: 0; }
-
-  .about-cards-col {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-  }
 
   .about-services-intro {
     max-width: 680px;

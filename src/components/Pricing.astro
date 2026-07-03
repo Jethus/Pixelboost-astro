@@ -10,6 +10,7 @@ const plans = [
       { text: "Design and development", included: true },
       { text: "Plausible analytics included", included: true },
       { text: "Hosting included", included: true },
+      { text: "Unlimited edits included", included: true },
       { text: "+$100 per page after 5", included: true },
       { text: "+$250 to add a blog", included: true },
       { text: "24/7 support", included: true },
@@ -144,9 +145,10 @@ const standard = plans.find(p => p.variant === 'lump')!;
   .feat-no  { color: var(--color-ink-400); }
   .featured .feat-no { color: rgba(248,245,238,0.4); }
 
-  /* Not-included rows read muted */
-  .feat-row.is-off .feat-text { color: var(--color-ink-400); }
-  .featured .feat-row.is-off .feat-text { color: rgba(248,245,238,0.45); }
+  /* Not-included rows read muted (ink-500, not ink-400: 14.5px text on
+     paper-2 needs AA contrast — ink-400 is only 3.84:1). */
+  .feat-row.is-off .feat-text { color: var(--color-ink-500); }
+  .featured .feat-row.is-off .feat-text { color: rgba(248,245,238,0.6); }
 
   .plan-btn { padding: 13px 20px; font-size: 14.5px; }
   .plan-btn-arrow { flex: none; }
