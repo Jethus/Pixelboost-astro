@@ -9,7 +9,7 @@ routes = [
 
 # Required Worker secrets:
 # - PSI_API_KEY: Google PageSpeed Insights key for /api/audit
-# - JMAP_FASTMAIL_API: Fastmail API token (mail-send scope) for sending audit result + lead emails via JMAP
+# - JMAP_FASTMAIL_API: Fastmail API token (mail-send scope) for sending contact form, audit result, and lead emails via JMAP
 # - TURNSTILE_SITE_KEY: public Turnstile widget sitekey injected into /contact
 # - TURNSTILE_SECRET: private Turnstile Siteverify secret for POST /contact
 
@@ -22,8 +22,3 @@ not_found_handling = "404-page"
 # lead), the CSP header is never set, and the Turnstile sitekey is never
 # injected. The Worker is designed to front all traffic.
 run_worker_first = true
-
-[[send_email]]
-name = "CONTACT_EMAIL"
-# TODO: back to hello@pixelboost.ca once it's a real (verified) inbox.
-destination_address = "josh@pixelboost.ca"
