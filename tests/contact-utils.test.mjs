@@ -58,14 +58,26 @@ test("buildContactEmail creates a plain text email for the site owner", () => {
     message: "I need help with a website redesign.",
   });
 
-  assert.equal(email.from, "Pixelboost Website <hello@pixelboost.ca>");
+  assert.equal(email.from, "Pixelboost Website <josh@pixelboost.ca>");
   assert.equal(email.to, "josh@pixelboost.ca");
   assert.equal(email.replyTo, "jane@example.com");
   assert.equal(email.subject, "New Pixelboost contact form submission from Jane Smith");
-  assert.match(email.raw, /From: Pixelboost Website <hello@pixelboost\.ca>/);
-  assert.match(email.raw, /Reply-To: Jane Smith <jane@example\.com>/);
-  assert.match(email.raw, /Website: example\.com/);
-  assert.match(email.raw, /I need help with a website redesign\./);
+  assert.match(email.text, /Name: Jane Smith/);
+  assert.match(email.text, /Email: jane@example\.com/);
+  assert.match(email.text, /Website: example\.com/);
+  assert.match(email.text, /I need help with a website redesign\./);
+});
+
+test("buildContactEmail strips CRLF from header-bound values", () => {
+  const email = buildContactEmail({
+    name: "Jane\r\nBcc: evil@example.com",
+    email: "jane@example.com\r\nX-Evil: 1",
+    website: "",
+    message: "Help!",
+  });
+
+  assert.doesNotMatch(email.subject, /[\r\n]/);
+  assert.doesNotMatch(email.replyTo, /[\r\n]/);
 });
 
 test("buildContactScanEmail notifies Josh only, with lead context and scores", () => {
