@@ -1,7 +1,7 @@
 name = "pixelboost-astro"
 main = "src/worker/index.js"
 compatibility_date = "2026-06-03"
-workers_dev = true
+workers_dev = false
 routes = [
   { pattern = "pixelboost.ca/*", zone_name = "pixelboost.ca" },
   { pattern = "www.pixelboost.ca/*", zone_name = "pixelboost.ca" },
