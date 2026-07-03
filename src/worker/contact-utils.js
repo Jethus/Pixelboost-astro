@@ -2,13 +2,12 @@ import { verdictFromScores } from "../shared/verdict.js";
 
 // TODO: back to hello@pixelboost.ca once it's a real (verified) inbox.
 const CONTACT_EMAIL = "josh@pixelboost.ca";
-const FROM_EMAIL = "Pixelboost Website <hello@pixelboost.ca>";
-// Audit emails send via Fastmail JMAP, which requires the From address to be a
+// All email sends via Fastmail JMAP, which requires the From address to be a
 // VERIFIED sending identity on the account. hello@pixelboost.ca is NOT one (only
-// josh@pixelboost.ca is), so audit emails send from josh@ — sending from an
-// unverified identity is rejected with `forbiddenFrom`. The contact form keeps
-// FROM_EMAIL (hello@) because it goes through the Cloudflare send_email binding,
-// not Fastmail.
+// josh@pixelboost.ca is) — sending from an unverified identity is rejected with
+// `forbiddenFrom`. The display names differ so contact leads and audit results
+// are distinguishable in the inbox.
+const FROM_EMAIL = "Pixelboost Website <josh@pixelboost.ca>";
 const AUDIT_FROM_EMAIL = "Josh from Pixelboost <josh@pixelboost.ca>";
 // Audit lead notifications (including anonymous scans) go to josh@ directly,
 // not the shared hello@ inbox — the contact form still uses CONTACT_EMAIL (hello@).
@@ -58,9 +57,8 @@ export function validateContactSubmission(formData) {
 
 export function buildContactEmail(submission) {
   const safeName = encodeHeader(submission.name);
-  const safeEmail = stripHeaderValue(submission.email);
   const subject = `New Pixelboost contact form submission from ${safeName}`;
-  const body = [
+  const text = [
     "New contact form submission from pixelboost.ca",
     "",
     `Name: ${submission.name}`,
@@ -69,26 +67,14 @@ export function buildContactEmail(submission) {
     "",
     "Message:",
     submission.message,
-  ].join("\r\n");
-
-  const raw = [
-    `From: ${FROM_EMAIL}`,
-    `To: ${CONTACT_EMAIL}`,
-    `Reply-To: ${safeName} <${safeEmail}>`,
-    `Subject: ${subject}`,
-    "MIME-Version: 1.0",
-    "Content-Type: text/plain; charset=UTF-8",
-    "Content-Transfer-Encoding: 8bit",
-    "",
-    body,
-  ].join("\r\n");
+  ].join("\n");
 
   return {
     from: FROM_EMAIL,
     to: CONTACT_EMAIL,
-    replyTo: safeEmail,
+    replyTo: stripHeaderValue(submission.email),
     subject,
-    raw,
+    text,
   };
 }
 
