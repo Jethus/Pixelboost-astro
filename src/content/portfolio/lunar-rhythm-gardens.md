@@ -5,7 +5,7 @@ tags: Agriculture / Local Markets
 image: ../../assets/portfolio/lunar-desktop.webp
 imageMobile: ../../assets/portfolio/lunar-mobile.webp
 url: https://www.csafarmdurhamkawartha.com/
-location: Prince Edward Island
+location: Port Perry, ON
 summary: Family farm CSA. Refreshed from a basic wordpress template.
 outcome: "Increased local online orders by 40% in the first season"
 stats:

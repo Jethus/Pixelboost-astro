@@ -1,0 +1,76 @@
+---
+import { getCollection } from "astro:content";
+import SectionHeader from "./ui/SectionHeader.astro";
+import BlogCard from "./ui/BlogCard.astro";
+import FeaturedBlogCard from "./ui/FeaturedBlogCard.astro";
+import { readTime } from "../lib/read-time";
+
+const posts = (await getCollection("blog"))
+  .filter((p) => !p.data.draft)
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+  .slice(0, 3);
+
+const [featured, ...rest] = posts;
+---
+
+{featured && (
+  <section id="blog" class="section-card surface-paper-2">
+    <div data-reveal>
+      <SectionHeader
+        eyebrow="From the blog"
+        subhead="Speed, SEO, accessibility: the stuff that actually affects whether your site works for your customers."
+      >
+        Practical web advice for small businesses.
+      </SectionHeader>
+    </div>
+
+    <div class="teaser-posts">
+      <FeaturedBlogCard
+        title={featured.data.title}
+        description={featured.data.description}
+        pubDate={featured.data.pubDate}
+        readTime={readTime(featured.body)}
+        slug={featured.id}
+      />
+
+      {rest.length > 0 && (
+        <div class="teaser-grid">
+          {rest.map((post) => (
+            <div data-reveal>
+              <BlogCard
+                title={post.data.title}
+                description={post.data.description}
+                pubDate={post.data.pubDate}
+                readTime={readTime(post.body)}
+                slug={post.id}
+              />
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+
+    <div class="teaser-more" data-reveal>
+      <a href="/blog" class="btn-outline btn-interactive">
+        Read all posts
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+      </a>
+    </div>
+  </section>
+)}
+
+<style>
+  .teaser-posts { margin-top: 36px; }
+
+  .teaser-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+  @media (max-width: 560px) { .teaser-grid { grid-template-columns: 1fr; } }
+
+  .teaser-grid > [data-reveal]:nth-child(1) { --reveal-i: 1; }
+  .teaser-grid > [data-reveal]:nth-child(2) { --reveal-i: 2; }
+
+  .teaser-more { margin-top: 28px; }
+</style>

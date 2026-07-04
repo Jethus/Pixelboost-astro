@@ -32,10 +32,9 @@ const pillars = [
     </SectionHeader>
   </div>
 
-  <ol class="fix-list">
-    {pillars.map((p, i) => (
+  <ul class="fix-list">
+    {pillars.map((p) => (
       <li class="fix-row" data-reveal>
-        <span class="fix-num" aria-hidden="true">{String(i + 1).padStart(2, "0")}</span>
         <div class="fix-body">
           <h3 class="fix-title">{p.title}</h3>
           <p class="fix-pitch">{p.pitch}</p>
@@ -46,7 +45,7 @@ const pillars = [
         </div>
       </li>
     ))}
-  </ol>
+  </ul>
 </section>
 
 <style>
@@ -58,21 +57,8 @@ const pillars = [
   }
 
   .fix-row {
-    display: grid;
-    grid-template-columns: 72px minmax(0, 1fr);
-    column-gap: 28px;
-    align-items: start;
     padding: 28px 4px;
     border-bottom: 1px solid var(--color-line);
-  }
-
-  .fix-num {
-    font-size: clamp(34px, 4vw, 52px);
-    font-weight: 800;
-    line-height: 0.9;
-    letter-spacing: -0.04em;
-    color: var(--color-mint-200);
-    font-variant-numeric: tabular-nums;
   }
 
   .fix-body { display: flex; flex-direction: column; gap: 8px; }
@@ -128,11 +114,6 @@ const pillars = [
   .fix-row:nth-child(4) { --reveal-i: 4; }
 
   @media (max-width: 600px) {
-    .fix-row {
-      grid-template-columns: 48px minmax(0, 1fr);
-      column-gap: 16px;
-      padding: 22px 2px;
-    }
-    .fix-num { font-size: 30px; }
+    .fix-row { padding: 22px 2px; }
   }
 </style>

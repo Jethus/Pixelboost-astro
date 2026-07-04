@@ -32,7 +32,7 @@ Two collections are defined in `src/content.config.ts`:
 - **`blog`** (`src/content/blog/`) — loads `.md` **and `.mdx`**, excluding `_`-prefixed files (so `_template.md` never builds). Frontmatter: `title`, `description`, `pubDate`, optional `updatedDate`/`heroImage`, `draft` (default false), and optional `faq` (array of `{ q, a }`) which renders a visible `BlogFAQ` section **and** emits FAQPage JSON-LD from the same data.
 - **`portfolio`** (`src/content/portfolio/`) — display-only (no detail pages). Frontmatter: `title`, `order`, `tags`, `image`, plus optional `imageMobile`, `url`, `outcome`, `location`, `summary`, `stats` (array of `{label, before, after}`), `kpi`.
 
-There are **no landing-section collections** — landing components (`Hero`, `Problem`, `Features`, `Pricing`, `FAQ`, …) inline their own copy in the component file. Among components, only `Portfolio.astro` calls `getCollection()` (sorted by `order`); the landing page (`src/pages/index.astro`) just composes components. The only dynamic route is `src/pages/blog/[slug].astro` (via `getStaticPaths()`, filtering drafts).
+There are **no landing-section collections** — landing components (`Hero`, `Problem`, `Features`, `Pricing`, `FAQ`, …) inline their own copy in the component file. Among components, only `Portfolio.astro` (sorted by `order`) and `BlogTeaser.astro` (latest 3 posts) call `getCollection()`; the landing page (`src/pages/index.astro`) just composes components. The only dynamic route is `src/pages/blog/[slug].astro` (via `getStaticPaths()`, filtering drafts).
 
 `.pages.yml` configures Pages CMS (pagescms.org) so the blog collection can be edited through a CMS.
 
@@ -44,7 +44,7 @@ There are **no landing-section collections** — landing components (`Hero`, `Pr
 
 ### Key non-obvious patterns
 
-- **Blog read-time**: `blog/index.astro` computes read-time from `post.body` word count (~200 wpm) and passes it to `BlogCard` / the featured card — no `readTime` frontmatter field exists
+- **Blog read-time**: `readTime()` in `src/lib/read-time.ts` derives read-time from `post.body` word count (~200 wpm); `blog/index.astro` and `BlogTeaser.astro` pass it to `BlogCard` / `FeaturedBlogCard` — no `readTime` frontmatter field exists
 - **Reuse components and primitives** — before building UI, check `src/components/` and the primitives in `src/components/ui/` (`BlogCard`, `Button`, `Card`, `Eyebrow`, `SectionHeader`) for an existing pattern. When the same element appears in two places (e.g. the FAQ accordion in `FAQ.astro` and `BlogFAQ.astro`), they must look and behave identically; if a context needs a variant, make a prop-driven sibling that reuses the same markup/styles (`BlogFAQ.astro` is the model) rather than hand-rolling new markup.
 - **No emojis in UI** — always use inline SVG icons instead
 - **Tests** (`tests/*.test.mjs`) are plain `node:test` and mostly cover the Worker utilities, the verdict logic, and static invariants of checked-in files (font loading, header nav, image dimensions). Run them after touching `src/worker/` or `src/shared/`.
