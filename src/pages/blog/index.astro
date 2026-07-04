@@ -4,26 +4,16 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 import Header from "../../components/Header.astro";
 import Footer from "../../components/Footer.astro";
 import BlogCard from "../../components/ui/BlogCard.astro";
+import FeaturedBlogCard from "../../components/ui/FeaturedBlogCard.astro";
 import Eyebrow from "../../components/ui/Eyebrow.astro";
 import ClosingCTA from "../../components/ClosingCTA.astro";
-
-// ~200 wpm; strip markdown/frontmatter noise to a rough word count.
-const readTime = (body: string | undefined) => {
-  const words = (body ?? "").trim().split(/\s+/).filter(Boolean).length;
-  return Math.max(1, Math.round(words / 200));
-};
+import { readTime } from "../../lib/read-time";
 
 const posts = (await getCollection("blog"))
   .filter((p) => !p.data.draft)
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 
 const [featured, ...rest] = posts;
-
-const featuredDate = featured?.data.pubDate.toLocaleDateString("en-CA", {
-  year: "numeric",
-  month: "long",
-  day: "numeric",
-});
 ---
 
 <BaseLayout
@@ -48,18 +38,13 @@ const featuredDate = featured?.data.pubDate.toLocaleDateString("en-CA", {
       ) : (
         <>
           {featured && (
-            <a href={`/blog/${featured.id}`} class="featured-card" data-reveal>
-              <span class="featured-metarow">
-                <span class="featured-flag">Latest</span>
-                <span class="featured-meta">{featuredDate} · {readTime(featured.body)} min read</span>
-              </span>
-              <h2 class="featured-title">{featured.data.title}</h2>
-              <p class="featured-desc">{featured.data.description}</p>
-              <span class="featured-readmore">
-                Read post
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
-              </span>
-            </a>
+            <FeaturedBlogCard
+              title={featured.data.title}
+              description={featured.data.description}
+              pubDate={featured.data.pubDate}
+              readTime={readTime(featured.body)}
+              slug={featured.id}
+            />
           )}
 
           {rest.length > 0 && (
@@ -89,91 +74,6 @@ const featuredDate = featured?.data.pubDate.toLocaleDateString("en-CA", {
 </BaseLayout>
 
 <style>
-  .featured-card {
-    display: block;
-    position: relative;
-    background: var(--color-mint-100);
-    border: 1px solid var(--color-mint-200);
-    border-radius: var(--radius-card);
-    padding: clamp(28px, 4vw, 48px);
-    margin-bottom: 16px;
-    text-decoration: none;
-    color: var(--color-ink);
-    transition:
-      transform 0.2s cubic-bezier(0.2, 0.9, 0.2, 1),
-      box-shadow 0.2s ease;
-  }
-
-  .featured-card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 22px 54px -28px rgba(15, 26, 20, 0.45);
-  }
-
-  .featured-metarow {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    margin-bottom: 20px;
-  }
-
-  .featured-flag {
-    display: inline-block;
-    background: var(--color-mint-500);
-    color: var(--color-ink);
-    font-size: 11px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    padding: 5px 12px;
-    border-radius: 9999px;
-  }
-
-  .featured-meta {
-    font-size: 12px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    color: var(--color-mint-700);
-  }
-
-  .featured-title {
-    font-size: clamp(26px, 2.8vw, 36px);
-    font-weight: 800;
-    line-height: 1.12;
-    letter-spacing: -0.03em;
-    margin: 0 0 18px 0;
-    max-width: 22ch;
-    transition: color 0.2s ease;
-  }
-
-  .featured-card:hover .featured-title { color: var(--color-mint-700); }
-
-  .featured-desc {
-    font-size: clamp(15px, 1.3vw, 18px);
-    color: var(--color-ink-500);
-    line-height: 1.55;
-    max-width: 58ch;
-    margin: 0 0 24px 0;
-    font-weight: 500;
-  }
-
-  .featured-readmore {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 14px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    color: var(--color-ink);
-  }
-
-  .featured-readmore svg {
-    transition: transform 0.2s cubic-bezier(0.2, 0.9, 0.2, 1);
-  }
-
-  .featured-card:hover .featured-readmore svg { transform: translateX(3px); }
-
   .blog-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -203,14 +103,4 @@ const featuredDate = featured?.data.pubDate.toLocaleDateString("en-CA", {
   .blog-grid > [data-reveal]:nth-child(4) { --reveal-i: 4; }
   .blog-grid > [data-reveal]:nth-child(5) { --reveal-i: 5; }
   .blog-grid > [data-reveal]:nth-child(6) { --reveal-i: 6; }
-
-  @media (prefers-reduced-motion: reduce) {
-    .featured-card,
-    .featured-card:hover,
-    .featured-readmore svg,
-    .featured-card:hover .featured-readmore svg {
-      transform: none;
-      transition: none;
-    }
-  }
 </style>
