@@ -7,19 +7,24 @@ interface Props {
   title: string;
   description: string;
   pubDate: Date;
+  updatedDate?: Date;
   readTime: number;
   slug: string;
 }
-const { title, description, pubDate, readTime, slug } = Astro.props;
-const formattedDate = pubDate.toLocaleDateString("en-CA", {
-  year: "numeric", month: "long", day: "numeric",
+const { title, description, pubDate, updatedDate, readTime, slug } = Astro.props;
+const displayDate = updatedDate ?? pubDate;
+// Dates are authored as bare YYYY-MM-DD (parsed as UTC midnight); format in UTC
+// so the build machine's local timezone can't shift the shown day back by one.
+const formattedDate = displayDate.toLocaleDateString("en-CA", {
+  year: "numeric", month: "long", day: "numeric", timeZone: "UTC",
 });
+const datePrefix = updatedDate ? "Updated " : "";
 ---
 
 <a href={`/blog/${slug}`} class="featured-card" data-reveal>
   <span class="featured-metarow">
     <span class="featured-flag">Latest</span>
-    <span class="featured-meta">{formattedDate} · {readTime} min read</span>
+    <span class="featured-meta">{datePrefix}{formattedDate} · {readTime} min read</span>
   </span>
   <h2 class="featured-title">{title}</h2>
   <p class="featured-desc">{description}</p>

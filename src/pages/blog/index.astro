@@ -9,9 +9,12 @@ import Eyebrow from "../../components/ui/Eyebrow.astro";
 import ClosingCTA from "../../components/ClosingCTA.astro";
 import { readTime } from "../../lib/read-time";
 
+// Sort by effective date (updatedDate falls back to pubDate) so a refreshed
+// post resurfaces near the top, in step with search-engine freshness weighting.
+const sortDate = (p) => (p.data.updatedDate ?? p.data.pubDate).valueOf();
 const posts = (await getCollection("blog"))
   .filter((p) => !p.data.draft)
-  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+  .sort((a, b) => sortDate(b) - sortDate(a));
 
 const [featured, ...rest] = posts;
 ---
@@ -42,6 +45,7 @@ const [featured, ...rest] = posts;
               title={featured.data.title}
               description={featured.data.description}
               pubDate={featured.data.pubDate}
+              updatedDate={featured.data.updatedDate}
               readTime={readTime(featured.body)}
               slug={featured.id}
             />
@@ -55,6 +59,7 @@ const [featured, ...rest] = posts;
                     title={post.data.title}
                     description={post.data.description}
                     pubDate={post.data.pubDate}
+                    updatedDate={post.data.updatedDate}
                     readTime={readTime(post.body)}
                     slug={post.id}
                   />
