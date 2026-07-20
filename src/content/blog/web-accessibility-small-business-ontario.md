@@ -47,9 +47,11 @@ There's a second AODA obligation people confuse with the website standard: the *
 
 If the fear driving your search is a lawsuit or a fine, here's the honest picture. The penalties on the books are large: under the AODA, a corporation found guilty of an offence can be fined **up to $100,000 for each day** the offence continues, and a director or officer up to $50,000 a day ([aoda.ca, Guide to the Act](https://www.aoda.ca/guide-to-the-act/)). Those numbers are real, and they're what alarmist "get compliant or else" marketing leans on.
 
-But two things temper the panic. First, those maximums are ceilings a court can impose, not automatic fines that land in your inbox for a low-contrast button. Second, and more useful to know: the day-to-day compliance mechanism isn't a website inspector. It's the **self-filed accessibility compliance report** above, backed by the government's power to audit, issue a Director's Order to fix the problem, and levy penalties if you ignore it. In practice, that means the realistic risk for a small business isn't a surprise six-figure fine, it's being caught out of compliance during an audit or a customer complaint with no plan to respond.
+But two things temper the panic. First, those maximums are ceilings a court can impose, not automatic fines that land in your inbox for a low-contrast button. Second, and more useful to know: in practice the penalty usually arrives as a **warning with time to fix**, not a surprise cheque. I've seen this firsthand. I was on the team that remediated the College's site after it was served an AODA warning, and we were given a long remediation timeline to bring it up to standard, not fined on the spot.
 
-So: worth taking seriously, not worth losing sleep over. The sane move is to know where your site actually stands, which costs you nothing (see below).
+The day-to-day compliance mechanism isn't a website inspector either. It's the **self-filed accessibility compliance report** above, backed by the government's power to audit, issue an order to fix the problem, and escalate to penalties only if you ignore it. So the realistic risk for a small business isn't a shock six-figure fine, it's being caught out of compliance with no plan to respond.
+
+Worth taking seriously, then, but not worth losing sleep over. The sane move is to know where your site actually stands, which costs you nothing (see below).
 
 ## What it actually means for your website
 
@@ -77,7 +79,7 @@ When someone can't use your website, they go to a competitor who has one they ca
 
 ## Where most small business sites fall short
 
-I've done accessibility remediation on institutional websites held to formal WCAG grading, the same standard the AODA references, so I've spent real time hunting these failures down rather than just reading the checklist. The most common ones I see in audits:
+I was part of the team that remediated the website for the College (the Ontario College of Teachers) after it was served an AODA accessibility warning, so I've done this work under a real deadline against the standard the law references, not just read the checklist. The most common failures I see:
 
 1. Low text contrast, especially popular "modern" designs with light grey text
 2. Missing alt text on photos
