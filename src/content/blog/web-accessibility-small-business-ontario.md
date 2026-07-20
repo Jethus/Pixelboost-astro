@@ -79,7 +79,7 @@ When someone can't use your website, they go to a competitor who has one they ca
 
 ## Where most small business sites fall short
 
-I led the design work on the website for the College (the Ontario College of Teachers) after it was served an AODA accessibility warning, and part of my job was catching the issues our contractors had missed. So I've done this work under a real deadline against the standard the law references, not just read the checklist. The most common failures I see:
+I led the design work on the website for the College (the Ontario College of Teachers) after it was served an AODA accessibility warning, and part of my job was catching accessibility issues as we worked through remediation. So I've done this work under a real deadline against the standard the law references, not just read the checklist. The most common failures I see:
 
 1. Low text contrast, especially popular "modern" designs with light grey text
 2. Missing alt text on photos
