@@ -54,3 +54,5 @@ At that point, the cost of a custom site, [$200/month or $3,200 flat](/#pricing)
 ## Not sure where you fall?
 
 [Run a free website audit](/free-website-audit). I'll check your current site's speed, accessibility, and whether you have working analytics, and give you a plain-English read on whether a rebuild makes financial sense for your situation. No pitch, no pressure.
+
+If you're a local business, here's more on [custom web design for Durham Region](/durham-region-web-design), Oshawa, Whitby, Ajax, and Pickering.

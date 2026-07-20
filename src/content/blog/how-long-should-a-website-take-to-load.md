@@ -84,6 +84,6 @@ Here's a rough sense of the cost. Say 200 people a month visit your site, and no
 
 The biggest single win for most small business sites is usually images: a homepage hero photo that's 4 MB instead of 200 KB can add several seconds on its own. After that, it's about cutting the scripts and platform overhead the page doesn't actually need.
 
-On Wix and WordPress you can get modest gains, compress images, add caching, switch hosting, but you're fighting the platform's built-in weight. A custom-built static site sidesteps most of this by sending only what the page needs and nothing else. That's why the sites I build for Toronto and Durham Region businesses consistently load in under a second.
+On Wix and WordPress you can get modest gains, compress images, add caching, switch hosting, but you're fighting the platform's built-in weight. A custom-built static site sidesteps most of this by sending only what the page needs and nothing else. That's why the sites I build for Toronto and [Durham Region businesses](/durham-region-web-design) consistently load in under a second.
 
 If your site is slow and you're tired of it costing you customers, [start with a free website audit](/free-website-audit). I'll tell you your exact load time, what's slowing it down, and whether a rebuild actually makes sense. Sometimes it doesn't, and I'll tell you that too.

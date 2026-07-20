@@ -72,13 +72,16 @@ const pageTitle = title === SITE_TITLE ? title : `${title} | ${SITE_NAME}`;
     <script type="application/ld+json" set:html={JSON.stringify({
       "@context": "https://schema.org",
       "@type": "LocalBusiness",
+      "@id": "https://pixelboost.ca/#business",
       "name": "Pixelboost",
       "description": "Custom web design and development for small businesses in Toronto, Oshawa, and Durham Region.",
       "url": "https://pixelboost.ca",
+      "image": "https://pixelboost.ca/og-image.png",
       "telephone": "+19057812464",
       "email": "josh@pixelboost.ca",
       "address": {
         "@type": "PostalAddress",
+        "addressLocality": "Oshawa",
         "addressRegion": "ON",
         "addressCountry": "CA"
       },
