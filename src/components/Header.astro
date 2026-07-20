@@ -12,6 +12,7 @@ const isActive = (href: string) => pathname === href || (href !== '/' && pathnam
 
     <div id="nav-links" class="nav-links">
       <a href="/free-website-audit" class:list={["nav-link", isActive('/free-website-audit') && "nav-active"]}>Free Scan</a>
+      <a href="/#work"   class="nav-link">Work</a>
       <a href="/about"   class:list={["nav-link", isActive('/about') && "nav-active"]}>About</a>
       <a href="/blog"    class:list={["nav-link", isActive('/blog') && "nav-active"]}>Blog</a>
       <a href="/contact" class="btn-mint btn-sm btn-interactive nav-cta plausible-event-name=Get+In+Touch+Clicked plausible-event-location=header">
@@ -30,6 +31,7 @@ const isActive = (href: string) => pathname === href || (href !== '/' && pathnam
   <div id="mobile-nav" class="mobile-nav">
     <div class="mobile-nav__links">
       <a href="/free-website-audit" class:list={["mobile-link", isActive('/free-website-audit') && "mobile-link--active"]}>Free scan</a>
+      <a href="/#work"   class="mobile-link">Work</a>
       <a href="/about"   class:list={["mobile-link", isActive('/about') && "mobile-link--active"]}>About</a>
       <a href="/blog"    class:list={["mobile-link", isActive('/blog') && "mobile-link--active"]}>Blog</a>
       <a href="/contact" class="btn-mint btn-block btn-interactive mobile-cta plausible-event-name=Get+In+Touch+Clicked plausible-event-location=header-mobile">Get in touch</a>

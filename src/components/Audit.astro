@@ -5,12 +5,14 @@ import type { AuditRow } from "./Audit.tsx";
 interface Props {
   eyebrow?: string;
   headline?: string;
+  headingLevel?: "h1" | "h2";
   body?: string;
 }
 
 const {
   eyebrow = "Free, no email required",
   headline = "Run a free scan of your site.",
+  headingLevel = "h2",
   body = "Enter your URL and get a scorecard in seconds: what's working, what's broken, and what to fix first.",
 }: Props = Astro.props;
 
@@ -22,8 +24,8 @@ const rows: AuditRow[] = [
   },
   {
     key: "mobile",
-    label: "Mobile experience",
-    sub: "Tap targets, layout, readability",
+    label: "Mobile speed",
+    sub: "Load, responsiveness, visual stability",
   },
   {
     key: "seo",
@@ -47,13 +49,20 @@ const rows: AuditRow[] = [
   client:visible
   eyebrow={eyebrow}
   headline={headline}
+  headingLevel={headingLevel}
   body={body}
-  footnote="Real speed, accessibility, and usability checks. The score is one benchmark; the customer experience still matters."
+  footnote="These scores come from a single lab test (Google Lighthouse on a simulated mid-range phone), so they can wobble a few points run to run. Where Google has enough real-visitor data, I show that too. The real-world picture over time lives in your Search Console."
   verdictIdle="Enter your URL above to run a real scan."
   verdictDone="Want the full breakdown sent to your inbox?"
   callCopy="Book a free 15-min call to walk through it ->"
   rows={rows}
 />
+
+{/* Invisible Turnstile for the scan. The sitekey (a Worker secret) is injected
+    at the edge into data-sitekey via HTMLRewriter matching [data-turnstile-sitekey];
+    the island reads it off this element and renders an invisible widget here. */}
+<div id="audit-turnstile" data-turnstile-sitekey data-sitekey=""></div>
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer is:inline></script>
 
 <style is:global>
   .audit-section {
@@ -249,6 +258,30 @@ const rows: AuditRow[] = [
   .audit-verdict-strong {
     color: var(--color-mint-700);
   }
+
+  /* Real-user (CrUX) field line — only rendered when Google has field data. */
+  .audit-field-line {
+    margin: 10px 0 0;
+    font-size: 12.5px;
+    line-height: 1.5;
+    color: var(--color-ink-700);
+  }
+  .audit-field-tag {
+    display: inline-block;
+    margin-right: 6px;
+    padding: 1px 7px;
+    border-radius: 9999px;
+    font-size: 10.5px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    vertical-align: 1px;
+    background: var(--color-line);
+    color: var(--color-ink-700);
+  }
+  .audit-field-tag[data-cat="FAST"]    { background: var(--color-mint-100); color: var(--color-mint-700); }
+  .audit-field-tag[data-cat="AVERAGE"] { background: #fdf0d5; color: #8a6d1a; }
+  .audit-field-tag[data-cat="SLOW"]    { background: #fbe0e0; color: var(--color-red); }
 
   .audit-error-msg {
     color: var(--color-red);

@@ -42,6 +42,30 @@ export function deriveLcp(audits) {
   return typeof v === "number" ? Math.round(v) : null;
 }
 
+// Real-user (CrUX) field data from the PSI response, when the site has enough
+// traffic to have any. This is the "top block" of PSI — actual Chrome users
+// over a 28-day window — as opposed to the single throttled lab run everything
+// else here is derived from. Absent for low-traffic sites (returns null).
+export function deriveField(loadingExperience) {
+  const metrics = loadingExperience?.metrics;
+  const overall = loadingExperience?.overall_category;
+  // No metrics, or overall NONE, means CrUX had insufficient data for this URL.
+  if (!metrics || !overall || overall === "NONE") return null;
+
+  const lcp = metrics.LARGEST_CONTENTFUL_PAINT_MS;
+  const inp = metrics.INTERACTION_TO_NEXT_PAINT;
+  const cls = metrics.CUMULATIVE_LAYOUT_SHIFT_SCORE;
+
+  return {
+    overall,                                   // FAST | AVERAGE | SLOW
+    lcpMs: typeof lcp?.percentile === "number" ? lcp.percentile : null,
+    lcpCategory: lcp?.category ?? null,
+    // INP percentile is already in ms; CLS percentile is score × 100.
+    inpMs: typeof inp?.percentile === "number" ? inp.percentile : null,
+    clsCategory: cls?.category ?? null,
+  };
+}
+
 export function normalizeMobileMetric(value, good, poor) {
   if (value <= good) return 100;
   if (value >= poor) return 0;
@@ -128,5 +152,8 @@ export async function runScan(targetUrl, apiKey, fetchImpl = fetch, retryOpts = 
     tracking: deriveTracking(audits),
     trackingTools: getTrackingTools(audits),
     lcp: deriveLcp(audits),
+    // Real-user CrUX data (null when the site has too little traffic). The
+    // scores above are a single lab run; this is what actual visitors get.
+    field: deriveField(data.loadingExperience),
   };
 }

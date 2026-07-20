@@ -39,6 +39,10 @@ Thumbs.db
 /*.png
 /*.jpg
 
+# lead-finder output (internal prospecting; never commit lead lists)
+scripts/lead-gen/*.csv
+scripts/lead-gen/*.html
+
 # wrangler (Cloudflare dev)
 .wrangler/
 

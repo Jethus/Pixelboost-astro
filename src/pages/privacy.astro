@@ -1,0 +1,139 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import Eyebrow from "../components/ui/Eyebrow.astro";
+
+// Plain-language privacy notice. Keep it honest and specific: it should match
+// what the site actually collects (contact form, audit tool, analytics) — if
+// those change, update this page.
+const updated = "July 2026";
+---
+
+<BaseLayout
+  title="Privacy"
+  description="How Pixelboost handles the information you share: the contact form, the free website audit, and privacy-friendly analytics. Plain language, no surprises."
+>
+  <Header />
+  <main>
+    <section class="section-card surface-paper privacy">
+      <Eyebrow label="Privacy" />
+      <h1 class="privacy-h1">Privacy policy</h1>
+      <p class="privacy-lead">
+        I'm Josh, and Pixelboost is a one-person web studio. This page explains what
+        information this site collects, why, and what I do with it. No jargon, no
+        surprises. If anything here isn't clear, just <a href="/contact">get in touch</a>.
+      </p>
+
+      <div class="privacy-body">
+        <h2>The short version</h2>
+        <p>
+          I collect only what I need to reply to you and to run the free scan you
+          asked for. I don't sell your information, I don't share it with advertisers,
+          and I use privacy-friendly analytics that don't track you across the web or
+          set advertising cookies.
+        </p>
+
+        <h2>What I collect, and when</h2>
+
+        <h3>When you use the contact form</h3>
+        <p>
+          You choose what to send: typically your name, email, a message, and
+          optionally your current website address. I use this only to reply to you
+          and, if you shared a website, to take a quick look before I do. That's it.
+        </p>
+
+        <h3>When you run the free website audit</h3>
+        <p>
+          The audit tool takes the website address you enter and runs it through
+          Google's PageSpeed Insights to score its speed, accessibility, SEO, and
+          setup. Entering your own email is optional — if you do, I use it to send
+          you the scan results and, sometimes, to follow up about your site. The URL
+          you scan is also sent to me so I can see who's checking their site. If you
+          don't want that, don't enter an email, but the scanned URL is still shared
+          with me.
+        </p>
+
+        <h3>Analytics</h3>
+        <p>
+          I use a self-hosted copy of <a href="https://plausible.io/data-policy" rel="noopener" target="_blank">Plausible Analytics</a>
+          to understand which pages get visited. Plausible is privacy-first: it uses
+          no cookies, collects no personal data, and doesn't follow you around the
+          internet. I see aggregate numbers (page views, rough locations, referrers),
+          never anything that identifies you personally.
+        </p>
+
+        <h2>The tools that keep this site running</h2>
+        <p>
+          A few services process data on my behalf to make this site work and keep
+          it secure:
+        </p>
+        <ul>
+          <li><strong>Cloudflare</strong> hosts and delivers the site, and helps protect it from abuse.</li>
+          <li><strong>Cloudflare Turnstile</strong> is a privacy-friendly CAPTCHA alternative that checks the contact form and audit tool aren't being abused by bots. It doesn't track you.</li>
+          <li><strong>Google PageSpeed Insights</strong> is the engine behind the free audit; the URL you scan is sent to Google to be measured.</li>
+          <li><strong>Fastmail</strong> is where the emails from the contact form and audit tool land, so I can read and reply to them.</li>
+        </ul>
+
+        <h2>How long I keep things</h2>
+        <p>
+          I keep contact and audit emails as long as I need them to help you or to
+          keep a record of our conversation, and no longer than is reasonable. If you'd
+          like me to delete what I have about you, just ask and I'll take care of it.
+        </p>
+
+        <h2>Your choices</h2>
+        <p>
+          You can email me any time to see what information I hold about you, to
+          correct it, or to have it deleted. You're never on a mailing list you didn't
+          ask to join — I don't run one.
+        </p>
+
+        <h2>Contact</h2>
+        <p>
+          Questions about any of this? Email <a href="mailto:josh@pixelboost.ca">josh@pixelboost.ca</a>
+          or use the <a href="/contact">contact form</a>.
+        </p>
+
+        <p class="privacy-updated">Last updated: {updated}.</p>
+      </div>
+    </section>
+  </main>
+  <Footer />
+</BaseLayout>
+
+<style>
+  .privacy { max-width: 820px; }
+  .privacy-h1 {
+    font-size: clamp(32px, 4vw, 52px); font-weight: 800;
+    letter-spacing: -0.03em; margin: 12px 0 18px; line-height: 1.05;
+  }
+  .privacy-lead {
+    font-size: clamp(16px, 1.4vw, 19px); color: var(--color-ink-500);
+    line-height: 1.6; max-width: 62ch; margin: 0 0 8px; font-weight: 500;
+  }
+  .privacy-body { margin-top: 28px; }
+  .privacy-body h2 {
+    font-size: clamp(20px, 2.2vw, 26px); font-weight: 800;
+    letter-spacing: -0.02em; margin: 36px 0 10px;
+  }
+  .privacy-body h3 {
+    font-size: clamp(16px, 1.6vw, 19px); font-weight: 700;
+    margin: 22px 0 6px; color: var(--color-ink);
+  }
+  .privacy-body p, .privacy-body li {
+    font-size: 16px; line-height: 1.65; color: var(--color-ink-700);
+    max-width: 66ch;
+  }
+  .privacy-body p { margin: 0 0 14px; }
+  .privacy-body ul { margin: 0 0 14px; padding-left: 20px; display: grid; gap: 8px; }
+  .privacy-body a {
+    color: var(--color-mint-700); text-decoration: underline;
+    text-underline-offset: 2px; font-weight: 600;
+  }
+  .privacy-body a:hover { color: var(--color-mint-600); }
+  .privacy-updated {
+    margin-top: 32px; font-size: 13px; font-style: italic;
+    color: var(--color-ink-500);
+  }
+</style>
