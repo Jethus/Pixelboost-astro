@@ -1,34 +1,47 @@
 ---
-title: "How long should a small business website take to load?"
-description: "A small business website should load in under 2.5 seconds on mobile. Here's what counts as fast, how to check yours, and what slow load times cost you."
+title: "Website speed test: how to check your site (free tools)"
+description: "How to run a website speed test for free with PageSpeed Insights, GTmetrix, and Pingdom, what the scores mean, and which tool to trust, in plain English."
 pubDate: 2026-06-02
+updatedDate: 2026-07-20
 draft: false
 faq:
-  - q: "What is a good website load time in 2026?"
-    a: "Under 2.5 seconds on mobile is the benchmark Google uses, and under 1 second is excellent. Specifically, your Largest Contentful Paint, when the main content appears, should land under 2.5 seconds. Past 3 seconds you start losing more than half your visitors."
-  - q: "Is 5 seconds too slow for a website to load?"
-    a: "Yes. At five seconds, a visitor is far more likely to leave before your page appears than at one second. For a small business relying on local search, a 5-second load time is quietly costing you leads every single day."
-  - q: "Does website speed affect Google ranking?"
-    a: "Yes. Google uses Core Web Vitals, including loading speed (LCP), as a ranking signal, measured from real visitor data. A slow site gets pushed down in mobile search results, which means fewer people find your business in the first place."
-  - q: "How do I test my website's loading speed for free?"
-    a: "Use Google's free PageSpeed Insights tool. Paste in your web address, run it, and read the Mobile tab. The Performance score and the LCP number tell you whether your site is fast enough, under 50 on mobile means visitors are feeling the wait."
+  - q: "How do I test my website speed for free?"
+    a: "Paste your web address into Google's free PageSpeed Insights, then read the Mobile tab, that's where most visitors are and where sites are slowest. GTmetrix and Pingdom are good free alternatives. Or run the free audit on this site for a plain-English report instead of a raw score."
+  - q: "What is a good website speed test score?"
+    a: "On PageSpeed Insights, 90 to 100 is good, 50 to 89 needs improvement, and under 50 is a real problem costing you visitors. For load time itself, aim for under 2.5 seconds on mobile, under 4 seconds needs work, and over 4 seconds is losing you customers."
+  - q: "Which website speed test tool is most accurate?"
+    a: "PageSpeed Insights is the one that matters most, because it uses Google's own scoring and the Core Web Vitals that affect your search ranking. GTmetrix and Pingdom give a helpful second opinion and a clear waterfall of what's slow, but Google's tool is the ranking-relevant one."
+  - q: "Why do different speed test tools give different scores?"
+    a: "Each tool tests from a different location, connection speed, and simulated device, so the numbers rarely match exactly. Don't chase a single perfect score. Look for the pattern across tools, and prioritise the Mobile result in PageSpeed Insights, since that's what Google ranks on."
 ---
 
-A small business website should fully load in **under 2.5 seconds on a mobile phone**, and ideally closer to one second. Past three seconds, more than half of your visitors leave before they ever see your page. That's the short answer, and for most owners, it's the only number that matters.
+To run a website speed test for free, paste your web address into [Google's PageSpeed Insights](https://pagespeed.web.dev/), read the **Mobile** tab, and look at the Performance score: **90 or above is good, 50 to 89 needs work, and under 50 is losing you customers.** That takes about two minutes. Below, I'll walk through that tool and two solid alternatives, what each number actually means, and which one to trust when they disagree.
 
-But "load time" turns out to mean a few different things, and the targets that actually affect your customers and your Google ranking are more specific than one number. Here's the plain-English version, with the benchmarks Google uses and how to check your own site in two minutes.
+First, why bother. [Google's research is consistent](https://www.thinkwithgoogle.com/marketing-strategies/app-and-mobile/mobile-page-speed-new-industry-benchmarks/): 53% of mobile visitors leave a page that takes longer than three seconds to load. People searching for a local business on their phone, in line, in the car, between errands, have almost no patience for a spinner. A speed test tells you, in a couple of minutes, whether that's quietly happening to you.
 
-## The short answer: under 2.5 seconds
+## The three free tools worth using
 
-If you want one rule to remember, it's this:
+You don't need to pay for any of this. Three free tools cover it, and they answer slightly different questions:
 
-> Your site should be visibly loaded and usable in under 2.5 seconds on a typical phone and connection. Under one second is excellent. Over three seconds is costing you customers.
+| Tool | Best for | The catch |
+| :--- | :--- | :--- |
+| **[PageSpeed Insights](https://pagespeed.web.dev/)** | The one that matters, it uses Google's own scoring and the metrics that affect your ranking | The report looks intimidating if you don't know what to read |
+| **[GTmetrix](https://gtmetrix.com/)** | A clear "waterfall" showing exactly what loaded slowly, image by image | Free tests default to a non-Canadian test location |
+| **[Pingdom](https://tools.pingdom.com/)** | A simple, friendly score and load time if PSI feels like too much | Less detail than the other two |
 
-[Google's research is consistent](https://www.thinkwithgoogle.com/marketing-strategies/app-and-mobile/mobile-page-speed-new-industry-benchmarks/): 53% of mobile visitors leave a page that takes longer than three seconds to load. People searching for a local business on their phone, in line, in the car, between errands, have almost no patience for a spinner.
+If you only run one, run **PageSpeed Insights**, because it scores your site the same way Google does. The other two are useful second opinions when you want to see *what* is slow, not just *how* slow.
 
-## What "load time" actually means
+### How to read PageSpeed Insights (the two-minute version)
 
-When people say "how fast does it load," they're usually mixing up three separate things. Google measures all three as part of what it calls [Core Web Vitals](https://web.dev/articles/vitals), and these directly affect your search ranking.
+1. **Go to [PageSpeed Insights](https://pagespeed.web.dev/)** and paste in your website address.
+2. **Read the Mobile tab, not Desktop.** Most of your visitors are on phones, and mobile is where sites are slowest, so it's the honest number.
+3. **Look at the Performance score (0–100) and the LCP figure.** Performance under 50 on mobile is a real problem. LCP (the moment your main content appears) over 2.5 seconds means visitors are waiting too long.
+
+Everything else on the page is detail. Those two numbers tell you whether you have a problem. (Not sure what the score is built from? Here's [what a Google Lighthouse score actually means](/blog/what-is-google-lighthouse-score).)
+
+## What the numbers actually mean
+
+Your speed test throws a lot of jargon at you, but it's measuring three separate things. Google groups them under [Core Web Vitals](https://web.dev/articles/vitals), and they directly affect your search ranking.
 
 | What it measures | Plain meaning | Good target |
 | :--- | :--- | :--- |
@@ -40,7 +53,7 @@ You don't need to memorize these. The takeaway is simple: **LCP under 2.5 second
 
 ## How fast is fast, and how slow is too slow?
 
-Here's a practical scale for a small business site loading on a mid-range phone:
+Here's a practical scale for your site loading on a mid-range phone:
 
 - **Under 1 second:** Excellent. Visitors won't perceive any wait.
 - **1 to 2.5 seconds:** Good. This is the target. Most people won't notice the load.
@@ -49,15 +62,13 @@ Here's a practical scale for a small business site loading on a mid-range phone:
 
 For context: most Wix and WordPress sites on mobile land in the three to six second range. ([Here's why they slow down.](/blog/why-your-wix-wordpress-site-is-slow)) A [well-built custom site](/blog/custom-website-vs-template) should clear 2.5 seconds comfortably, often loading in under a second.
 
-## How to check your load time (free, two minutes)
+## When the tools disagree, trust this one
 
-You don't have to guess. Use Google's own free tool:
+Run your site through all three and you'll get three different numbers. That's normal, not a bug: each tool tests from a different location, on a different simulated connection and device. Don't chase a single perfect score across all of them.
 
-1. **Go to [PageSpeed Insights](https://pagespeed.web.dev/).** It's free and made by Google.
-2. **Paste in your website address and run it.** Read the **Mobile** tab, not Desktop. Most of your visitors are on phones, and mobile is where sites are slowest.
-3. **Look at the Performance score (0–100) and the LCP number.** Performance under 50 on mobile is a real problem. An LCP over 2.5 seconds means visitors are waiting too long.
+Instead, look for the pattern. If every tool says you're slow, you're slow. When they disagree on the exact figure, **let the Mobile result in PageSpeed Insights be the tiebreaker**, because that's the closest match to how Google actually judges your site for ranking. GTmetrix and Pingdom are there to show you *what* is dragging (usually a giant image or a pile of scripts), not to give you a grade to frame on the wall.
 
-If you'd rather not decode the results, [run a free website audit](/free-website-audit) and it'll check your load time and send a plain-English report. (Not sure what the numbers mean? Start with [what a Google Lighthouse score is](/blog/what-is-google-lighthouse-score).)
+If you'd rather skip the three-tool juggling act, [run a free website audit](/free-website-audit) and it'll check your speed for you and send back a plain-English report, no score-decoding required.
 
 ## Why slow load times cost real money
 
