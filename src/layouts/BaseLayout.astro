@@ -94,7 +94,16 @@ const pageTitle = title === SITE_TITLE ? title : `${title} | ${SITE_NAME}`;
         { "@type": "AdministrativeArea", "name": "Durham Region" },
         { "@type": "AdministrativeArea", "name": "Ontario" }
       ],
-      "serviceType": ["Web Design", "Web Development", "Website Redesign", "Website Maintenance"],
+      "hasOfferCatalog": {
+        "@type": "OfferCatalog",
+        "name": "Web design services",
+        "itemListElement": [
+          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Web Design" } },
+          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Web Development" } },
+          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Website Redesign" } },
+          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Website Maintenance" } }
+        ]
+      },
       "priceRange": "$$",
       "sameAs": [
         "https://maps.app.goo.gl/kqccN21LCLu6ZTek9"
