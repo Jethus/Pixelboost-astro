@@ -10,9 +10,14 @@ import {
 } from "./contact-utils.js";
 import { sendViaFastmail } from "./fastmail.js";
 
+// Same-origin is all we ever need: the audit island fetches /api/audit from
+// pixelboost.ca itself. Locking this (instead of "*") stops other sites' browser
+// JS from invoking the endpoint, which spends PSI quota and sends a lead email.
+const ALLOWED_ORIGIN = "https://pixelboost.ca";
+
 const JSON_HEADERS = {
   "Content-Type": "application/json",
-  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Origin": ALLOWED_ORIGIN,
 };
 
 // Turnstile needs the *.challenges.cloudflare.com wildcard in connect-src:
@@ -51,6 +56,17 @@ async function handleAudit(request, env, ctx) {
   }
   if (email && !EMAIL_RE.test(email)) {
     return Response.json({ error: "Invalid email" }, { status: 400, headers: JSON_HEADERS });
+  }
+
+  // Turnstile gate: every scan spends PSI quota and fires a lead email, so a
+  // valid token is required. The island fetches an invisible token before POSTing.
+  const verified = await validateTurnstileToken({
+    token: body.turnstileToken,
+    secret: env.TURNSTILE_SECRET,
+    remoteIp: request.headers.get("CF-Connecting-IP"),
+  });
+  if (!verified) {
+    return Response.json({ error: "Verification failed" }, { status: 403, headers: JSON_HEADERS });
   }
 
   let targetUrl;
@@ -179,11 +195,11 @@ export default {
 
     const contentType = response.headers.get("Content-Type") || "";
 
-    if (
-      request.method === "GET" &&
-      (url.pathname === "/contact" || url.pathname === "/contact/") &&
-      contentType.includes("text/html")
-    ) {
+    // Inject the Turnstile sitekey (a Worker secret, so absent from the static
+    // build) into any placeholder element. The contact form and the audit island
+    // both carry a [data-turnstile-sitekey] element; the rewriter is a no-op on
+    // pages without one, so it's safe to run for all HTML.
+    if (request.method === "GET" && contentType.includes("text/html")) {
       return new HTMLRewriter()
         .on("[data-turnstile-sitekey]", {
           element(element) {
@@ -193,17 +209,25 @@ export default {
         .transform(withSecurityHeaders(response));
     }
 
-    if (request.method === "GET" && contentType.includes("text/html")) {
-      return withSecurityHeaders(response);
-    }
-
     return response;
   },
+};
+
+// Baseline security headers applied to every HTML response. Kept separate from
+// the CSP string above (which is large and HTML-specific).
+const SECURITY_HEADERS = {
+  // 2 years, subdomains, preload-eligible. The site is HTTPS-only behind CF.
+  "Strict-Transport-Security": "max-age=63072000; includeSubDomains; preload",
+  "X-Content-Type-Options": "nosniff",
+  "Referrer-Policy": "strict-origin-when-cross-origin",
+  // No powerful features are used; deny the common ones outright.
+  "Permissions-Policy": "geolocation=(), microphone=(), camera=(), payment=()",
 };
 
 function withSecurityHeaders(response) {
   const headers = new Headers(response.headers);
   headers.set("Content-Security-Policy", CSP_HEADER);
+  for (const [k, v] of Object.entries(SECURITY_HEADERS)) headers.set(k, v);
   return new Response(response.body, {
     status: response.status,
     statusText: response.statusText,

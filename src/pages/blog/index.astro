@@ -1,5 +1,5 @@
 ---
-import { getCollection } from "astro:content";
+import { getCollection, type CollectionEntry } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import Header from "../../components/Header.astro";
 import Footer from "../../components/Footer.astro";
@@ -11,7 +11,8 @@ import { readTime } from "../../lib/read-time";
 
 // Sort by effective date (updatedDate falls back to pubDate) so a refreshed
 // post resurfaces near the top, in step with search-engine freshness weighting.
-const sortDate = (p) => (p.data.updatedDate ?? p.data.pubDate).valueOf();
+const sortDate = (p: CollectionEntry<"blog">) =>
+  (p.data.updatedDate ?? p.data.pubDate).valueOf();
 const posts = (await getCollection("blog"))
   .filter((p) => !p.data.draft)
   .sort((a, b) => sortDate(b) - sortDate(a));

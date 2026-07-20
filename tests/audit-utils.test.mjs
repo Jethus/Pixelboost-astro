@@ -3,6 +3,7 @@ import { test } from "node:test";
 
 import {
   buildPageSpeedUrl,
+  deriveField,
   deriveLcp,
   deriveMobile,
   deriveTracking,
@@ -193,6 +194,31 @@ test("runScan returns the full scores shape from a PSI response", async () => {
     tracking: 100,
     trackingTools: ["Plausible"],
     lcp: 2500,
+    field: null,
+  });
+});
+
+test("deriveField returns null when CrUX data is absent or NONE", () => {
+  assert.equal(deriveField(undefined), null);
+  assert.equal(deriveField({ overall_category: "NONE", metrics: {} }), null);
+  assert.equal(deriveField({ metrics: { LARGEST_CONTENTFUL_PAINT_MS: { percentile: 2000 } } }), null);
+});
+
+test("deriveField extracts real-user metrics when present", () => {
+  const field = deriveField({
+    overall_category: "AVERAGE",
+    metrics: {
+      LARGEST_CONTENTFUL_PAINT_MS: { percentile: 3100, category: "AVERAGE" },
+      INTERACTION_TO_NEXT_PAINT: { percentile: 180, category: "FAST" },
+      CUMULATIVE_LAYOUT_SHIFT_SCORE: { percentile: 5, category: "FAST" },
+    },
+  });
+  assert.deepEqual(field, {
+    overall: "AVERAGE",
+    lcpMs: 3100,
+    lcpCategory: "AVERAGE",
+    inpMs: 180,
+    clsCategory: "FAST",
   });
 });
 

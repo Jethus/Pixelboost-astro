@@ -1,5 +1,5 @@
 ---
-import { getCollection } from "astro:content";
+import { getCollection, type CollectionEntry } from "astro:content";
 import SectionHeader from "./ui/SectionHeader.astro";
 import BlogCard from "./ui/BlogCard.astro";
 import FeaturedBlogCard from "./ui/FeaturedBlogCard.astro";
@@ -8,7 +8,8 @@ import { readTime } from "../lib/read-time";
 // Sort by effective date (updatedDate falls back to pubDate) so a substantially
 // refreshed post resurfaces as "Latest", matching how search engines weight
 // freshness. The card then labels it "Updated <date>".
-const sortDate = (p) => (p.data.updatedDate ?? p.data.pubDate).valueOf();
+const sortDate = (p: CollectionEntry<"blog">) =>
+  (p.data.updatedDate ?? p.data.pubDate).valueOf();
 const posts = (await getCollection("blog"))
   .filter((p) => !p.data.draft)
   .sort((a, b) => sortDate(b) - sortDate(a))

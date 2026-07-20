@@ -3,6 +3,25 @@ import { verdictFromScores } from '../shared/verdict.js';
 
 type AuditState = 'idle' | 'scanning' | 'done' | 'error';
 
+interface TurnstileApi {
+  render: (el: HTMLElement, opts: Record<string, unknown>) => string;
+  execute: (id: string) => void;
+  reset: (id: string) => void;
+}
+declare global {
+  interface Window {
+    turnstile?: TurnstileApi;
+  }
+}
+
+interface FieldData {
+  overall: 'FAST' | 'AVERAGE' | 'SLOW';
+  lcpMs: number | null;
+  lcpCategory: string | null;
+  inpMs: number | null;
+  clsCategory: string | null;
+}
+
 interface Scores {
   perf: number;
   a11y: number;
@@ -11,6 +30,7 @@ interface Scores {
   tracking: number;
   lcp: number | null;
   trackingTools: string[];
+  field?: FieldData | null;
 }
 
 type MetricKey = 'perf' | 'mobile' | 'seo' | 'a11y' | 'tracking';
@@ -24,6 +44,9 @@ export interface AuditRow {
 export interface AuditContent {
   eyebrow: string;
   headline: string;
+  /** Heading tag for the headline. Use "h1" on the standalone audit page,
+   *  "h2" when the audit section sits under another page's <h1> (e.g. home). */
+  headingLevel?: 'h1' | 'h2';
   body: string;
   footnote: string;
   verdictIdle: string;
@@ -66,6 +89,7 @@ const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 export default function Audit({
   eyebrow,
   headline,
+  headingLevel = 'h2',
   body,
   footnote,
   verdictIdle,
@@ -85,6 +109,12 @@ export default function Audit({
   const rafRef = useRef<number | null>(null);
   // Latest startScan, for the mount-scoped hero-handoff listener.
   const startScanRef = useRef<(rawUrl: string) => void>(() => {});
+
+  // Invisible Turnstile: rendered once into the server-injected #audit-turnstile
+  // element (which carries the edge-injected sitekey). Each scan calls execute()
+  // and awaits a fresh token via the pending resolver, then resets the widget.
+  const turnstileIdRef = useRef<string | null>(null);
+  const tokenResolverRef = useRef<((token: string) => void) | null>(null);
 
   // Refs for CSSOM-driven dynamic styles (bar widths + score colors)
   const barFillRefs = useRef<Record<string, HTMLSpanElement | null>>({});
@@ -108,6 +138,58 @@ export default function Audit({
     window.addEventListener('pb:prefill-url', onPrefill);
     return () => window.removeEventListener('pb:prefill-url', onPrefill);
   }, []);
+
+  // Render the invisible Turnstile widget once its API script has loaded. Polls
+  // briefly because the script is async and may land after this island mounts.
+  useEffect(() => {
+    const el = document.getElementById('audit-turnstile');
+    const sitekey = el?.getAttribute('data-sitekey') ?? '';
+    if (!el || !sitekey) return; // no sitekey (e.g. local dev) → scans go tokenless
+
+    let cancelled = false;
+    const tryRender = () => {
+      if (cancelled || turnstileIdRef.current !== null) return true;
+      if (!window.turnstile) return false;
+      turnstileIdRef.current = window.turnstile.render(el, {
+        sitekey,
+        size: 'invisible',
+        callback: (token: string) => {
+          tokenResolverRef.current?.(token);
+          tokenResolverRef.current = null;
+        },
+        'error-callback': () => {
+          tokenResolverRef.current?.('');
+          tokenResolverRef.current = null;
+        },
+      });
+      return true;
+    };
+
+    if (tryRender()) return;
+    const poll = window.setInterval(() => { if (tryRender()) window.clearInterval(poll); }, 200);
+    const stop = window.setTimeout(() => window.clearInterval(poll), 8000);
+    return () => { cancelled = true; window.clearInterval(poll); window.clearTimeout(stop); };
+  }, []);
+
+  // Trigger the invisible challenge and resolve with a token. Falls back to an
+  // empty string if Turnstile never loaded, so local dev still exercises the flow
+  // (the Worker rejects the empty token, which is the correct prod behavior).
+  const getTurnstileToken = (): Promise<string> => {
+    const id = turnstileIdRef.current;
+    if (!window.turnstile || id === null) return Promise.resolve('');
+    return new Promise<string>((resolve) => {
+      tokenResolverRef.current = resolve;
+      window.turnstile!.reset(id);
+      window.turnstile!.execute(id);
+      // Safety net: never hang the scan if the challenge stalls.
+      window.setTimeout(() => {
+        if (tokenResolverRef.current === resolve) {
+          tokenResolverRef.current = null;
+          resolve('');
+        }
+      }, 12000);
+    });
+  };
 
   // Count-up animation toward the real scores once a scan completes.
   useEffect(() => {
@@ -174,10 +256,11 @@ export default function Audit({
     setDisplayScores({ perf: 0, a11y: 0, seo: 0, mobile: 0, tracking: 0, lcp: null, trackingTools: [] });
     setState('scanning');
     try {
+      const turnstileToken = await getTurnstileToken();
       const res = await fetch('/api/audit', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ url: normalized, email: email.trim() }),
+        body: JSON.stringify({ url: normalized, email: email.trim(), turnstileToken }),
       });
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const data: Scores = await res.json();
@@ -216,9 +299,11 @@ export default function Audit({
             {eyebrow}
           </span>
 
-          <h2 className="audit-headline">
-            {headline}
-          </h2>
+          {headingLevel === 'h1' ? (
+            <h1 className="audit-headline">{headline}</h1>
+          ) : (
+            <h2 className="audit-headline">{headline}</h2>
+          )}
 
           <p className="audit-body">
             {body}
@@ -339,6 +424,14 @@ export default function Audit({
                     : <>Verdict <svg className="audit-verdict-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.25" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg> <strong>{verdictIdle}</strong></>
               }
             </p>
+            {state === 'done' && scores.field && (
+              <p className="audit-field-line">
+                <span className="audit-field-tag" data-cat={scores.field.overall}>Real visitors</span>
+                {scores.field.lcpMs != null
+                  ? <>Actual load for people on this site: <strong>{(scores.field.lcpMs / 1000).toFixed(1)}s</strong> (Google's 28-day data).</>
+                  : <>Real-user data from Google's 28-day field record: <strong>{scores.field.overall.toLowerCase()}</strong>.</>}
+              </p>
+            )}
           </div>
 
           {/* Delivery confirmation / nudge — shown after scan */}

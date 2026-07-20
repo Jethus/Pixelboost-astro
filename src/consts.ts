@@ -12,13 +12,19 @@ export const SITE_TITLE = HOME_TITLE;
 export const SITE_DESCRIPTION =
   "Custom website design and redesign for small businesses in Toronto and Durham Region. Faster, cleaner sites that turn visitors into leads. Free site scan, no email required.";
 
-// Recent site scans shown in the hero "Recently scanned" strip.
-// PLACEHOLDER DATA — swap each entry for a real (anonymized) scan before
-// this goes live: business type + town, and the mobile performance score
-// from PageSpeed Insights / the audit tool. Keep 3–5 entries.
-export const RECENT_SCANS: { label: string; score: number }[] = [
-  { label: "Landscaper, Ajax", score: 38 },
-  { label: "Dental clinic, Whitby", score: 52 },
-  { label: "Café, Oshawa", score: 44 },
-  { label: "Auto shop, Pickering", score: 41 },
+// Aggregate results from scanning real local small-business websites across
+// Toronto, Oshawa, and Whitby (July 2026). These are genuine figures — refresh
+// them from a new scan run rather than fabricating. The hero shows them as the
+// backdrop to "every site I build ships at 95+".
+export interface ScanStat {
+  value: string; // the number, e.g. "89%"
+  label: string; // what it measures, e.g. "score under 90 on mobile"
+}
+
+export const SCAN_SAMPLE_SIZE = 476;
+
+export const SCAN_STATS: ScanStat[] = [
+  { value: "1 in 3", label: "score under 50 on mobile" },
+  { value: "60", label: "average mobile score, out of 100" },
+  { value: "34%", label: "have no analytics at all" },
 ];

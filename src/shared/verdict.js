@@ -1,6 +1,6 @@
 export const METRIC_LABELS = {
   perf: 'Speed',
-  mobile: 'Mobile experience',
+  mobile: 'Mobile speed',
   seo: 'SEO basics',
   a11y: 'Accessibility',
 };
