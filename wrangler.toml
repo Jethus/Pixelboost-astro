@@ -17,6 +17,11 @@ routes = [
 directory = "./dist"
 binding = "ASSETS"
 not_found_handling = "404-page"
+# Canonical URLs are slash-free (/about, not /about/). Serve the bare path and
+# redirect the slash form to it, so Google consolidates on one URL. The worker
+# (src/worker/index.js) upgrades this redirect from Cloudflare's default 307 to
+# a permanent 308 so Google actually drops the old slash URLs from its index.
+html_handling = "drop-trailing-slash"
 # Without this, asset-matching requests are served directly and the Worker
 # never runs: POST /contact 405s at the asset layer (dropping every contact
 # lead), the CSP header is never set, and the Turnstile sitekey is never

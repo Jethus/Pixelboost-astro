@@ -166,6 +166,17 @@ export default {
     }
 
     const response = await env.ASSETS.fetch(request);
+
+    // Cloudflare Assets (html_handling = "drop-trailing-slash") answers /about/
+    // with a 307 to /about. 307 is temporary — Google keeps indexing both URLs.
+    // Reissue as 308 (permanent) so the slash form is consolidated away.
+    if (response.status === 307) {
+      const location = response.headers.get("Location");
+      if (location) {
+        return Response.redirect(new URL(location, url).toString(), 308);
+      }
+    }
+
     const contentType = response.headers.get("Content-Type") || "";
 
     if (
