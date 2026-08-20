@@ -139,44 +139,60 @@ export default function Audit({
     return () => window.removeEventListener('pb:prefill-url', onPrefill);
   }, []);
 
-  // Render the invisible Turnstile widget once its API script has loaded. Polls
-  // briefly because the script is async and may land after this island mounts.
-  useEffect(() => {
+  // Render the invisible Turnstile widget as soon as its (async) API script
+  // has landed. Returns the widget id, or null if it isn't renderable yet.
+  const renderTurnstile = (): string | null => {
+    if (turnstileIdRef.current !== null) return turnstileIdRef.current;
     const el = document.getElementById('audit-turnstile');
     const sitekey = el?.getAttribute('data-sitekey') ?? '';
-    if (!el || !sitekey) return; // no sitekey (e.g. local dev) → scans go tokenless
+    if (!el || !sitekey || !window.turnstile) return null;
+    turnstileIdRef.current = window.turnstile.render(el, {
+      sitekey,
+      size: 'invisible',
+      callback: (token: string) => {
+        tokenResolverRef.current?.(token);
+        tokenResolverRef.current = null;
+      },
+      'error-callback': () => {
+        tokenResolverRef.current?.('');
+        tokenResolverRef.current = null;
+      },
+    });
+    return turnstileIdRef.current;
+  };
 
-    let cancelled = false;
-    const tryRender = () => {
-      if (cancelled || turnstileIdRef.current !== null) return true;
-      if (!window.turnstile) return false;
-      turnstileIdRef.current = window.turnstile.render(el, {
-        sitekey,
-        size: 'invisible',
-        callback: (token: string) => {
-          tokenResolverRef.current?.(token);
-          tokenResolverRef.current = null;
-        },
-        'error-callback': () => {
-          tokenResolverRef.current?.('');
-          tokenResolverRef.current = null;
-        },
-      });
-      return true;
-    };
+  // Wait for the widget to become renderable. The script is async and the island
+  // is client:visible, so the very first scan (especially the hero handoff, which
+  // calls startScan on mount) can arrive before turnstile.js has executed — the
+  // scan must wait for it rather than POST a token-less request the Worker 403s.
+  const waitForTurnstile = (timeoutMs = 10000): Promise<string | null> => {
+    const id = renderTurnstile();
+    if (id !== null) return Promise.resolve(id);
+    // No sitekey at all (e.g. `astro dev`, which has no Worker secret) → don't
+    // stall the scan; go tokenless, as before.
+    const sitekey = document.getElementById('audit-turnstile')?.getAttribute('data-sitekey');
+    if (!sitekey) return Promise.resolve(null);
+    return new Promise(resolve => {
+      const started = Date.now();
+      const poll = window.setInterval(() => {
+        const ready = renderTurnstile();
+        if (ready !== null || Date.now() - started > timeoutMs) {
+          window.clearInterval(poll);
+          resolve(ready);
+        }
+      }, 100);
+    });
+  };
 
-    if (tryRender()) return;
-    const poll = window.setInterval(() => { if (tryRender()) window.clearInterval(poll); }, 200);
-    const stop = window.setTimeout(() => window.clearInterval(poll), 8000);
-    return () => { cancelled = true; window.clearInterval(poll); window.clearTimeout(stop); };
-  }, []);
+  // Warm the widget up on mount so a scan started later doesn't pay the wait.
+  useEffect(() => { void waitForTurnstile(); }, []);
 
   // Trigger the invisible challenge and resolve with a token. Falls back to an
   // empty string if Turnstile never loaded, so local dev still exercises the flow
   // (the Worker rejects the empty token, which is the correct prod behavior).
-  const getTurnstileToken = (): Promise<string> => {
-    const id = turnstileIdRef.current;
-    if (!window.turnstile || id === null) return Promise.resolve('');
+  const getTurnstileToken = async (): Promise<string> => {
+    const id = await waitForTurnstile();
+    if (!window.turnstile || id === null) return '';
     return new Promise<string>((resolve) => {
       tokenResolverRef.current = resolve;
       window.turnstile!.reset(id);
