@@ -3,6 +3,12 @@ import { verdictFromScores } from '../shared/verdict.js';
 
 type AuditState = 'idle' | 'scanning' | 'done' | 'error';
 
+// Error copy: the Worker 403s when Turnstile verification fails — that's a
+// "reload and let the challenge rerun" problem, not a bad URL, so it gets its
+// own message instead of blaming the URL the visitor typed.
+const GENERIC_SCAN_ERROR = "Couldn't reach that URL. Double-check it and try again.";
+const VERIFY_SCAN_ERROR = 'Cloudflare verification failed. Reload the page and try again.';
+
 interface TurnstileApi {
   render: (el: HTMLElement, opts: Record<string, unknown>) => string;
   execute: (id: string) => void;
@@ -115,6 +121,11 @@ export default function Audit({
   // and awaits a fresh token via the pending resolver, then resets the widget.
   const turnstileIdRef = useRef<string | null>(null);
   const tokenResolverRef = useRef<((token: string) => void) | null>(null);
+  // In-form slot the #audit-turnstile element is moved into before the widget
+  // renders, so an interactive challenge appears under the submit button
+  // instead of orphaned at the end of the section.
+  const turnstileSlotRef = useRef<HTMLDivElement | null>(null);
+  const [errorMsg, setErrorMsg] = useState(GENERIC_SCAN_ERROR);
 
   // Refs for CSSOM-driven dynamic styles (bar widths + score colors)
   const barFillRefs = useRef<Record<string, HTMLSpanElement | null>>({});
@@ -146,8 +157,13 @@ export default function Audit({
     const el = document.getElementById('audit-turnstile');
     const sitekey = el?.getAttribute('data-sitekey') ?? '';
     if (!el || !sitekey || !window.turnstile) return null;
+    // Relocate the (static, edge-injected) element into the form before the
+    // widget renders — moving it afterwards would reload the widget iframe.
+    const slot = turnstileSlotRef.current;
+    if (slot && el.parentElement !== slot) slot.appendChild(el);
     turnstileIdRef.current = window.turnstile.render(el, {
       sitekey,
+      theme: 'dark',
       // `size: 'invisible'` is not a valid Turnstile param (the API throws on
       // it, so no token is ever issued and every scan 403s). The supported
       // invisible pattern: defer the challenge until execute() and keep the
@@ -283,11 +299,16 @@ export default function Audit({
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ url: normalized, email: email.trim(), turnstileToken }),
       });
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      if (!res.ok) {
+        setErrorMsg(res.status === 403 ? VERIFY_SCAN_ERROR : GENERIC_SCAN_ERROR);
+        setState('error');
+        return;
+      }
       const data: Scores = await res.json();
       setScores(data);
       setState('done');
     } catch {
+      setErrorMsg(GENERIC_SCAN_ERROR);
       setState('error');
     }
   };
@@ -363,6 +384,11 @@ export default function Audit({
               {state === 'scanning' ? 'Scanning…' : state === 'done' ? 'Run again' : 'Score my site'}
               <svg className="audit-btn-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.25" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
             </button>
+            {/* #audit-turnstile (static, outside the island) is moved in here
+                before the widget renders; empty until then, and 0-height unless
+                Turnstile needs a visible interaction. React never manages the
+                moved node, so it's safe to reparent into this ref div. */}
+            <div ref={turnstileSlotRef} className="audit-turnstile-slot" />
           </form>
           {emailInvalid && (
             <p id="audit-email-error" className="audit-email-error" role="alert">That email doesn't look right. Check it, or leave it blank.</p>
@@ -441,7 +467,7 @@ export default function Audit({
                 : state === 'scanning'
                   ? 'Scanning your site…'
                   : state === 'error'
-                    ? <span className="audit-error-msg">Couldn't reach that URL. Double-check it and try again.</span>
+                    ? <span className="audit-error-msg">{errorMsg}</span>
                     : <>Verdict <svg className="audit-verdict-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.25" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg> <strong>{verdictIdle}</strong></>
               }
             </p>

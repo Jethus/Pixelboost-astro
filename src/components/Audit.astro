@@ -59,8 +59,11 @@ const rows: AuditRow[] = [
 />
 
 {/* Invisible Turnstile for the scan. The sitekey (a Worker secret) is injected
-    at the edge into data-sitekey via HTMLRewriter matching [data-turnstile-sitekey];
-    the island reads it off this element and renders an invisible widget here. */}
+    at the edge into data-sitekey via HTMLRewriter matching [data-turnstile-sitekey],
+    which is why this element must live in static HTML rather than inside the React
+    island (hydration would clobber the injected attribute). The island moves it
+    into its .audit-turnstile-slot under the form before rendering the widget, so
+    an interactive challenge shows up next to the submit button. */}
 <div id="audit-turnstile" data-turnstile-sitekey data-sitekey=""></div>
 <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer is:inline></script>
 
