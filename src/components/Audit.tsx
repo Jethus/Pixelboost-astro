@@ -148,7 +148,12 @@ export default function Audit({
     if (!el || !sitekey || !window.turnstile) return null;
     turnstileIdRef.current = window.turnstile.render(el, {
       sitekey,
-      size: 'invisible',
+      // `size: 'invisible'` is not a valid Turnstile param (the API throws on
+      // it, so no token is ever issued and every scan 403s). The supported
+      // invisible pattern: defer the challenge until execute() and keep the
+      // widget hidden unless Turnstile needs a visible interaction.
+      execution: 'execute',
+      appearance: 'interaction-only',
       callback: (token: string) => {
         tokenResolverRef.current?.(token);
         tokenResolverRef.current = null;
