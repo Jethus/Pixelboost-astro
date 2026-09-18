@@ -1,6 +1,6 @@
 ---
 title: Ontario College of Teachers FAQ
-order: 2
+order: 3
 tags: Regulatory / UX
 image: ../../assets/portfolio/oct-faq-desktop.webp
 imageMobile: ../../assets/portfolio/oct-faq-mobile.webp

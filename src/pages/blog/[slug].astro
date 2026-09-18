@@ -5,6 +5,8 @@ import Header from "../../components/Header.astro";
 import Footer from "../../components/Footer.astro";
 import BlogFAQ from "../../components/BlogFAQ.astro";
 import ClosingCTA from "../../components/ClosingCTA.astro";
+import ScanBar from "../../components/ScanBar.astro";
+import Audit from "../../components/Audit.astro";
 
 export async function getStaticPaths() {
   const posts = await getCollection("blog");
@@ -77,6 +79,14 @@ const faqLd = faq && {
 
     <section class="section-card surface-paper-2">
       <article class="post-body post-body-width">
+        {post.data.scanTool && (
+          <ScanBar
+            heading="Test your website speed now."
+            note="Runs a real Google Lighthouse scan: speed, mobile, SEO and accessibility, scored in plain English. No email needed to see it."
+            location="blog-speed-test"
+          />
+        )}
+
         <Content />
 
         {faq && <BlogFAQ questions={faq} />}
@@ -92,6 +102,14 @@ const faqLd = faq && {
         </a>
       </div>
     </section>
+
+    {post.data.scanTool && (
+      <Audit
+        eyebrow="Your results"
+        headline="Your site's scorecard."
+        body="The scan checks the same things Google does, then explains each score in plain English: what's fine, what's costing you visitors, and what to fix first."
+      />
+    )}
 
     <ClosingCTA />
 

@@ -1,6 +1,6 @@
 ---
 title: Crescendo Stage
-order: 3
+order: 4
 tags: Finance / Automation
 image: ../../assets/portfolio/cs-desktop.webp
 imageMobile: ../../assets/portfolio/cs-mobile.webp

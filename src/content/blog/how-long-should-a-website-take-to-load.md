@@ -2,11 +2,12 @@
 title: "Website speed test: how to check your site (free tools)"
 description: "How to run a website speed test for free with PageSpeed Insights, GTmetrix, and Pingdom, what the scores mean, and which tool to trust, in plain English."
 pubDate: 2026-06-02
-updatedDate: 2026-07-20
+updatedDate: 2026-09-18
 draft: false
+scanTool: true
 faq:
   - q: "How do I test my website speed for free?"
-    a: "Paste your web address into Google's free PageSpeed Insights, then read the Mobile tab, that's where most visitors are and where sites are slowest. GTmetrix and Pingdom are good free alternatives. Or run the free audit on this site for a plain-English report instead of a raw score."
+    a: "Paste your web address into the free scanner at the top of this page and you'll get speed, mobile, SEO and accessibility scores in plain English, no email needed. Google's own PageSpeed Insights is the other good option: read the Mobile tab, that's where most visitors are and where sites are slowest. GTmetrix and Pingdom are solid free alternatives too."
   - q: "What is a good website speed test score?"
     a: "On PageSpeed Insights, 90 to 100 is good, 50 to 89 needs improvement, and under 50 is a real problem costing you visitors. For load time itself, aim for under 2.5 seconds on mobile, under 4 seconds needs work, and over 4 seconds is losing you customers."
   - q: "Which website speed test tool is most accurate?"
@@ -15,7 +16,7 @@ faq:
     a: "Each tool tests from a different location, connection speed, and simulated device, so the numbers rarely match exactly. Don't chase a single perfect score. Look for the pattern across tools, and prioritise the Mobile result in PageSpeed Insights, since that's what Google ranks on."
 ---
 
-To run a website speed test for free, paste your web address into [Google's PageSpeed Insights](https://pagespeed.web.dev/), read the **Mobile** tab, and look at the Performance score: **90 or above is good, 50 to 89 needs work, and under 50 is losing you customers.** That takes about two minutes. Below, I'll walk through that tool and two solid alternatives, what each number actually means, and which one to trust when they disagree.
+To run a website speed test for free, paste your web address into the scanner above, or into [Google's PageSpeed Insights](https://pagespeed.web.dev/), and read the **Mobile** tab: **90 or above is good, 50 to 89 needs work, and under 50 is losing you customers.** Either way it takes about two minutes. The difference is that the scanner above explains each score in plain English instead of handing you a wall of technical warnings. Below, I'll walk through Google's tool and two solid alternatives, what each number actually means, and which one to trust when they disagree.
 
 First, why bother. [Google's research is consistent](https://www.thinkwithgoogle.com/marketing-strategies/app-and-mobile/mobile-page-speed-new-industry-benchmarks/): 53% of mobile visitors leave a page that takes longer than three seconds to load. People searching for a local business on their phone, in line, in the car, between errands, have almost no patience for a spinner. A speed test tells you, in a couple of minutes, whether that's quietly happening to you.
 
@@ -68,7 +69,7 @@ Run your site through all three and you'll get three different numbers. That's n
 
 Instead, look for the pattern. If every tool says you're slow, you're slow. When they disagree on the exact figure, **let the Mobile result in PageSpeed Insights be the tiebreaker**, because that's the closest match to how Google actually judges your site for ranking. GTmetrix and Pingdom are there to show you *what* is dragging (usually a giant image or a pile of scripts), not to give you a grade to frame on the wall.
 
-If you'd rather skip the three-tool juggling act, [run a free website audit](/free-website-audit) and it'll check your speed for you and send back a plain-English report, no score-decoding required.
+If you'd rather skip the three-tool juggling act, use the scanner at the top of this page. It checks your speed and hands back a plain-English report, no score-decoding required, along with your mobile, SEO and [accessibility](/blog/web-accessibility-small-business-ontario) scores — that last one matters in Ontario, where the AODA sets rules for some businesses' websites.
 
 ## Why slow load times cost real money
 

@@ -1,6 +1,6 @@
 ---
 title: Lunar Rhythm Gardens
-order: 4
+order: 5
 tags: Agriculture / Local Markets
 image: ../../assets/portfolio/lunar-desktop.webp
 imageMobile: ../../assets/portfolio/lunar-mobile.webp

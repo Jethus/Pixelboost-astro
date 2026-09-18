@@ -1,6 +1,6 @@
 ---
 title: Ontario College of Teachers
-order: 1
+order: 2
 tags: Regulatory / Public Sector
 image: ../../assets/portfolio/oct-desktop.webp
 imageMobile: ../../assets/portfolio/oct-mobile.webp

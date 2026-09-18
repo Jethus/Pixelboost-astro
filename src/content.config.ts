@@ -19,6 +19,10 @@ const blog = defineCollection({
       faq: z
         .array(z.object({ q: z.string(), a: z.string() }))
         .optional(),
+      // Opt a post into the compact scan bar + live audit tool. For posts that
+      // rank on tool intent ("test my website speed"), where prose alone earns
+      // impressions but no clicks. Off by default — it loads the React island.
+      scanTool: z.boolean().default(false),
     }),
 });
 

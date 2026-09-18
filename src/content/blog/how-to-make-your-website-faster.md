@@ -82,6 +82,6 @@ But if your site is hurting badly, it's often better to bring in someone with ex
 
 ## See what's slowing your site down
 
-Not sure which of these apply to you? [Run a free website audit](/free-website-audit). It checks your speed, along with your mobile experience, SEO, and accessibility, and gives you a plain-English report of what's costing you. From there we're happy to connect and walk you through exactly what's slowing your site down, and how we'd fix it.
+Not sure which of these apply to you? [Run a free website audit](/free-website-audit). It checks your speed, along with your mobile experience, SEO, and [accessibility](/blog/web-accessibility-small-business-ontario) (which in Ontario ties into the AODA rules), and gives you a plain-English report of what's costing you. From there we're happy to connect and walk you through exactly what's slowing your site down, and how we'd fix it.
 
 If you want more background first, here's [how long a website should take to load](/blog/how-long-should-a-website-take-to-load), [why Wix and WordPress sites get slow](/blog/why-your-wix-wordpress-site-is-slow), and [what your Google Lighthouse score actually means](/blog/what-is-google-lighthouse-score).
