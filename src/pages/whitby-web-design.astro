@@ -1,0 +1,231 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Header from "../components/Header.astro";
+import Hero from "../components/Hero.astro";
+import Problem from "../components/Problem.astro";
+import Portfolio from "../components/Portfolio.astro";
+import Pricing from "../components/Pricing.astro";
+import FAQ from "../components/FAQ.astro";
+import ClosingCTA from "../components/ClosingCTA.astro";
+import Footer from "../components/Footer.astro";
+import SectionHeader from "../components/ui/SectionHeader.astro";
+
+/**
+ * Whitby landing page.
+ *
+ * Targets the Whitby search demand, which per GSC (Jun–Sep 2026) is almost
+ * entirely SEO-worded — `seo whitby` 178 impr @ pos 1.9, `whitby seo` 57 @ pos
+ * 2.5 — versus only ~4 impressions for "web design whitby". Pixelboost does
+ * not sell SEO retainers, so this page deliberately targets that language and
+ * is then straight about the boundary: I build the technical foundation SEO
+ * depends on, and say plainly when someone needs a dedicated SEO specialist.
+ * Being honest about the line is the differentiator here — every competing
+ * Whitby result sells retainers, citation cleanup and "review velocity".
+ */
+
+const problemCards = [
+  {
+    title: "You rank, but nobody clicks.",
+    body: "Showing up in Whitby search results is only half of it. If your listing looks dated or your page loads slowly, people scroll past to the next business.",
+  },
+  {
+    title: "Your site is slow on a phone.",
+    body: "Most Whitby customers find you on mobile, often on the road. Google measures that load time and ranks you on it. Many Wix and Squarespace sites score under 50.",
+  },
+  {
+    title: "Google can't read your site properly.",
+    body: "Missing page titles, no structure, no local business markup. None of it is visible to you, all of it decides whether you show up for Whitby searches at all.",
+  },
+  {
+    title: "You can't tell what's working.",
+    body: "Without analytics you're guessing whether Whitby customers came from Google, the map listing, or word of mouth, so you can't tell what's worth doing again.",
+  },
+];
+
+// The technical foundation — what I actually do, stated concretely.
+const foundation = [
+  {
+    title: "Speed and Core Web Vitals",
+    body: "Google ranks partly on how fast your pages load and how stable they feel. I build sites that clear those thresholds on a mid-range phone, not just on my desk.",
+  },
+  {
+    title: "Clean structure Google can read",
+    body: "Proper page titles, headings, and descriptions for every page, so search engines understand what each one is for instead of guessing.",
+  },
+  {
+    title: "Local business markup",
+    body: "Structured data telling Google you're a real business serving Whitby and Durham Region, which is what makes the richer local results possible.",
+  },
+  {
+    title: "Mobile that genuinely works",
+    body: "Not a desktop site squeezed into a phone. Tap targets big enough to hit, text you can read, and nothing that shifts around while it loads.",
+  },
+  {
+    title: "Accessibility built in",
+    body: "Built to WCAG 2.1 AA from the start. It overlaps heavily with the things search engines reward, and in Ontario it ties into AODA.",
+  },
+  {
+    title: "Analytics you can actually read",
+    body: "Plausible included, set up so you can see which pages bring in Whitby enquiries without learning a dashboard.",
+  },
+];
+
+const whitbyFaq = [
+  {
+    q: "Do you do SEO for Whitby businesses?",
+    a: "Partly, and I'd rather be straight about which part. I build the technical foundation that search depends on: fast pages, clean structure, local business markup, mobile that works, and analytics. What I don't sell is an ongoing SEO retainer, content marketing, or link building. If that's what you need, you want a dedicated SEO specialist, and I'll tell you so.",
+  },
+  {
+    q: "How much does SEO cost for a small business in Ontario?",
+    a: "Ongoing SEO retainers for Canadian small businesses generally run about $800 to $2,500 a month, and Toronto agencies often quote higher. That's a real service and sometimes worth it. My work is different: a one-time build at $200/month or $3,200 flat that gets the technical foundation right, with no monthly SEO fee attached.",
+  },
+  {
+    q: "Will a new website make me rank higher in Whitby?",
+    a: "It removes the technical reasons you're being held back, which for most small business sites is the biggest single gap. But ranking also depends on reviews, your Google Business Profile, and how competitive your trade is locally. A fast, well-built site is the foundation, not the whole job. I'll be honest about which one is actually your problem.",
+  },
+  {
+    q: "Do you work with businesses in Whitby?",
+    a: "Yes. Whitby is a core service area, along with Oshawa, Ajax, Pickering, Bowmanville, and the rest of Durham Region. I'm based in Toronto, so we can meet in person or work remotely, whichever suits you.",
+  },
+  {
+    q: "How long does a Whitby small business website take?",
+    a: "Most take 4 to 6 weeks from kickoff. Larger sites, or ones where I write the content, take a bit longer. I only take on two projects at a time so the timelines I give you stay honest.",
+  },
+  {
+    q: "What if my current site is fine?",
+    a: "Then I'll tell you that. Start with the free scan, which checks your speed, mobile, SEO basics, and accessibility in a couple of minutes. Sometimes the answer is that your site is mostly fine and three specific things need fixing, and that's a much cheaper conversation than a rebuild.",
+  },
+];
+---
+
+<BaseLayout
+  title="Whitby web design and SEO foundations for small business"
+  description="Whitby SEO starts with how your site is built. Fast, well-structured websites for Whitby and Durham Region small businesses, plus an honest line on SEO."
+>
+  <Header />
+  <main>
+    <Hero
+      scanInput={false}
+      primaryHref="/free-website-audit"
+      title={`Whitby SEO starts with <span class="high">how your site is built</span>.`}
+      sub="I build fast, properly structured websites for small businesses in Whitby and across Durham Region. Search engines reward the technical foundation, and that's the part I do. I'll also tell you plainly when what you need is an SEO specialist instead."
+      note="Free site scan. No email required."
+      primaryLabel="Scan my site free"
+      secondaryLabel="See recent work"
+      secondaryHref="#work"
+    />
+
+    <Problem
+      eyebrow="Why it matters"
+      subhead="Whitby customers feel these every day. Most owners never see them."
+      heading="Why local businesses stay invisible in Whitby search."
+      cards={problemCards}
+    />
+
+    <section class="section-card surface-paper">
+      <div data-reveal>
+        <SectionHeader
+          eyebrow="What I actually do"
+          subhead="The technical groundwork search engines measure, built in from the first day rather than bolted on later."
+        >
+          The part of SEO that lives in the build.
+        </SectionHeader>
+      </div>
+      <ul class="found-list" aria-label="What the build includes">
+        {foundation.map((f, i) => (
+          <li class="found-item" data-reveal style={`--reveal-i:${i + 1}`}>
+            <h3 class="found-title">{f.title}</h3>
+            <p class="found-body">{f.body}</p>
+          </li>
+        ))}
+      </ul>
+    </section>
+
+    <section class="section-card surface-paper-2">
+      <div data-reveal>
+        <SectionHeader
+          eyebrow="Being straight with you"
+          subhead="Most Whitby search results for SEO are agencies selling monthly retainers. I'm not one, and you should know the difference before you call anyone."
+        >
+          What I don't do.
+        </SectionHeader>
+      </div>
+      <div class="honest-wrap" data-reveal>
+        <p class="honest-p">
+          I don't sell ongoing SEO retainers, content marketing, or link building. Those are real services, and for a competitive trade in a crowded market they can genuinely pay off. In Canada they typically run <strong>$800 to $2,500 a month</strong>, and Toronto agencies often quote above that.
+        </p>
+        <p class="honest-p">
+          What I do is a one-time build that gets the technical foundation right, then stays out of your way. For a lot of small businesses in Whitby, that foundation plus a well-tended <a class="prose-link" href="https://support.google.com/business/answer/3038177" target="_blank" rel="noopener noreferrer">Google Business Profile</a> and a handful of real reviews is most of the local-search battle, without a monthly invoice attached.
+        </p>
+        <p class="honest-p">
+          If your site is already fast and well-built and you're still not showing up, a new website isn't your answer and I'll say so. That's usually a reviews, listings, or competitiveness problem, and it's worth paying a specialist for rather than paying me for a rebuild you don't need.
+        </p>
+      </div>
+    </section>
+
+    <Portfolio />
+
+    <Pricing />
+
+    <FAQ
+      heading="Whitby web design and SEO, common questions."
+      questions={whitbyFaq}
+    />
+
+    <ClosingCTA />
+  </main>
+  <Footer />
+</BaseLayout>
+
+<style>
+  .found-list {
+    margin-top: 40px;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+  }
+  .found-item {
+    padding: 22px;
+    border: 1px solid var(--color-line);
+    border-radius: 18px;
+    background: rgba(248, 245, 238, 0.48);
+  }
+  .found-title {
+    margin: 0 0 6px 0;
+    font-size: clamp(17px, 1.35vw, 20px);
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    color: var(--color-ink);
+  }
+  .found-body {
+    margin: 0;
+    font-size: clamp(14.5px, 1.1vw, 16px);
+    color: var(--color-ink-500);
+    line-height: 1.55;
+    font-weight: 450;
+  }
+
+  .honest-wrap {
+    margin-top: 36px;
+    max-width: 68ch;
+  }
+  .honest-p {
+    margin: 0 0 1.15rem;
+    font-size: clamp(16px, 1.2vw, 18px);
+    line-height: 1.7;
+    color: var(--color-ink-700);
+    font-weight: 450;
+  }
+  .honest-p:last-child { margin-bottom: 0; }
+  .honest-p strong { color: var(--color-ink); font-weight: 700; }
+
+  @media (max-width: 980px) {
+    .found-list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+  @media (max-width: 720px) {
+    .found-list { grid-template-columns: 1fr; margin-top: 36px; }
+  }
+</style>
