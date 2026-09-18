@@ -5,7 +5,6 @@ import Header from "../../components/Header.astro";
 import Footer from "../../components/Footer.astro";
 import BlogFAQ from "../../components/BlogFAQ.astro";
 import ClosingCTA from "../../components/ClosingCTA.astro";
-import ScanBar from "../../components/ScanBar.astro";
 import Audit from "../../components/Audit.astro";
 
 export async function getStaticPaths() {
@@ -21,11 +20,17 @@ export async function getStaticPaths() {
 const { post } = Astro.props;
 const { Content } = await render(post);
 
-const formattedDate = post.data.pubDate.toLocaleDateString("en-CA", {
+// Dates are authored as bare YYYY-MM-DD (parsed as UTC midnight); format in UTC
+// so the build machine's timezone can't shift the shown day back by one.
+// (Same rule as BlogCard.astro — keep them in sync.)
+const dateOpts = {
   year: "numeric",
   month: "long",
   day: "numeric",
-});
+  timeZone: "UTC",
+} as const;
+const formattedDate = post.data.pubDate.toLocaleDateString("en-CA", dateOpts);
+const formattedUpdated = post.data.updatedDate?.toLocaleDateString("en-CA", dateOpts);
 
 const postUrl = new URL(`/blog/${post.id}`, Astro.site).href;
 
@@ -59,7 +64,7 @@ const faqLd = faq && {
 };
 ---
 
-<BaseLayout title={post.data.title} description={post.data.description}>
+<BaseLayout title={post.data.title} description={post.data.description} noSuffix>
   <script type="application/ld+json" set:html={JSON.stringify(blogPostingLd)} />
   {faqLd && (
     <script type="application/ld+json" set:html={JSON.stringify(faqLd)} />
@@ -70,23 +75,28 @@ const faqLd = faq && {
   <main>
 
     <section class="section-card surface-paper">
-      <p class="post-eyebrow">{formattedDate}</p>
+      <p class="post-eyebrow">
+        {formattedDate}{formattedUpdated && ` · Updated ${formattedUpdated}`}
+      </p>
       <h1 class="post-title">{post.data.title}</h1>
       <p class="post-description">
         {post.data.description}
       </p>
     </section>
 
+    {/* Tool-intent posts ("test my website speed") get the live scanner right
+        under the title, results and all, so the searcher never has to scroll
+        past the article to see the tool run. */}
+    {post.data.scanTool && (
+      <Audit
+        eyebrow="Free · no email needed"
+        headline="Test your website speed now."
+        body="Runs a real Google Lighthouse scan: speed, mobile, SEO and accessibility, scored in plain English. No email needed to see it."
+      />
+    )}
+
     <section class="section-card surface-paper-2">
       <article class="post-body post-body-width">
-        {post.data.scanTool && (
-          <ScanBar
-            heading="Test your website speed now."
-            note="Runs a real Google Lighthouse scan: speed, mobile, SEO and accessibility, scored in plain English. No email needed to see it."
-            location="blog-speed-test"
-          />
-        )}
-
         <Content />
 
         {faq && <BlogFAQ questions={faq} />}
@@ -103,15 +113,7 @@ const faqLd = faq && {
       </div>
     </section>
 
-    {post.data.scanTool && (
-      <Audit
-        eyebrow="Your results"
-        headline="Your site's scorecard."
-        body="The scan checks the same things Google does, then explains each score in plain English: what's fine, what's costing you visitors, and what to fix first."
-      />
-    )}
-
-    <ClosingCTA />
+    <ClosingCTA scanHref={post.data.scanTool ? "#audit" : "/#audit"} />
 
   </main>
 

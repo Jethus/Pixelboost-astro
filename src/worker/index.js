@@ -40,6 +40,12 @@ const CSP_HEADER = [
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
+// Retired URLs (with or without a trailing slash) → where they live now.
+export const LEGACY_REDIRECTS = {
+  "/case-studies": "/#work",
+  "/services": "/",
+};
+
 async function handleAudit(request, env, ctx) {
   let body;
   try {
@@ -171,6 +177,13 @@ export default {
     if (url.hostname.startsWith("www.")) {
       url.hostname = url.hostname.slice(4);
       return Response.redirect(url.toString(), 301);
+    }
+
+    // Pages that no longer exist but still surface in Search Console at
+    // page-one positions. Send that equity somewhere real instead of a 404.
+    const legacy = LEGACY_REDIRECTS[url.pathname.replace(/\/+$/, "") || "/"];
+    if (legacy) {
+      return Response.redirect(new URL(legacy, url).toString(), 301);
     }
 
     if (request.method === "POST" && url.pathname === "/api/audit") {

@@ -49,7 +49,22 @@ const {
   },
   ],
 }: Props = Astro.props;
+
+// FAQPage structured data from the same strings the accordion renders, so the
+// landing pages (home, Durham, Whitby) are eligible for FAQ rich results the
+// way blog posts already are via blog/[slug].astro.
+const faqLd = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: questions.map((item) => ({
+    "@type": "Question",
+    name: item.q,
+    acceptedAnswer: { "@type": "Answer", text: item.a },
+  })),
+};
 ---
+
+<script type="application/ld+json" set:html={JSON.stringify(faqLd)} />
 
 <section id="faq" class="section-card faq-section">
   <SectionHeader eyebrow="FAQ" maxWidth="narrow">

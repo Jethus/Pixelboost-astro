@@ -1,5 +1,12 @@
 ---
 import Button from "./ui/Button.astro";
+
+interface Props {
+  /** Where "Score my site" points. Pages that carry their own Audit island
+   *  pass "#audit" so the button stays on-page instead of going home. */
+  scanHref?: string;
+}
+const { scanHref = "/#audit" }: Props = Astro.props;
 ---
 
 <section id="cta" class="section-card cta-section">
@@ -8,7 +15,7 @@ import Button from "./ui/Button.astro";
     Run a free scan of your site. No email required. You'll see what's slowing people down, what's missing, and what I'd fix first.
   </p>
   <div class="cta-actions">
-    <Button href="/#audit" variant="mint" class="btn-on-dark">Score my site</Button>
+    <Button href={scanHref} variant="mint" class="btn-on-dark">Score my site</Button>
     <Button href="mailto:josh@pixelboost.ca" variant="outline-light" arrow={false}>Or just email me</Button>
   </div>
 </section>

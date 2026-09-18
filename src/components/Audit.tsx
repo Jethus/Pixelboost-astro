@@ -126,6 +126,9 @@ export default function Audit({
   // instead of orphaned at the end of the section.
   const turnstileSlotRef = useRef<HTMLDivElement | null>(null);
   const [errorMsg, setErrorMsg] = useState(GENERIC_SCAN_ERROR);
+  // True while Turnstile has (almost certainly) switched to its interactive
+  // checkbox mid-scan, so the status line can tell the visitor to tick it.
+  const [verifyHint, setVerifyHint] = useState(false);
 
   // Refs for CSSOM-driven dynamic styles (bar widths + score colors)
   const barFillRefs = useRef<Record<string, HTMLSpanElement | null>>({});
@@ -215,16 +218,29 @@ export default function Audit({
     const id = await waitForTurnstile();
     if (!window.turnstile || id === null) return '';
     return new Promise<string>((resolve) => {
-      tokenResolverRef.current = resolve;
+      const done = (token: string) => {
+        window.clearTimeout(hintTimer);
+        setVerifyHint(false);
+        resolve(token);
+      };
+      tokenResolverRef.current = done;
       window.turnstile!.reset(id);
       window.turnstile!.execute(id);
-      // Safety net: never hang the scan if the challenge stalls.
+      // No token after a few seconds means Turnstile has switched to its
+      // interactive "Verify you are human" box (VPNs, privacy browsers, etc.).
+      // Tell the visitor to tick it and keep waiting — a short timeout here used
+      // to POST an empty token, which the Worker 403'd while the box was still
+      // on screen, and the late token then landed on a null resolver.
+      const hintTimer = window.setTimeout(() => {
+        if (tokenResolverRef.current === done) setVerifyHint(true);
+      }, 6000);
+      // Hard stop so a genuinely stalled challenge can never hang the scan.
       window.setTimeout(() => {
-        if (tokenResolverRef.current === resolve) {
+        if (tokenResolverRef.current === done) {
           tokenResolverRef.current = null;
-          resolve('');
+          done('');
         }
-      }, 12000);
+      }, 120000);
     });
   };
 
@@ -291,6 +307,7 @@ export default function Audit({
     if (email.trim()) sessionStorage.setItem('pb_audit_email', email.trim());
     setScores({ perf: 0, a11y: 0, seo: 0, mobile: 0, tracking: 0, lcp: null, trackingTools: [] });
     setDisplayScores({ perf: 0, a11y: 0, seo: 0, mobile: 0, tracking: 0, lcp: null, trackingTools: [] });
+    setVerifyHint(false);
     setState('scanning');
     try {
       const turnstileToken = await getTurnstileToken();
@@ -465,7 +482,9 @@ export default function Audit({
               {state === 'done' && verdict
                 ? <>{verdict.text} <strong className="audit-verdict-strong">{verdict.cta}</strong></>
                 : state === 'scanning'
-                  ? 'Scanning your site…'
+                  ? (verifyHint
+                      ? 'Tick the "Verify you are human" box by the button to continue.'
+                      : 'Scanning your site…')
                   : state === 'error'
                     ? <span className="audit-error-msg">{errorMsg}</span>
                     : <>Verdict <svg className="audit-verdict-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.25" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg> <strong>{verdictIdle}</strong></>
