@@ -54,3 +54,6 @@ keystatic.config.old
 
 CLAUDE.md
 skills-lock.json
+# internal prospecting tool: local-only, never public
+scripts/lead-gen/
+tests/lead-gen.test.mjs

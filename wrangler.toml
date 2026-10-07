@@ -13,8 +13,8 @@ routes = [
 # - TURNSTILE_SITE_KEY: public Turnstile widget sitekey injected into /contact
 # - TURNSTILE_SECRET: private Turnstile Siteverify secret for POST /contact
 
-# Only ./dist (the Astro build) is uploaded and served. Anything outside it —
-# notably scripts/ (the internal lead-gen tooling) and tests/ — is never
+# Only ./dist (the Astro build) is uploaded and served. Anything outside it,
+# notably tests/, is never
 # deployed. Astro likewise only builds src/, so scripts/ stays out of dist/.
 [assets]
 directory = "./dist"
