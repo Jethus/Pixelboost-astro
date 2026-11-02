@@ -10,7 +10,7 @@ export const SITE_NAME = "Pixelboost";
 // the home page. Points at HOME_TITLE.
 export const SITE_TITLE = HOME_TITLE;
 export const SITE_DESCRIPTION =
-  "Custom website design and redesign for small businesses in Toronto and Durham Region. Faster, cleaner sites that turn visitors into leads. Free site scan, no email required.";
+  "Website design and redesign for small businesses in Toronto and Durham Region. Faster sites that turn visitors into leads. Free site scan, no email required.";
 
 // Aggregate results from scanning real local small-business websites across
 // Toronto, Oshawa, and Whitby (July 2026). These are genuine figures — refresh

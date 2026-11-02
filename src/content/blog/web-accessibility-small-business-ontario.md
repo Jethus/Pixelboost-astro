@@ -87,7 +87,7 @@ I led the design work on the website for the College (the Ontario College of Tea
 4. Hamburger menus and dropdowns that don't work with keyboard navigation
 5. Buttons that are too small to tap reliably on mobile
 
-None of these are hard to fix. They just require someone to actually check for them, which most designers don't, unless accessibility is explicitly part of their process.
+None of these are hard to fix. They just require someone to actually check for them, which most designers don't, unless accessibility is explicitly part of their process. If you'd rather check your own site first, here's [how to check whether your website is AODA compliant](/blog/is-my-website-aoda-compliant) in about half an hour, no technical skills needed.
 
 ## What to do
 
