@@ -24,7 +24,7 @@ Here's how to do both, in plain English, with nothing to install.
 
 Ontario's AODA points to an international standard called [WCAG 2.0 Level AA](https://www.ontario.ca/page/how-make-websites-accessible). If you have **50 or more employees** (or you're in the public sector), your public website must meet it. If you have fewer than 50, there's no legal WCAG requirement for your site, but every barrier below still costs you customers who can't book, call, or buy.
 
-I've covered who the rules apply to, the reporting deadline, and the fines question in [AODA website requirements for Ontario small businesses](/blog/web-accessibility-small-business-ontario). This post is the practical half: how to find out where your site actually stands.
+I've covered who the rules apply to, the reporting deadline, and the fines question in [AODA website requirements for Ontario small businesses](/blog/web-accessibility-small-business-ontario). This post is the practical half: how to find out where your site actually stands. If you're filling in the compliance report, see [how to file your AODA compliance report](/blog/how-to-file-aoda-compliance-report).
 
 One thing worth knowing up front: there's no government certificate for an accessible website. Nobody from Ontario inspects your site and hands you a badge. Compliance is something you check, fix, and keep a record of yourself.
 

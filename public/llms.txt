@@ -26,6 +26,7 @@ Key facts:
 
 - [AODA website requirements for Ontario small businesses](https://pixelboost.ca/blog/web-accessibility-small-business-ontario): who must comply, which WCAG level applies, the December 31, 2026 reporting deadline, and fines
 - [Is your website AODA compliant? How to check it yourself](https://pixelboost.ca/blog/is-my-website-aoda-compliant): a free scan plus five hands-on accessibility checks
+- [How to file your AODA compliance report](https://pixelboost.ca/blog/how-to-file-aoda-compliance-report): who must file by December 31, 2026, what you need, the portal steps, and the WCAG website question
 - [Website speed test: how to check your site (free tools)](https://pixelboost.ca/blog/how-long-should-a-website-take-to-load): PageSpeed Insights, GTmetrix, and Pingdom compared, and how fast a site should load
 - [Why is my website slow? How to make it faster](https://pixelboost.ca/blog/how-to-make-your-website-faster): why sites (especially Wix and WordPress) get slow, and a plain-English checklist to fix it
 - [What is a Google Lighthouse score?](https://pixelboost.ca/blog/what-is-google-lighthouse-score): what the performance, accessibility, SEO, and best-practices scores mean

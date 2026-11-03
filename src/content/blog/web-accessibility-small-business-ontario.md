@@ -51,7 +51,7 @@ Two things keep it relevant anyway. First, the trend is toward wider coverage as
 
 ### The reporting rule is separate (and catches smaller businesses)
 
-There's a second AODA obligation people confuse with the website standard: the **accessibility compliance report**. Businesses and non-profits with **20 or more employees** must file one with the Government of Ontario by **December 31, 2026**, and every three years after that. That's a lower threshold than the 50-employee website standard, so a mid-sized small business can be off the hook for WCAG but still on the hook to report.
+There's a second AODA obligation people confuse with the website standard: the **accessibility compliance report**. Businesses and non-profits with **20 or more employees** must file one with the Government of Ontario by **December 31, 2026**, and every three years after that. That's a lower threshold than the 50-employee website standard, so a mid-sized small business can be off the hook for WCAG but still on the hook to report. Here's [how to file your AODA compliance report](/blog/how-to-file-aoda-compliance-report), step by step.
 
 ## Can you actually be fined for an inaccessible website?
 
