@@ -43,12 +43,25 @@ const blogPostingLd = {
   ...(post.data.updatedDate && {
     dateModified: post.data.updatedDate.toISOString(),
   }),
-  author: { "@type": "Person", name: "Josh Del Vecchio" },
+  // Same @id as the founder in BaseLayout's LocalBusiness, so search engines
+  // and AI tools tie every post to one real author with an /about page.
+  author: {
+    "@type": "Person",
+    "@id": "https://pixelboost.ca/about#josh",
+    name: "Josh Del Vecchio",
+    url: "https://pixelboost.ca/about",
+  },
   publisher: {
     "@type": "Organization",
     name: "Pixelboost",
     url: "https://pixelboost.ca",
+    logo: {
+      "@type": "ImageObject",
+      url: "https://pixelboost.ca/web-app-manifest-512x512.png",
+    },
   },
+  image: "https://pixelboost.ca/og-image.png",
+  inLanguage: "en-CA",
   mainEntityOfPage: postUrl,
 };
 
@@ -64,7 +77,15 @@ const faqLd = faq && {
 };
 ---
 
-<BaseLayout title={post.data.title} description={post.data.description} noSuffix>
+<BaseLayout
+  title={post.data.title}
+  description={post.data.description}
+  noSuffix
+  breadcrumbs={[
+    { name: "Blog", path: "/blog" },
+    { name: post.data.title, path: `/blog/${post.id}` },
+  ]}
+>
   <script type="application/ld+json" set:html={JSON.stringify(blogPostingLd)} />
   {faqLd && (
     <script type="application/ld+json" set:html={JSON.stringify(faqLd)} />

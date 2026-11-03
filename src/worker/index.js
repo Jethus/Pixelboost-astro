@@ -44,6 +44,10 @@ const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 export const LEGACY_REDIRECTS = {
   "/case-studies": "/#work",
   "/services": "/",
+  // 2026-11 consolidation: Google had these as "Crawled - currently not
+  // indexed" (near-duplicates of stronger posts); merged into the indexed one.
+  "/blog/custom-website-vs-template": "/blog/wix-vs-custom-website-small-business",
+  "/blog/why-your-wix-wordpress-site-is-slow": "/blog/how-to-make-your-website-faster",
 };
 
 async function handleAudit(request, env, ctx) {

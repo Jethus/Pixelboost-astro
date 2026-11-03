@@ -61,7 +61,7 @@ Here's a practical scale for your site loading on a mid-range phone:
 - **2.5 to 4 seconds:** Slow. A meaningful share of visitors leave before the page appears.
 - **Over 4 seconds:** A problem. You're losing customers daily, and Google knows it.
 
-For context: most Wix and WordPress sites on mobile land in the three to six second range. ([Here's why they slow down.](/blog/why-your-wix-wordpress-site-is-slow)) A [well-built custom site](/blog/custom-website-vs-template) should clear 2.5 seconds comfortably, often loading in under a second.
+For context: most Wix and WordPress sites on mobile land in the three to six second range. ([Here's why they slow down.](/blog/how-to-make-your-website-faster)) A [well-built custom site](/blog/wix-vs-custom-website-small-business) should clear 2.5 seconds comfortably, often loading in under a second.
 
 ## When the tools disagree, trust this one
 

@@ -20,7 +20,7 @@ If you've started asking around about a website redesign in Toronto, you've prob
 
 Web design pricing varies because "website" means very different things to different people.
 
-A $500 website is usually a Wix or Squarespace template with your logo and text swapped in. Fast to produce, looks okay, but you're getting a template, not a custom design, and often a slow, hard-to-update result. ([Here's the real difference between a template and a custom build](/blog/custom-website-vs-template).)
+A $500 website is usually a Wix or Squarespace template with your logo and text swapped in. Fast to produce, looks okay, but you're getting a template, not a custom design, and often a slow, hard-to-update result. ([Here's the real difference between a template and a custom build](/blog/wix-vs-custom-website-small-business).)
 
 A $30,000+ website is usually a large agency with project managers, account teams, and multiple rounds of stakeholder approvals built into the quote. The work might be excellent, but a lot of what you're paying for is overhead that a small business doesn't need.
 

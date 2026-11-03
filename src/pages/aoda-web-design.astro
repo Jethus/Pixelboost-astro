@@ -1,0 +1,161 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Header from "../components/Header.astro";
+import Hero from "../components/Hero.astro";
+import Problem from "../components/Problem.astro";
+import FeatureGrid from "../components/FeatureGrid.astro";
+import PlainTalk from "../components/PlainTalk.astro";
+import Portfolio from "../components/Portfolio.astro";
+import Pricing from "../components/Pricing.astro";
+import FAQ from "../components/FAQ.astro";
+import ClosingCTA from "../components/ClosingCTA.astro";
+import Footer from "../components/Footer.astro";
+
+/**
+ * AODA service page.
+ *
+ * Targets the hire-me AODA queries no page answered (GSC Aug–Oct 2026:
+ * `aoda web design toronto` 89 impr @ pos 75, `aoda web design` 78 @ 76,
+ * `aoda compliant website` 26 @ 71). The two AODA blog posts own the
+ * informational side (requirements; how to check) and link here.
+ *
+ * Scope is new builds and redesigns only (Josh, 2026-11-02): don't add
+ * claims about remediating existing sites or formal audits.
+ */
+
+const problemCards = [
+  {
+    title: "Some customers can't use your site.",
+    body: "Light grey text, tiny buttons, and forms without proper labels turn away older customers and anyone with low vision or a disability. They don't complain. They just call someone else.",
+  },
+  {
+    title: "A plugin won't fix it.",
+    body: "Accessibility toolbars and widgets sit on top of your site. The real problems, like contrast, labels, and menus that need a mouse, live in the design and code underneath.",
+  },
+  {
+    title: "You're not sure what the law asks of you.",
+    body: "Ontario's AODA rules depend on your size, and a lot of \"get compliant or else\" marketing glosses over that. You deserve a straight answer before you spend anything.",
+  },
+  {
+    title: "A good scan score isn't the whole story.",
+    body: "Automated checkers catch a portion of accessibility problems. Things like keyboard access and sensible image descriptions need a person to check.",
+  },
+];
+
+const builtIn = [
+  {
+    title: "Readable colour contrast",
+    body: "Text and buttons that meet the WCAG AA contrast ratios, so they're readable in sunlight, on a cheap phone, and with low vision.",
+  },
+  {
+    title: "Works with a keyboard alone",
+    body: "Menus, forms, and pop-ups that can be reached and used without a mouse, with a visible highlight showing where you are.",
+  },
+  {
+    title: "Forms people can finish",
+    body: "Real labels on every field and error messages that say what's wrong in words, not just a red outline. Your contact form is where visitors become leads.",
+  },
+  {
+    title: "Images that make sense out loud",
+    body: "Meaningful descriptions on every image that carries information, so a screen reader tells a blind visitor what a sighted one sees.",
+  },
+  {
+    title: "Holds up when zoomed",
+    body: "Layouts that stay readable and usable at 200% zoom, which plenty of customers rely on every day.",
+  },
+  {
+    title: "Built in, not bolted on",
+    body: "Accessibility is part of the design and code from the first sketch, not a plugin added at the end. It costs nothing extra.",
+  },
+];
+
+const aodaFaq = [
+  {
+    q: "What is AODA-compliant web design?",
+    a: "It means designing and building a website so it meets WCAG 2.0 Level AA, the accessibility standard Ontario's AODA references. I build every site to WCAG 2.1 AA, the newer version, which covers everything in 2.0 AA. In practice that means readable contrast, keyboard access, labelled forms, image descriptions, and layouts that hold up when zoomed.",
+  },
+  {
+    q: "Does my small business website legally need to be AODA compliant?",
+    a: "Only if you have 50 or more employees, or you're a public sector organization. Then your public website must meet WCAG 2.0 Level AA. Under 50 employees there's no legal WCAG requirement for your site, though businesses with 20 or more employees must still file an accessibility compliance report by December 31, 2026.",
+  },
+  {
+    q: "Why build to the standard if the law doesn't require it for my business?",
+    a: "Because the barriers cost you customers either way. Older visitors, people on small phones, and anyone with a disability hit the same problems the standard is designed to prevent. Building to it from the start costs nothing extra, and it means you're already covered if your business grows past 50 employees.",
+  },
+  {
+    q: "How much does an accessible website cost?",
+    a: "The same as any site I build: $200/month for the build plus ongoing updates, or $3,200 flat for a clean hand-off. Accessibility is included, not an add-on. Both options are shown in the pricing section above.",
+  },
+  {
+    q: "Will an accessibility plugin or overlay make my current site compliant?",
+    a: "Not on its own. A toolbar or widget sits on top of your site and can't rewrite what's underneath, like low-contrast colours in your template, form fields without labels, or menus that only work with a mouse. Those need fixing in the site itself, which is why I build them right from the start.",
+  },
+  {
+    q: "Can you make my existing website AODA compliant?",
+    a: "My work is new builds and redesigns, so for a site with deep accessibility problems the path I offer is a rebuild to WCAG 2.1 AA. If your site is mostly fine, run the free scan first and work through the hands-on checks in my AODA self-check guide. You may only need a few fixes you can make yourself.",
+  },
+];
+---
+
+<BaseLayout
+  title="AODA web design for Toronto small businesses"
+  breadcrumbs={[{ name: "AODA web design", path: "/aoda-web-design" }]}
+  description="Accessible websites built to WCAG 2.1 AA from day one for Toronto and Durham Region small businesses. AODA-ready, fast, and honest about what the law needs."
+>
+  <Header />
+  <main>
+    <Hero
+      scanInput={false}
+      primaryHref="/free-website-audit"
+      title={`Websites built to <span class="high">AODA standards</span> from day one.`}
+      sub="I design and build websites for small businesses in Toronto and Durham Region to WCAG 2.1 AA, which covers the WCAG 2.0 AA standard Ontario's AODA references. Accessibility isn't a plugin or an upsell here. It's how the site is built."
+      note="Free site scan, including an accessibility score. No email required."
+      primaryLabel="Scan my site free"
+      secondaryLabel="See recent work"
+      secondaryHref="#work"
+    />
+
+    <Problem
+      eyebrow="Why it matters"
+      subhead="Most owners never see these barriers. Some of their customers hit them every day."
+      heading="An inaccessible site quietly turns customers away."
+      cards={problemCards}
+    />
+
+    <FeatureGrid
+      eyebrow="What's built in"
+      subhead="The parts of WCAG that most small business sites fail, handled in the design and the code from the start."
+      heading="Accessible by default, not by plugin."
+      items={builtIn}
+      label="Accessibility built into every site"
+    />
+
+    <PlainTalk
+      eyebrow="Being straight with you"
+      subhead="Accessibility marketing in Ontario leans hard on fear. Here's the calmer version."
+      heading="What the AODA actually asks of you."
+    >
+      <p>
+        If your business has <strong>fewer than 50 employees</strong>, the AODA doesn't legally require your website to meet WCAG. I'll tell you that up front, because a lot of "get compliant or else" marketing doesn't. If you have 50 or more, your public website must meet WCAG 2.0 Level AA. Here's the full picture on <a class="prose-link" href="/blog/web-accessibility-small-business-ontario">AODA website requirements for Ontario small businesses</a>.
+      </p>
+      <p>
+        I build to the standard anyway, on every site, because the same barriers cost you customers whether or not the law applies to you. I learned this work under a real deadline: I led the design work on the website for the College (the Ontario College of Teachers) after it was served an AODA warning, and part of my job was catching accessibility issues through each round of remediation.
+      </p>
+      <p>
+        If you'd like to see where your current site stands first, <a class="prose-link" href="/blog/is-my-website-aoda-compliant">here's how to check whether your website is AODA compliant</a> yourself, in about half an hour. Sometimes the answer is a few fixes, not a new site, and I'll say so.
+      </p>
+    </PlainTalk>
+
+    <Portfolio />
+
+    <Pricing />
+
+    <FAQ
+      heading="AODA web design, common questions."
+      questions={aodaFaq}
+    />
+
+    <ClosingCTA />
+  </main>
+  <Footer />
+</BaseLayout>

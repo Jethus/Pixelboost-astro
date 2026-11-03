@@ -8,7 +8,8 @@ import Pricing from "../components/Pricing.astro";
 import FAQ from "../components/FAQ.astro";
 import ClosingCTA from "../components/ClosingCTA.astro";
 import Footer from "../components/Footer.astro";
-import SectionHeader from "../components/ui/SectionHeader.astro";
+import FeatureGrid from "../components/FeatureGrid.astro";
+import PlainTalk from "../components/PlainTalk.astro";
 
 /**
  * Whitby landing page.
@@ -100,6 +101,7 @@ const whitbyFaq = [
 
 <BaseLayout
   title="Whitby web design and SEO foundations"
+  breadcrumbs={[{ name: "Whitby web design", path: "/whitby-web-design" }]}
   description="Whitby SEO starts with how your site is built. Fast, well-structured websites for Whitby and Durham Region small businesses, plus an honest line on SEO."
 >
   <Header />
@@ -122,46 +124,29 @@ const whitbyFaq = [
       cards={problemCards}
     />
 
-    <section class="section-card surface-paper">
-      <div data-reveal>
-        <SectionHeader
-          eyebrow="What I actually do"
-          subhead="The technical groundwork search engines measure, built in from the first day rather than bolted on later."
-        >
-          The part of SEO that lives in the build.
-        </SectionHeader>
-      </div>
-      <ul class="found-list" aria-label="What the build includes">
-        {foundation.map((f, i) => (
-          <li class="found-item" data-reveal style={`--reveal-i:${i + 1}`}>
-            <h3 class="found-title">{f.title}</h3>
-            <p class="found-body">{f.body}</p>
-          </li>
-        ))}
-      </ul>
-    </section>
+    <FeatureGrid
+      eyebrow="What I actually do"
+      subhead="The technical groundwork search engines measure, built in from the first day rather than bolted on later."
+      heading="The part of SEO that lives in the build."
+      items={foundation}
+      label="What the build includes"
+    />
 
-    <section class="section-card surface-paper-2">
-      <div data-reveal>
-        <SectionHeader
-          eyebrow="Being straight with you"
-          subhead="Most Whitby search results for SEO are agencies selling monthly retainers. I'm not one, and you should know the difference before you call anyone."
-        >
-          What I don't do.
-        </SectionHeader>
-      </div>
-      <div class="honest-wrap" data-reveal>
-        <p class="honest-p">
-          I don't sell ongoing SEO retainers, content marketing, or link building. Those are real services, and for a competitive trade in a crowded market they can genuinely pay off. In Canada they typically run <strong>$800 to $2,500 a month</strong>, and Toronto agencies often quote above that.
-        </p>
-        <p class="honest-p">
-          What I do is a one-time build that gets the technical foundation right, then stays out of your way. For a lot of small businesses in Whitby, that foundation plus a well-tended <a class="prose-link" href="https://support.google.com/business/answer/3038177" target="_blank" rel="noopener noreferrer">Google Business Profile</a> and a handful of real reviews is most of the local-search battle, without a monthly invoice attached.
-        </p>
-        <p class="honest-p">
-          If your site is already fast and well-built and you're still not showing up, a new website isn't your answer and I'll say so. That's usually a reviews, listings, or competitiveness problem, and it's worth paying a specialist for rather than paying me for a rebuild you don't need.
-        </p>
-      </div>
-    </section>
+    <PlainTalk
+      eyebrow="Being straight with you"
+      subhead="Most Whitby search results for SEO are agencies selling monthly retainers. I'm not one, and you should know the difference before you call anyone."
+      heading="What I don't do."
+    >
+      <p>
+        I don't sell ongoing SEO retainers, content marketing, or link building. Those are real services, and for a competitive trade in a crowded market they can genuinely pay off. In Canada they typically run <strong>$800 to $2,500 a month</strong>, and Toronto agencies often quote above that.
+      </p>
+      <p>
+        What I do is a one-time build that gets the technical foundation right, then stays out of your way. For a lot of small businesses in Whitby, that foundation plus a well-tended <a class="prose-link" href="https://support.google.com/business/answer/3038177" target="_blank" rel="noopener noreferrer">Google Business Profile</a> and a handful of real reviews is most of the local-search battle, without a monthly invoice attached.
+      </p>
+      <p>
+        If your site is already fast and well-built and you're still not showing up, a new website isn't your answer and I'll say so. That's usually a reviews, listings, or competitiveness problem, and it's worth paying a specialist for rather than paying me for a rebuild you don't need.
+      </p>
+    </PlainTalk>
 
     <Portfolio />
 
@@ -176,56 +161,3 @@ const whitbyFaq = [
   </main>
   <Footer />
 </BaseLayout>
-
-<style>
-  .found-list {
-    margin-top: 40px;
-    padding: 0;
-    list-style: none;
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 16px;
-  }
-  .found-item {
-    padding: 22px;
-    border: 1px solid var(--color-line);
-    border-radius: 18px;
-    background: rgba(248, 245, 238, 0.48);
-  }
-  .found-title {
-    margin: 0 0 6px 0;
-    font-size: clamp(17px, 1.35vw, 20px);
-    font-weight: 700;
-    line-height: 1.2;
-    letter-spacing: -0.02em;
-    color: var(--color-ink);
-  }
-  .found-body {
-    margin: 0;
-    font-size: clamp(14.5px, 1.1vw, 16px);
-    color: var(--color-ink-500);
-    line-height: 1.55;
-    font-weight: 450;
-  }
-
-  .honest-wrap {
-    margin-top: 36px;
-    max-width: 68ch;
-  }
-  .honest-p {
-    margin: 0 0 1.15rem;
-    font-size: clamp(16px, 1.2vw, 18px);
-    line-height: 1.7;
-    color: var(--color-ink-700);
-    font-weight: 450;
-  }
-  .honest-p:last-child { margin-bottom: 0; }
-  .honest-p strong { color: var(--color-ink); font-weight: 700; }
-
-  @media (max-width: 980px) {
-    .found-list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  }
-  @media (max-width: 720px) {
-    .found-list { grid-template-columns: 1fr; margin-top: 36px; }
-  }
-</style>

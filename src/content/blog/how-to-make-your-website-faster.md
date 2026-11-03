@@ -1,7 +1,8 @@
 ---
 title: "How to make your website faster: a plain-English checklist"
-description: "Slow website? Here's a plain-English checklist to make it faster: compress images, cut script bloat, lazy-load, and pick the right host. No jargon, real fixes."
+description: "Slow Wix or WordPress site? A plain-English checklist to make your website faster: compress images, cut script bloat, lazy-load, and pick a faster host."
 pubDate: 2026-07-02
+updatedDate: 2026-11-02
 draft: false
 faq:
   - q: "How can I make my website load faster for free?"
@@ -25,6 +26,8 @@ Two reasons, and neither is about tech for its own sake.
 First, Google cares. Plenty of SEO people will tell you speed doesn't matter. It does. Google indexes on it, and when your site is neck-and-neck with a competitor on everything else, Google picks the one with the better speed and user experience. Speed is the tiebreaker you control.
 
 Second, your customers care more than you think. [Google's research](https://www.thinkwithgoogle.com/marketing-strategies/app-and-mobile/mobile-page-speed-new-industry-benchmarks/) found that 53% of mobile visitors leave a page if it takes longer than three seconds to load, while the average mobile page still takes around 19 seconds to load on a 3G connection. That gap is a huge amount of potential customers and sales bleeding out before anyone sees what you offer.
+
+Here's a rough way to put a number on it. Say your site gets 200 visitors a month and 5% of them normally get in touch: that's 10 leads. If your site is slow enough that 30% of visitors leave before it loads, you're really only getting 7. That's 3 leads a month lost to a loading spinner, every month.
 
 Here's the checklist.
 
@@ -68,11 +71,17 @@ Where your website lives matters as much as anything above. A good host with a l
 
 I use [Cloudflare](https://www.cloudflare.com/) for everything, its network is excellent and there are no surprise bandwidth bills. Netlify and Vercel are also solid, just keep an eye on their bandwidth fees if your traffic grows.
 
-## A note on page builders
+## Why Wix and WordPress sites get slow
 
-If you're on a page builder, know that they carry bloat by design. They're built to work for any business and any layout, so there's a lot of general-purpose code loaded whether you use it or not. They've improved over the years, but you have to be diligent to get a fast site out of one.
+If you're on Wix, Squarespace, or WordPress, know that page builders carry bloat by design. They're built to work for any business and any layout, so there's a lot of general-purpose code loaded whether you use it or not. They aren't inherently bad tools, and they've improved over the years, but you have to be diligent to get a fast site out of one.
 
-The honest truth: 99% of the time, a page builder will be slower than a custom-built site, especially now that tools like [Astro](https://astro.build/) can ship a fast static site with almost nothing extra to slow it down. It's what I build with, and it's why those sites load the way they do.
+**Wix** loads a lot of its platform infrastructure on every page: editor tooling, app scripts, font loaders, even when none of it is visible to your visitors. You don't control most of it.
+
+**WordPress** is slow in a different way. Most WordPress sites run a theme (which loads its own scripts), several plugins (each loading their own scripts), and shared hosting that's slow under load. Every plugin you add is another thing that can slow the page down, and most owners have no idea which ones are the culprits.
+
+That's why the checklist above only gets you so far on these platforms. You can compress images, add a caching plugin, and switch hosts for a modest improvement, but you're still fighting the platform's baseline weight.
+
+The honest truth: 99% of the time, a page builder will be slower than a custom-built site, especially now that tools like [Astro](https://astro.build/) can ship a fast static site with almost nothing extra to slow it down. It's what I build with, and it's why those sites load the way they do. (Weighing a switch? Here's an honest [Wix vs custom website](/blog/wix-vs-custom-website-small-business) comparison.)
 
 ## Can you do this yourself?
 
@@ -82,6 +91,6 @@ But if your site is hurting badly, it's often better to bring in someone with ex
 
 ## See what's slowing your site down
 
-Not sure which of these apply to you? [Run a free website audit](/free-website-audit). It checks your speed, along with your mobile experience, SEO, and [accessibility](/blog/web-accessibility-small-business-ontario) (which in Ontario ties into the AODA rules), and gives you a plain-English report of what's costing you. From there we're happy to connect and walk you through exactly what's slowing your site down, and how we'd fix it.
+Not sure which of these apply to you? [Run a free website audit](/free-website-audit). It checks your speed, along with your mobile experience, SEO, and [accessibility](/blog/web-accessibility-small-business-ontario) (which in Ontario ties into the AODA rules), and gives you a plain-English report of what's costing you. From there I'm happy to walk you through exactly what's slowing your site down, and how I'd fix it. Sometimes a rebuild doesn't make sense, and I'll tell you that too.
 
-If you want more background first, here's [how long a website should take to load](/blog/how-long-should-a-website-take-to-load), [why Wix and WordPress sites get slow](/blog/why-your-wix-wordpress-site-is-slow), and [what your Google Lighthouse score actually means](/blog/what-is-google-lighthouse-score).
+If you want more background first, here's [how to run a website speed test](/blog/how-long-should-a-website-take-to-load) and [what your Google Lighthouse score actually means](/blog/what-is-google-lighthouse-score).

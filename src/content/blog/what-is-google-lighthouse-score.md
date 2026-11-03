@@ -41,7 +41,7 @@ This measures how fast your site loads for a real person on a real phone. It loo
 - **50–89:** Noticeable. Some visitors will wait, some won't.
 - **Below 50:** Slow. A meaningful percentage of your visitors are leaving before they see your content.
 
-Most Wix and WordPress sites score 40–65 on mobile. That's not bad luck, it's the platform loading a pile of scripts you never asked for, from plugins doing who knows what. A well-built custom site should be 90+, because it only ships what the page actually needs. (Here's [why Wix and WordPress sites are slow](/blog/why-your-wix-wordpress-site-is-slow) in the first place.)
+Most Wix and WordPress sites score 40–65 on mobile. That's not bad luck, it's the platform loading a pile of scripts you never asked for, from plugins doing who knows what. A well-built custom site should be 90+, because it only ships what the page actually needs. (Here's [why Wix and WordPress sites are slow](/blog/how-to-make-your-website-faster) in the first place.)
 
 ### Accessibility
 

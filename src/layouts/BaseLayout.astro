@@ -11,11 +11,32 @@ interface Props {
    *  already 50–60 chars, and the 12-char suffix pushed every one past the
    *  ~60-char SERP cutoff. */
   noSuffix?: boolean;
+  /** BreadcrumbList trail AFTER "Home" (Google shows it in place of the URL in
+   *  desktop results and reports it under Enhancements > Breadcrumbs).
+   *  Default: one crumb, this page's title. Pass a shorter name where the SEO
+   *  title is long, a deeper trail for nested pages, or `false` to omit
+   *  (404). The homepage never emits one. */
+  breadcrumbs?: { name: string; path: string }[] | false;
 }
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
-const { title, description = SITE_DESCRIPTION, image, noSuffix = false } = Astro.props;
+const { title, description = SITE_DESCRIPTION, image, noSuffix = false, breadcrumbs } = Astro.props;
 const pageTitle = title === SITE_TITLE || noSuffix ? title : `${title} | ${SITE_NAME}`;
+
+const isHome = title === SITE_TITLE;
+const trail = breadcrumbs === false || isHome
+  ? null
+  : (breadcrumbs ?? [{ name: title, path: Astro.url.pathname }]);
+const breadcrumbLd = trail && {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [{ name: "Home", path: "/" }, ...trail].map((crumb, i) => ({
+    "@type": "ListItem",
+    position: i + 1,
+    name: crumb.name,
+    item: new URL(crumb.path, Astro.site).href,
+  })),
+};
 ---
 
 <!doctype html>
@@ -77,6 +98,10 @@ const pageTitle = title === SITE_TITLE || noSuffix ? title : `${title} | ${SITE_
       "url": "https://pixelboost.ca"
     })} />
 
+    {breadcrumbLd && (
+      <script type="application/ld+json" set:html={JSON.stringify(breadcrumbLd)} />
+    )}
+
     <script type="application/ld+json" set:html={JSON.stringify({
       "@context": "https://schema.org",
       "@type": "LocalBusiness",
@@ -85,6 +110,15 @@ const pageTitle = title === SITE_TITLE || noSuffix ? title : `${title} | ${SITE_
       "description": "Custom web design and development for small businesses in Toronto and Durham Region.",
       "url": "https://pixelboost.ca",
       "image": "https://pixelboost.ca/og-image.png",
+      "logo": "https://pixelboost.ca/web-app-manifest-512x512.png",
+      "founder": {
+        "@type": "Person",
+        "@id": "https://pixelboost.ca/about#josh",
+        "name": "Josh Del Vecchio",
+        "jobTitle": "Web designer and developer",
+        "url": "https://pixelboost.ca/about",
+        "sameAs": ["https://github.com/Jethus"]
+      },
       "telephone": "+19057812464",
       "email": "josh@pixelboost.ca",
       "address": {

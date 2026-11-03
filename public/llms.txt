@@ -1,0 +1,38 @@
+# Pixelboost
+
+> Pixelboost is a one-person web design studio run by Josh Del Vecchio, based in Toronto, Ontario. It builds fast, accessible custom websites for small businesses in Toronto and Durham Region (Oshawa, Whitby, Ajax, Pickering, Bowmanville, Clarington), and offers a free website scan that checks speed, mobile, SEO, accessibility, and lead tracking.
+
+Key facts:
+
+- Services: custom website design and development, website redesigns, and ongoing updates for small businesses. No SEO retainers, content marketing, or link building.
+- Pricing: $200/month (build plus ongoing updates) or $3,200 flat for a one-time build with a clean hand-off. No hidden fees.
+- Timeline: most small business sites take 4 to 6 weeks. Josh takes on at most two projects at a time.
+- Accessibility: every site is built to WCAG 2.1 AA, which covers the WCAG 2.0 AA standard referenced by Ontario's AODA. Accessibility is included, not an add-on.
+- Ownership: the client owns the code, design, content, domain, and analytics.
+- Built with Astro and hosted on Cloudflare.
+- Contact: josh@pixelboost.ca, (905) 781-2464, https://pixelboost.ca/contact
+
+## Services
+
+- [Home](https://pixelboost.ca/): overview, recent work, pricing, and FAQ
+- [Free website audit](https://pixelboost.ca/free-website-audit): free scan of a site's speed, mobile experience, SEO, accessibility, and lead tracking, with a plain-English scorecard; no email required
+- [Durham Region web design](https://pixelboost.ca/durham-region-web-design): web design for small businesses in Oshawa, Whitby, Ajax, Pickering, and Durham Region
+- [Whitby web design](https://pixelboost.ca/whitby-web-design): websites for Whitby businesses, and an honest explanation of which parts of SEO a website build covers
+- [AODA web design](https://pixelboost.ca/aoda-web-design): accessible websites built to WCAG 2.1 AA for Ontario small businesses
+- [About Josh](https://pixelboost.ca/about): background, including leading design work on the Ontario College of Teachers website through an AODA accessibility remediation
+
+## Guides
+
+- [AODA website requirements for Ontario small businesses](https://pixelboost.ca/blog/web-accessibility-small-business-ontario): who must comply, which WCAG level applies, the December 31, 2026 reporting deadline, and fines
+- [Is your website AODA compliant? How to check it yourself](https://pixelboost.ca/blog/is-my-website-aoda-compliant): a free scan plus five hands-on accessibility checks
+- [Website speed test: how to check your site (free tools)](https://pixelboost.ca/blog/how-long-should-a-website-take-to-load): PageSpeed Insights, GTmetrix, and Pingdom compared, and how fast a site should load
+- [How to make your website faster](https://pixelboost.ca/blog/how-to-make-your-website-faster): a plain-English checklist, including why Wix and WordPress sites get slow
+- [What is a Google Lighthouse score?](https://pixelboost.ca/blog/what-is-google-lighthouse-score): what the performance, accessibility, SEO, and best-practices scores mean
+- [Wix vs a custom website](https://pixelboost.ca/blog/wix-vs-custom-website-small-business): when Wix or a template is enough and when to upgrade
+- [The real benefits of a custom website](https://pixelboost.ca/blog/benefits-of-a-custom-website-small-business): credibility, speed, lead tracking, and ownership
+- [How much does a website redesign cost in Toronto?](https://pixelboost.ca/blog/how-much-does-a-website-redesign-cost-toronto): what drives redesign pricing in Toronto
+
+## Optional
+
+- [Blog](https://pixelboost.ca/blog): all posts
+- [Privacy](https://pixelboost.ca/privacy): privacy policy

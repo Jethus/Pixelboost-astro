@@ -1,0 +1,73 @@
+---
+/**
+ * Section card with a header and a 3-up grid of titled points.
+ * Used by the local/service landing pages (Whitby, AODA) so the grid looks
+ * and behaves identically wherever it appears.
+ */
+import SectionHeader from "./ui/SectionHeader.astro";
+
+interface Props {
+  eyebrow: string;
+  heading: string;
+  subhead?: string;
+  items: { title: string; body: string }[];
+  /** Accessible name for the list. */
+  label: string;
+  surface?: "paper" | "paper-2";
+}
+
+const { eyebrow, heading, subhead, items, label, surface = "paper" } = Astro.props;
+---
+
+<section class:list={["section-card", surface === "paper-2" ? "surface-paper-2" : "surface-paper"]}>
+  <div data-reveal>
+    <SectionHeader eyebrow={eyebrow} subhead={subhead}>{heading}</SectionHeader>
+  </div>
+  <ul class="found-list" aria-label={label}>
+    {items.map((f, i) => (
+      <li class="found-item" data-reveal style={`--reveal-i:${i + 1}`}>
+        <h3 class="found-title">{f.title}</h3>
+        <p class="found-body">{f.body}</p>
+      </li>
+    ))}
+  </ul>
+</section>
+
+<style>
+  .found-list {
+    margin-top: 40px;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+  }
+  .found-item {
+    padding: 22px;
+    border: 1px solid var(--color-line);
+    border-radius: 18px;
+    background: rgba(248, 245, 238, 0.48);
+  }
+  .found-title {
+    margin: 0 0 6px 0;
+    font-size: clamp(17px, 1.35vw, 20px);
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    color: var(--color-ink);
+  }
+  .found-body {
+    margin: 0;
+    font-size: clamp(14.5px, 1.1vw, 16px);
+    color: var(--color-ink-500);
+    line-height: 1.55;
+    font-weight: 450;
+  }
+
+  @media (max-width: 980px) {
+    .found-list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+  @media (max-width: 720px) {
+    .found-list { grid-template-columns: 1fr; margin-top: 36px; }
+  }
+</style>

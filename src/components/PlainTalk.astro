@@ -1,0 +1,42 @@
+---
+/**
+ * Section card with a header and a short run of prose paragraphs (the
+ * "being straight with you" blocks on the landing pages). Pass <p> elements
+ * as the default slot; <strong> and .prose-link work inside them.
+ */
+import SectionHeader from "./ui/SectionHeader.astro";
+
+interface Props {
+  eyebrow: string;
+  heading: string;
+  subhead?: string;
+  surface?: "paper" | "paper-2";
+}
+
+const { eyebrow, heading, subhead, surface = "paper-2" } = Astro.props;
+---
+
+<section class:list={["section-card", surface === "paper-2" ? "surface-paper-2" : "surface-paper"]}>
+  <div data-reveal>
+    <SectionHeader eyebrow={eyebrow} subhead={subhead}>{heading}</SectionHeader>
+  </div>
+  <div class="honest-wrap" data-reveal>
+    <slot />
+  </div>
+</section>
+
+<style>
+  .honest-wrap {
+    margin-top: 36px;
+    max-width: 68ch;
+  }
+  .honest-wrap :global(p) {
+    margin: 0 0 1.15rem;
+    font-size: clamp(16px, 1.2vw, 18px);
+    line-height: 1.7;
+    color: var(--color-ink-700);
+    font-weight: 450;
+  }
+  .honest-wrap :global(p:last-child) { margin-bottom: 0; }
+  .honest-wrap :global(strong) { color: var(--color-ink); font-weight: 700; }
+</style>
