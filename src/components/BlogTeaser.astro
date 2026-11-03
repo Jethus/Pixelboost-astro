@@ -5,11 +5,8 @@ import BlogCard from "./ui/BlogCard.astro";
 import FeaturedBlogCard from "./ui/FeaturedBlogCard.astro";
 import { readTime } from "../lib/read-time";
 
-// Sort by effective date (updatedDate falls back to pubDate) so a substantially
-// refreshed post resurfaces as "Latest", matching how search engines weight
-// freshness. The card then labels it "Updated <date>".
-const sortDate = (p: CollectionEntry<"blog">) =>
-  (p.data.updatedDate ?? p.data.pubDate).valueOf();
+// Newest first by publish date, matching the date the cards show.
+const sortDate = (p: CollectionEntry<"blog">) => p.data.pubDate.valueOf();
 const posts = (await getCollection("blog"))
   .filter((p) => !p.data.draft)
   .sort((a, b) => sortDate(b) - sortDate(a))

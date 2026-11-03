@@ -15,11 +15,12 @@ const isActive = (href: string) => pathname === href || (href !== '/' && pathnam
       <a href="/#work"   class="nav-link">Work</a>
       <a href="/about"   class:list={["nav-link", isActive('/about') && "nav-active"]}>About</a>
       <a href="/blog"    class:list={["nav-link", isActive('/blog') && "nav-active"]}>Blog</a>
-      <a href="/contact" class="btn-mint btn-sm btn-interactive nav-cta plausible-event-name=Get+In+Touch+Clicked plausible-event-location=header">
-        Get in touch
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
-      </a>
     </div>
+
+    <a href="/contact" class="btn-mint btn-sm btn-interactive nav-cta plausible-event-name=Get+In+Touch+Clicked plausible-event-location=header">
+      Get in touch
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+    </a>
 
     <button id="nav-toggle" class="nav-toggle" aria-label="Toggle menu" aria-expanded="false" aria-controls="mobile-nav">
       <span class="nav-toggle__bar" aria-hidden="true"></span>
@@ -42,15 +43,18 @@ const isActive = (href: string) => pathname === href || (href !== '/' && pathnam
 <style>
   #site-header { position: sticky; top: 28px; z-index: 50; }
 
+  /* Logo left, links centred, CTA right: three columns, the outer two equal
+     so the links sit in the true centre of the bar. */
   #site-nav {
-    display: flex; justify-content: space-between; align-items: center;
+    display: grid; grid-template-columns: 1fr auto 1fr; align-items: center;
     background: #ffffff; border-radius: 9999px;
     padding: 10px 14px 10px 22px;
     box-shadow: var(--shadow-nav);
     max-width: 1200px; margin: 0 auto;
   }
 
-  .nav-logo { display: flex; align-items: center; }
+  .nav-logo { display: flex; align-items: center; justify-self: start; }
+  .nav-cta { justify-self: end; }
   .nav-logo img { height: 40px; width: auto; }
 
   .nav-links { display: flex; gap: 28px; align-items: center; font-weight: 500; font-size: 16px; }
@@ -86,7 +90,8 @@ const isActive = (href: string) => pathname === href || (href !== '/' && pathnam
   .mobile-cta { margin-top: 12px; }
 
   @media (max-width: 768px) {
-    .nav-links { display: none; }
+    #site-nav { grid-template-columns: 1fr auto; }
+    .nav-links, .nav-cta { display: none; }
     .nav-toggle { display: flex; }
   }
 </style>

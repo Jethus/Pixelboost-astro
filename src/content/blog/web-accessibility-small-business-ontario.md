@@ -11,6 +11,8 @@ faq:
     a: "For the website content standard specifically, no. The WCAG requirement applies to organizations with 50 or more employees. But if you have 20 or more employees you must still file an accessibility compliance report, and accessibility barriers cost you customers regardless of the law."
   - q: "What WCAG level does AODA require?"
     a: "WCAG 2.0 Level AA, for organizations that are in scope (public sector and businesses with 50+ employees). Building to the newer WCAG 2.1 AA automatically covers 2.0 AA, so it's the safer standard to aim for and future-proofs you as coverage broadens."
+  - q: "Does Ontario require WCAG 2.1 or 2.2 for AODA?"
+    a: "No. The AODA still references WCAG 2.0 Level AA, for public sector organizations and businesses with 50 or more employees. Newer versions like WCAG 2.1 and 2.2 include everything in 2.0 AA, so building to a newer version still meets the AODA standard, and it covers you if Ontario updates the requirement."
   - q: "When is the AODA accessibility compliance report due?"
     a: "Businesses and non-profits with 20 or more employees must file an accessibility compliance report with the Government of Ontario by December 31, 2026, and every three years after that. This is separate from the website WCAG standard."
   - q: "Can you be fined for an inaccessible website in Ontario?"

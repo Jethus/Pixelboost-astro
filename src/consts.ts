@@ -16,16 +16,16 @@ export const SITE_DESCRIPTION =
 // Toronto, Oshawa, and Whitby (July 2026). These are genuine figures — refresh
 // them from a new scan run rather than fabricating. The hero shows them as the
 // backdrop to "every site I build ships at 95+".
-export interface ScanStat {
-  value: string; // the number, e.g. "89%"
-  unit?: string; // optional smaller suffix, e.g. "/100"
-  label: string; // what it measures, e.g. "score under 90 on mobile"
-}
+//
+// The hero compares ONE metric on ONE scale (Google mobile score out of 100):
+// the local average vs. mine, as two bars. The other findings are supporting
+// facts in a sentence, so the strip reads at a glance instead of mixing units.
+export const SCAN_RESULTS = {
+  sampleSize: 476,
+  avgMobileScore: 60, // average Google mobile score, out of 100
+  under50: "1 in 3", // share scoring under 50 on mobile
+  noAnalytics: "34%", // share with no analytics at all
+};
 
-export const SCAN_SAMPLE_SIZE = 476;
-
-export const SCAN_STATS: ScanStat[] = [
-  { value: "1 in 3", label: "score under 50 on mobile" },
-  { value: "60", unit: "/100", label: "average mobile score" },
-  { value: "34%", label: "have no analytics at all" },
-];
+/** What every site I build ships at (Google mobile score, out of 100). */
+export const MY_MOBILE_SCORE = 95;

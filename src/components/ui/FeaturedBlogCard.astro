@@ -12,13 +12,16 @@ interface Props {
   slug: string;
 }
 const { title, description, pubDate, updatedDate, readTime, slug } = Astro.props;
-const displayDate = updatedDate ?? pubDate;
+// Cards show the original publish date; the "Updated" date lives on the
+// post page (and in dateModified). Showing updates here made several cards
+// read the same day after a batch of edits.
+const displayDate = pubDate;
 // Dates are authored as bare YYYY-MM-DD (parsed as UTC midnight); format in UTC
 // so the build machine's local timezone can't shift the shown day back by one.
 const formattedDate = displayDate.toLocaleDateString("en-CA", {
   year: "numeric", month: "long", day: "numeric", timeZone: "UTC",
 });
-const datePrefix = updatedDate ? "Updated " : "";
+const datePrefix = "";
 ---
 
 <a href={`/blog/${slug}`} class="featured-card" data-reveal>

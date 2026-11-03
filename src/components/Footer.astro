@@ -5,33 +5,37 @@ const year = new Date().getFullYear();
 
 <footer class="site-footer">
   <div class="foot-grid">
-    <div>
+    <div class="foot-brand">
       <a href="/" class="foot-logo">
         <img src={logoBlack.src} alt="Pixelboost" width="1048" height="226" loading="lazy" />
       </a>
       <p class="foot-blurb">
-        A one-person web studio in Ontario, building fast, accessible custom websites for Canadian small businesses.
+        Fast, accessible websites for small businesses in Toronto and Durham Region.
       </p>
-    </div>
-
-    <div>
-      <h2 class="foot-head">Pixelboost</h2>
-      <a href="/about"   class="foot-link">About</a>
-      <a href="/blog"    class="foot-link">Blog</a>
-      <a href="/contact" class="foot-link">Contact</a>
-      <a href="/free-website-audit" class="foot-link">Free Website Audit</a>
-      <a href="/website-redesign-toronto" class="foot-link">Website Redesign</a>
-      <a href="/durham-region-web-design" class="foot-link">Durham Region</a>
-      <a href="/whitby-web-design" class="foot-link">Whitby</a>
-      <a href="/aoda-web-design" class="foot-link">AODA Web Design</a>
-      <a href="/privacy" class="foot-link">Privacy</a>
-    </div>
-
-    <div>
-      <h2 class="foot-head">Get in touch</h2>
       <a href="mailto:josh@pixelboost.ca" class="foot-link">josh@pixelboost.ca</a>
       <a href="tel:+19057812464"           class="foot-link">(905) 781-2464</a>
     </div>
+
+    <nav class="foot-cols" aria-label="Footer">
+      <div>
+        <h2 class="foot-head">Services</h2>
+        <a href="/website-redesign-toronto" class="foot-link">Website redesign</a>
+        <a href="/free-website-audit" class="foot-link">Free website audit</a>
+        <a href="/aoda-web-design" class="foot-link">AODA web design</a>
+      </div>
+      <div>
+        <h2 class="foot-head">Areas</h2>
+        <a href="/durham-region-web-design" class="foot-link">Durham Region</a>
+        <a href="/whitby-web-design" class="foot-link">Whitby</a>
+      </div>
+      <div>
+        <h2 class="foot-head">Pixelboost</h2>
+        <a href="/about"   class="foot-link">About</a>
+        <a href="/blog"    class="foot-link">Blog</a>
+        <a href="/contact" class="foot-link">Contact</a>
+        <a href="/privacy" class="foot-link">Privacy</a>
+      </div>
+    </nav>
   </div>
 
   <div class="foot-bottom">
@@ -49,8 +53,14 @@ const year = new Date().getFullYear();
     font-size: 14px; color: var(--color-ink-500);
   }
 
-  .foot-grid { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 40px; }
-  @media (max-width: 720px) { .foot-grid { grid-template-columns: 1fr; } }
+  /* Brand + contact on the left, three short link groups on the right. On
+     phones the groups stay side by side (3 across, 2 on very narrow screens)
+     instead of stacking into one long column. */
+  .foot-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.6fr); gap: 40px; }
+  .foot-cols { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; }
+  .foot-brand .foot-blurb { margin-bottom: 12px; }
+  @media (max-width: 720px) { .foot-grid { grid-template-columns: 1fr; gap: 28px; } }
+  @media (max-width: 400px) { .foot-cols { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: 20px; } }
 
   .foot-logo { display: inline-flex; line-height: 0; }
   .foot-logo img { height: 40px; width: auto; display: block; }
