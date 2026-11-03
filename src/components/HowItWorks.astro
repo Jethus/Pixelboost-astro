@@ -1,0 +1,73 @@
+---
+/**
+ * HowItWorks — three numbered steps from first visit to live site.
+ * Sits right under the hero so a visitor knows exactly what happens next.
+ * Step 1 points at the on-page scan (#audit), or the audit page when the
+ * host page has no Audit section.
+ */
+import SectionHeader from "./ui/SectionHeader.astro";
+import Card from "./ui/Card.astro";
+
+interface Props {
+  /** Where "Score my site" points. Defaults to the on-page scan. */
+  scanHref?: string;
+}
+const { scanHref = "#audit" } = Astro.props;
+
+const steps = [
+  { title: "Scan your site", body: "Free. Takes a minute." },
+  { title: "Talk it through", body: "A 15-minute call about what to fix." },
+  { title: "Go live", body: "Your new site, usually in 4 to 6 weeks." },
+];
+---
+
+<section id="how" class="section-card surface-paper">
+  <div data-reveal>
+    <SectionHeader>How it works.</SectionHeader>
+  </div>
+
+  <ol class="how-steps">
+    {steps.map((s, i) => (
+      <li data-reveal style={`--reveal-i:${i + 1}`}>
+        <Card variant="mint" class="how-step">
+          <span class="how-num" aria-hidden="true">{i + 1}</span>
+          <h3 class="how-title">{s.title}</h3>
+          <p class="how-body">{s.body}</p>
+        </Card>
+      </li>
+    ))}
+  </ol>
+
+  <a
+    href={scanHref}
+    class="btn-mint btn-interactive how-cta plausible-event-name=Scan+Started plausible-event-location=how-it-works"
+  >
+    Score my site
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+  </a>
+</section>
+
+<style>
+  .how-steps {
+    list-style: none; margin: 32px 0 0; padding: 0;
+    display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px;
+  }
+  .how-steps > li { display: flex; }
+  .how-steps :global(.how-step) { flex: 1; }
+  .how-num {
+    display: inline-grid; place-items: center;
+    width: 40px; height: 40px; border-radius: 9999px;
+    background: var(--color-ink); color: var(--color-paper);
+    font-size: 17px; font-weight: 800; margin-bottom: 18px;
+  }
+  .how-title {
+    margin: 0 0 4px; font-size: clamp(19px, 1.6vw, 23px); font-weight: 700;
+    letter-spacing: -0.02em; line-height: 1.2;
+  }
+  .how-body { margin: 0; font-size: 15.5px; line-height: 1.5; color: var(--color-ink-500); font-weight: 500; }
+  .how-cta { margin-top: 28px; }
+
+  @media (max-width: 720px) {
+    .how-steps { grid-template-columns: 1fr; }
+  }
+</style>
