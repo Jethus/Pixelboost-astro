@@ -16,6 +16,7 @@ Key facts:
 
 - [Home](https://pixelboost.ca/): overview, recent work, pricing, and FAQ
 - [Free website audit](https://pixelboost.ca/free-website-audit): free scan of a site's speed, mobile experience, SEO, accessibility, and lead tracking, with a plain-English scorecard; no email required
+- [Website redesign](https://pixelboost.ca/website-redesign-toronto): redesigning slow, dated, or template-based sites (Wix, Squarespace, WordPress) as fast custom sites the owner fully owns; 4 to 6 weeks; $3,200 flat or $200/month
 - [Durham Region web design](https://pixelboost.ca/durham-region-web-design): web design for small businesses in Oshawa, Whitby, Ajax, Pickering, and Durham Region
 - [Whitby web design](https://pixelboost.ca/whitby-web-design): websites for Whitby businesses, and an honest explanation of which parts of SEO a website build covers
 - [AODA web design](https://pixelboost.ca/aoda-web-design): accessible websites built to WCAG 2.1 AA for Ontario small businesses
@@ -26,7 +27,7 @@ Key facts:
 - [AODA website requirements for Ontario small businesses](https://pixelboost.ca/blog/web-accessibility-small-business-ontario): who must comply, which WCAG level applies, the December 31, 2026 reporting deadline, and fines
 - [Is your website AODA compliant? How to check it yourself](https://pixelboost.ca/blog/is-my-website-aoda-compliant): a free scan plus five hands-on accessibility checks
 - [Website speed test: how to check your site (free tools)](https://pixelboost.ca/blog/how-long-should-a-website-take-to-load): PageSpeed Insights, GTmetrix, and Pingdom compared, and how fast a site should load
-- [How to make your website faster](https://pixelboost.ca/blog/how-to-make-your-website-faster): a plain-English checklist, including why Wix and WordPress sites get slow
+- [Why is my website slow? How to make it faster](https://pixelboost.ca/blog/how-to-make-your-website-faster): why sites (especially Wix and WordPress) get slow, and a plain-English checklist to fix it
 - [What is a Google Lighthouse score?](https://pixelboost.ca/blog/what-is-google-lighthouse-score): what the performance, accessibility, SEO, and best-practices scores mean
 - [Wix vs a custom website](https://pixelboost.ca/blog/wix-vs-custom-website-small-business): when Wix or a template is enough and when to upgrade
 - [The real benefits of a custom website](https://pixelboost.ca/blog/benefits-of-a-custom-website-small-business): credibility, speed, lead tracking, and ownership

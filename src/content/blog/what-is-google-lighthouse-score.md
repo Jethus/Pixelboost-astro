@@ -52,12 +52,14 @@ This measures whether your site works for everyone, not just people on a fast ph
 - Whether buttons and links are large enough to tap on a phone
 - Whether forms are labelled properly
 
-**Why it matters for your business:** Accessibility problems don't just affect a small edge case. They affect older visitors, people on low-end phones, anyone with a vision or motor difficulty. In Ontario, the AODA (Accessibility for Ontarians with Disabilities Act) also sets legal requirements for websites, something most small business owners don't know about until it's a problem. ([Here's what AODA means for your website](/blog/web-accessibility-small-business-ontario).)
+**Why it matters for your business:** Accessibility problems don't just affect a small edge case. They affect older visitors, people on low-end phones, anyone with a vision or motor difficulty. In Ontario, the AODA (Accessibility for Ontarians with Disabilities Act) also sets legal requirements for websites, something most small business owners don't know about until it's a problem. ([Here's what AODA means for your website](/blog/web-accessibility-small-business-ontario).) And it's common: when WebAIM tested the top million home pages in 2026, [95.9% had detectable accessibility failures](https://webaim.org/projects/million/), and low-contrast text alone turned up on 83.9% of them.
 
 **What the numbers mean:**
 - **90–100:** Solid. Most users can navigate your site without friction.
 - **70–89:** Issues exist that are affecting some visitors.
 - **Below 70:** Real people are being blocked from using your site.
+
+One catch: even a perfect 100 doesn't make your site AODA compliant. Lighthouse only runs automated checks, and things like keyboard access need a person to test. Here's [how to check the parts a scan can't](/blog/is-my-website-aoda-compliant).
 
 ### SEO
 
@@ -80,7 +82,7 @@ This is a catch-all for security and code quality, whether the site uses HTTPS, 
 
 ## What to do with your scores
 
-If your Performance score is below 70, that's the most urgent thing. Slow sites lose customers every day.
+If your Performance score is below 70, that's the most urgent thing. Slow sites lose customers every day. Start with this [plain-English checklist to make your website faster](/blog/how-to-make-your-website-faster), and see [how to run a website speed test](/blog/how-long-should-a-website-take-to-load) to compare free tools.
 
 If your Accessibility score is below 80, you're likely blocking real visitors, and depending on your business size, there may be legal exposure under AODA.
 

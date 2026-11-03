@@ -1,0 +1,152 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Header from "../components/Header.astro";
+import Hero from "../components/Hero.astro";
+import Problem from "../components/Problem.astro";
+import FeatureGrid from "../components/FeatureGrid.astro";
+import Comparison from "../components/Comparison.astro";
+import Portfolio from "../components/Portfolio.astro";
+import Founder from "../components/Founder.astro";
+import Pricing from "../components/Pricing.astro";
+import FAQ from "../components/FAQ.astro";
+import ClosingCTA from "../components/ClosingCTA.astro";
+import Footer from "../components/Footer.astro";
+
+/**
+ * Website redesign service page.
+ *
+ * Keyword Planner (Apr 2025–Mar 2026, CA): `website redesign toronto` and
+ * `website redesign near me` 1K–10K/mo each, Low competition; `website
+ * redesign services`, `small business website redesign`, `custom website
+ * redesign` 100–1K. No page targeted redesign as a service: the homepage
+ * targets "web design toronto" and the cost post owns the "how much" intent
+ * (linked from here and back).
+ *
+ * Claims are limited to facts stated elsewhere on the site (pricing, 4–6
+ * weeks, two projects at a time, ownership, WCAG 2.1 AA, Plausible).
+ */
+
+const signs = [
+  {
+    title: "It's slow on a phone.",
+    body: "Most of your customers find you on mobile. If your site takes more than a few seconds to load, many of them leave before they see your phone number.",
+  },
+  {
+    title: "You can't tell if it brings in business.",
+    body: "No analytics, or a dashboard nobody reads. You don't know which pages turn visitors into calls, so you can't tell what's worth fixing.",
+  },
+  {
+    title: "Every small change is a fight.",
+    body: "Adding a page or changing a booking flow means a workaround in Wix or another plugin in WordPress, or paying someone each time.",
+  },
+  {
+    title: "It looks older than your business.",
+    body: "If your site looks dated next to competitors, visitors assume the business is too, even when your work and reviews say otherwise.",
+  },
+];
+
+const included = [
+  {
+    title: "A custom design, not a template",
+    body: "Built around your customers and what you want them to do next: call, book, or get a quote. Nothing is there just because a theme came with it.",
+  },
+  {
+    title: "Fast on a mid-range phone",
+    body: "Built with Astro and hosted on Cloudflare, so pages load quickly where your customers actually are. Every site I build ships at 95+ on Google's speed test.",
+  },
+  {
+    title: "Analytics you can read",
+    body: "Plausible analytics set up so you can see where visitors come from and which pages bring in enquiries, without learning a dashboard.",
+  },
+  {
+    title: "Accessible from day one",
+    body: "Built to WCAG 2.1 AA, which covers the standard Ontario's AODA references. Included, not an add-on.",
+  },
+  {
+    title: "Search basics done right",
+    body: "Proper titles, structure, and local business markup on every page, so Google understands what you do and where you do it.",
+  },
+  {
+    title: "You own everything",
+    body: "The code, design, content, domain, and analytics are yours. If you ever want to move, you can. No platform lock-in.",
+  },
+];
+
+const redesignFaq = [
+  {
+    q: "How much does a website redesign cost in Toronto?",
+    a: "Quotes range from about $500 for a template with your logo swapped in to $30,000 or more from a large agency. My redesigns are $3,200 flat for a clean hand-off, or $200/month including hosting, analytics, and ongoing updates. Both include a custom design, accessibility, and analytics, with no hidden fees.",
+  },
+  {
+    q: "How long does a website redesign take?",
+    a: "Most small business redesigns take 4 to 6 weeks from kickoff. Larger sites, or projects where I write the content, take a bit longer. I only take on two projects at a time, so the timeline I give you is one I can keep.",
+  },
+  {
+    q: "Can you redesign my Wix, Squarespace, or WordPress site?",
+    a: "Yes. I rebuild it as a fast custom site that you own outright, so you're no longer paying a platform every month or fighting a template's limits. Your existing content, photos, and branding can come across, refreshed where it helps.",
+  },
+  {
+    q: "Will a redesign hurt my Google rankings?",
+    a: "It shouldn't, as long as every old page address is permanently redirected to its new one, so Google carries your history over to the new pages. Rankings usually drop after a redesign when old addresses are simply deleted. Ask any designer you're considering how they handle it.",
+  },
+  {
+    q: "Do I actually need a redesign, or just a few fixes?",
+    a: "Sometimes the honest answer is a few fixes. Start with the free site scan, which checks your speed, mobile experience, SEO basics, accessibility, and lead tracking. If your site is mostly fine, I'll tell you which three things to fix rather than sell you a rebuild.",
+  },
+  {
+    q: "Do you only work in Toronto?",
+    a: "No. I'm based in Toronto and work with small businesses across the GTA and Durham Region, including Oshawa, Whitby, Ajax, and Pickering. Meetings can be in person or remote, whichever is easier for you.",
+  },
+];
+---
+
+<BaseLayout
+  title="Website redesign for Toronto small businesses"
+  breadcrumbs={[{ name: "Website redesign", path: "/website-redesign-toronto" }]}
+  description="Website redesign for Toronto and Durham Region small businesses: a fast custom site you own, built in 4 to 6 weeks. $3,200 flat or $200/month. Free site scan."
+>
+  <Header />
+  <main>
+    <Hero
+      scanInput={false}
+      primaryHref="/free-website-audit"
+      title={`Website redesign for <span class="high">Toronto</span> small businesses.`}
+      sub="Your site is slow, dated, or not bringing in leads. I redesign it as a fast custom website you own, with analytics so you can finally see what's working. Most redesigns take 4 to 6 weeks."
+      note="Start with a free site scan. No email required."
+      primaryLabel="Scan my current site"
+      secondaryLabel="See recent work"
+      secondaryHref="#work"
+    />
+
+    <Problem
+      eyebrow="Signs it's time"
+      subhead="Most owners feel one of these long before they call anyone."
+      heading="Four signs your website needs a redesign."
+      cards={signs}
+    />
+
+    <FeatureGrid
+      eyebrow="What a redesign includes"
+      subhead="Everything a small business site needs to earn its keep, included in the price rather than sold as extras."
+      heading="A redesign that pays for itself."
+      items={included}
+      label="What every redesign includes"
+    />
+
+    <Comparison />
+
+    <Portfolio />
+
+    <Founder />
+
+    <Pricing />
+
+    <FAQ
+      heading="Website redesign, common questions."
+      questions={redesignFaq}
+    />
+
+    <ClosingCTA />
+  </main>
+  <Footer />
+</BaseLayout>

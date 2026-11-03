@@ -1,5 +1,5 @@
 ---
-title: "How to make your website faster: a plain-English checklist"
+title: "Why is my website slow? How to make it faster"
 description: "Slow Wix or WordPress site? A plain-English checklist to make your website faster: compress images, cut script bloat, lazy-load, and pick a faster host."
 pubDate: 2026-07-02
 updatedDate: 2026-11-02
@@ -87,7 +87,7 @@ The honest truth: 99% of the time, a page builder will be slower than a custom-b
 
 Yes, a lot of it. You can work through this list with an AI assistant and slowly optimize your site piece by piece. It just takes time, energy, and a few iterations to get right.
 
-But if your site is hurting badly, it's often better to bring in someone with experience so you end up with a final product that actually attracts and works for your customers, rather than a half-optimized site you've been fighting for weeks.
+But if your site is hurting badly, it's often better to bring in someone with experience for a [proper redesign](/website-redesign-toronto) so you end up with a final product that actually attracts and works for your customers, rather than a half-optimized site you've been fighting for weeks. (Here's [what a website redesign actually costs in Toronto](/blog/how-much-does-a-website-redesign-cost-toronto), so you know what you're comparing.)
 
 ## See what's slowing your site down
 

@@ -102,11 +102,11 @@ Then sort the list into two piles:
 | Scanned PDFs replaced with a real page | Form fields with no real labels |
 | Vague link text like "click here" | Layouts that break at 200% zoom |
 
-On Wix, Squarespace, or WordPress, the left column is mostly in your editor's settings. The right column usually lives in the template itself, which is why a toolbar or plugin sitting on top of your site can't fully fix it. The problem is underneath.
+On [Wix, Squarespace, or WordPress](/blog/wix-vs-custom-website-small-business), the left column is mostly in your editor's settings. The right column usually lives in the template itself, which is why a toolbar or plugin sitting on top of your site can't fully fix it. The problem is underneath.
 
 ## When it's worth getting help
 
-I led the design work on the website for the College (the Ontario College of Teachers) after it was served an AODA warning, and part of my job was catching accessibility issues through each round of remediation. So I've done this checking for real, against the standard the law references, not just read about it.
+[I led the design work](/about) on the website for the College (the Ontario College of Teachers) after it was served an AODA warning, and part of my job was catching accessibility issues through each round of remediation. So I've done this checking for real, against the standard the law references, not just read about it.
 
 If your list is short, fix it and move on. If the right-hand column is long, or your site is old enough that every fix fights the template, that's usually the point where rebuilding to the standard costs less than patching. Every site I build is [designed to WCAG 2.1 AA from the start](/aoda-web-design), which covers the 2.0 AA standard the AODA references.
 

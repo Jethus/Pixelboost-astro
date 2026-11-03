@@ -58,13 +58,13 @@ Without that data, you're guessing what's working, and that's expensive guessing
 
 **A custom site** makes sense if you've been in business for a while, you're spending money on marketing, you care about showing up on Google, and you want a site that actually represents your business. (Here are [the real benefits of a custom website](/blog/benefits-of-a-custom-website-small-business), and when it's *not* worth it.)
 
-You've outgrown Wix or your template when:
+You've outgrown Wix or your template, and it's time for a [website redesign](/website-redesign-toronto), when:
 - Your site is slow and you're losing customers to it
 - You're spending money on ads or SEO but can't tell if it's working
 - You want to look more professional than your current site allows
 - You're tired of paying Wix monthly and still needing to pay someone every time something needs to change
 
-At that point, the cost of a custom site, [$200/month or $3,200 flat](/#pricing), is easy to justify against what you're losing.
+At that point, the cost of a custom site, [$200/month or $3,200 flat](/#pricing), is easy to justify against what you're losing. (For context, here's [what a website redesign typically costs in Toronto](/blog/how-much-does-a-website-redesign-cost-toronto).)
 
 ## Not sure where you fall?
 

@@ -26,7 +26,7 @@ A template site is a design thousands of other businesses are also using. It's f
 
 This is the benefit that quietly costs the most when it's missing. [Google's research](https://www.thinkwithgoogle.com/marketing-strategies/app-and-mobile/mobile-page-speed-new-industry-benchmarks/) shows 53% of mobile visitors leave a page that takes longer than three seconds to load. Most template-based Wix and WordPress sites don't hit that on mobile.
 
-A custom site sends the browser exactly what the page needs and nothing else, no plugin bloat, no platform overhead, no scripts running who knows what in the background. That's why custom builds routinely clear 90+ on Google's speed score while template sites sit at 40–65. (Here's [why Wix and WordPress sites are slow](/blog/how-to-make-your-website-faster) in the first place, and [what those speed scores actually mean](/blog/what-is-google-lighthouse-score).)
+A custom site sends the browser exactly what the page needs and nothing else, no plugin bloat, no platform overhead, no scripts running who knows what in the background. That's why custom builds routinely clear 90+ on Google's speed score while template sites sit at 40–65. And small delays cost real sales: Akamai's study of online retailers found that [even a 100-millisecond delay in load time can cut conversion rates by 7%](https://www.bandt.com.au/study-even-100-millisecond-delays-can-impact-performance-retail-websites/). (Here's [why Wix and WordPress sites are slow](/blog/how-to-make-your-website-faster) in the first place, and [what those speed scores actually mean](/blog/what-is-google-lighthouse-score).)
 
 Faster pages mean more visitors stay long enough to read your offer, find your phone number, and get in touch. That's the whole game.
 

@@ -21,6 +21,14 @@ Most small business owners have never heard of AODA. Some have heard the name bu
 
 **The short answer:** Ontario's AODA requires public sector organizations and private businesses with 50 or more employees to make their public websites meet the WCAG 2.0 Level AA accessibility standard. If you have fewer than 50 employees, you have no legal WCAG obligation for your site, but accessibility still costs you real customers, and separate reporting rules may still apply to you. Here's what that actually means.
 
+| Who | What the AODA requires | When |
+|---|---|---|
+| Public sector organizations | Public website meets WCAG 2.0 Level AA | Already in effect |
+| Businesses and non-profits with 50+ employees | Public website meets WCAG 2.0 Level AA | Since January 1, 2021 |
+| Businesses and non-profits with 20+ employees | File an accessibility compliance report | By December 31, 2026, then every 3 years |
+| Businesses with fewer than 50 employees | No legal WCAG requirement for the website | n/a |
+| Maximum penalties (court-imposed) | Up to $100,000/day for a corporation, $50,000/day for a director | Only after a conviction |
+
 ## What AODA is
 
 The [Accessibility for Ontarians with Disabilities Act](https://www.ontario.ca/page/accessibility-laws) is Ontario legislation that sets accessibility standards across a range of areas, customer service, employment, and yes, the web. The web-specific requirements are part of the Integrated Accessibility Standards Regulation (IASR) and reference an international standard called [WCAG 2.0 Level AA](https://www.w3.org/WAI/standards-guidelines/wcag/).
@@ -47,7 +55,7 @@ There's a second AODA obligation people confuse with the website standard: the *
 
 If the fear driving your search is a lawsuit or a fine, here's the honest picture. The penalties on the books are large: under the AODA, a corporation found guilty of an offence can be fined **up to $100,000 for each day** the offence continues, and a director or officer up to $50,000 a day ([aoda.ca, Guide to the Act](https://www.aoda.ca/guide-to-the-act/)). Those numbers are real, and they're what alarmist "get compliant or else" marketing leans on.
 
-But two things temper the panic. First, those maximums are ceilings a court can impose, not automatic fines that land in your inbox for a low-contrast button. Second, and more useful to know: in practice the penalty usually arrives as a **warning with time to fix**, not a surprise cheque. I've seen this firsthand. I led the design work when the College's site was served an AODA warning, and we were given a long remediation timeline to bring it up to standard, not fined on the spot.
+But two things temper the panic. First, those maximums are ceilings a court can impose, not automatic fines that land in your inbox for a low-contrast button. Second, and more useful to know: in practice the penalty usually arrives as a **warning with time to fix**, not a surprise cheque. I've seen this firsthand. [I led the design work](/about) when the College's site was served an AODA warning, and we were given a long remediation timeline to bring it up to standard, not fined on the spot.
 
 The day-to-day compliance mechanism isn't a website inspector either. It's the **self-filed accessibility compliance report** above, backed by the government's power to audit, issue an order to fix the problem, and escalate to penalties only if you ignore it. So the realistic risk for a small business isn't a shock six-figure fine, it's being caught out of compliance with no plan to respond.
 

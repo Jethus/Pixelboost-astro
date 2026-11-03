@@ -18,6 +18,7 @@ export const SITE_DESCRIPTION =
 // backdrop to "every site I build ships at 95+".
 export interface ScanStat {
   value: string; // the number, e.g. "89%"
+  unit?: string; // optional smaller suffix, e.g. "/100"
   label: string; // what it measures, e.g. "score under 90 on mobile"
 }
 
@@ -25,6 +26,6 @@ export const SCAN_SAMPLE_SIZE = 476;
 
 export const SCAN_STATS: ScanStat[] = [
   { value: "1 in 3", label: "score under 50 on mobile" },
-  { value: "60", label: "average mobile score, out of 100" },
+  { value: "60", unit: "/100", label: "average mobile score" },
   { value: "34%", label: "have no analytics at all" },
 ];

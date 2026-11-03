@@ -26,6 +26,12 @@ A $30,000+ website is usually a large agency with project managers, account team
 
 For most Toronto small businesses, a local service, a retailer, a professional practice, the right answer is somewhere in between.
 
+| Price | What you usually get |
+|---|---|
+| Around $500 | A Wix or Squarespace template with your logo and text swapped in |
+| $3,200 flat, or $200/month (Pixelboost) | A custom design and build in 4 to 6 weeks, analytics included, and you own everything |
+| $30,000+ | A large agency, with project managers and approval rounds built into the quote |
+
 ## What a small business website actually needs
 
 You need a site that:
@@ -34,6 +40,8 @@ You need a site that:
 - Makes it easy for people to contact you or book
 - Shows up on Google in your area
 - Tells you where your leads are coming from
+
+Speed is the one owners underestimate most. [Google's research](https://www.thinkwithgoogle.com/marketing-strategies/app-and-mobile/mobile-page-speed-new-industry-benchmarks/) found that 53% of mobile visitors leave a page that takes longer than three seconds to load. If you're in Durham Region rather than the city, the same rules apply: here's [web design for Durham Region businesses](/durham-region-web-design), and [for Whitby specifically](/whitby-web-design).
 
 That's not a $500 job. It's also not a $30,000 job. It's a well-executed custom build from someone who knows what they're doing.
 
@@ -45,7 +53,7 @@ At Pixelboost, there are two options:
 
 **$3,200 flat:** same custom build, handed off cleanly at the end. You own everything outright. Good for businesses that have someone in-house to handle small updates, or that just want the work done and done.
 
-Both include Plausible analytics installed so you can actually see where your traffic comes from.
+Both include Plausible analytics installed so you can actually see where your traffic comes from, and every build is [designed to WCAG 2.1 AA accessibility](/aoda-web-design) at no extra cost. (Full details are in [the pricing section](/#pricing).)
 
 ## What to watch out for
 
@@ -59,6 +67,6 @@ Both include Plausible analytics installed so you can actually see where your tr
 
 ## Is a redesign worth it?
 
-That depends on what your current site is doing. If you're getting traffic and converting it into calls or bookings, maybe not much needs to change. If you're spending money on ads and can't tell whether they're working, or if you suspect your site is slow and losing people, that's worth fixing.
+That depends on what your current site is doing. If you're getting traffic and converting it into calls or bookings, maybe not much needs to change. If you're spending money on ads and can't tell whether they're working, or if you suspect your site is slow and losing people, that's worth fixing. Here are [the real benefits of a custom website](/blog/benefits-of-a-custom-website-small-business), and when it's honestly not worth it.
 
-The fastest way to find out is to [run a free website audit](/free-website-audit). I'll check your current site's speed, accessibility, and tracking setup, and tell you honestly whether a redesign makes financial sense. (Not sure how to read your current scores? Start with [what a Google Lighthouse score means](/blog/what-is-google-lighthouse-score).)
+If it is, here's [how a website redesign with me works](/website-redesign-toronto), start to finish. The fastest way to find out is to [run a free website audit](/free-website-audit). I'll check your current site's speed, accessibility, and tracking setup, and tell you honestly whether a redesign makes financial sense. (Not sure how to read your current scores? Start with [what a Google Lighthouse score means](/blog/what-is-google-lighthouse-score).)
