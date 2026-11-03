@@ -5,7 +5,6 @@ import Header from "../../components/Header.astro";
 import Footer from "../../components/Footer.astro";
 import BlogCard from "../../components/ui/BlogCard.astro";
 import FeaturedBlogCard from "../../components/ui/FeaturedBlogCard.astro";
-import Eyebrow from "../../components/ui/Eyebrow.astro";
 import ClosingCTA from "../../components/ClosingCTA.astro";
 import { readTime } from "../../lib/read-time";
 
@@ -28,7 +27,6 @@ const [featured, ...rest] = posts;
   <main>
 
     <section class="section-card surface-paper blog-hero">
-      <Eyebrow label="Blog" />
       <h1 class="blog-hero-h1">Practical web advice for small businesses.</h1>
       <p class="section-subhead">
         Speed, SEO, accessibility: the stuff that actually affects whether your site works for your customers.

@@ -7,18 +7,17 @@
 import SectionHeader from "./ui/SectionHeader.astro";
 
 interface Props {
-  eyebrow: string;
   heading: string;
   subhead?: string;
   surface?: "paper" | "paper-2";
 }
 
-const { eyebrow, heading, subhead, surface = "paper-2" } = Astro.props;
+const { heading, subhead, surface = "paper-2" } = Astro.props;
 ---
 
 <section class:list={["section-card", surface === "paper-2" ? "surface-paper-2" : "surface-paper"]}>
   <div data-reveal>
-    <SectionHeader eyebrow={eyebrow} subhead={subhead}>{heading}</SectionHeader>
+    <SectionHeader subhead={subhead}>{heading}</SectionHeader>
   </div>
   <div class="honest-wrap" data-reveal>
     <slot />

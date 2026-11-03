@@ -2,7 +2,6 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
-import Eyebrow from "../components/ui/Eyebrow.astro";
 
 const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY ?? "";
 ---
@@ -17,7 +16,6 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY ?? "";
   <main>
 
     <section class="section-card surface-paper">
-      <Eyebrow label="Contact" />
       <h1 class="contact-hero-h1">Let's talk about your site.</h1>
       <p class="contact-hero-lead">
         No pressure, no sales pitch. Just tell me what you're working on and I'll let you know if I can help.

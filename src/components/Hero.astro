@@ -2,6 +2,11 @@
 import Button from "./ui/Button.astro";
 import { SCAN_RESULTS, MY_MOBILE_SCORE } from "../consts";
 
+// Default sub: the local scan findings, stated plainly. The two shares are
+// separate findings (1 in 3 under 50; 34% no analytics), not the same sites.
+// &nbsp; on the last words keeps a single-word widow off the final line.
+const defaultSub = `I scanned ${SCAN_RESULTS.sampleSize} local businesses: ${SCAN_RESULTS.under50} scored under 50. 1 in 3 had no&nbsp;analytics.`;
+
 interface Props {
   /** Hero heading. May contain HTML (e.g. a <span class="high">). Defaults to the home copy. */
   title?: string;
@@ -25,8 +30,8 @@ interface Props {
 }
 
 const {
-  title = `Is your website <span class="high">losing you customers</span>?`,
-  sub = "Find out in a minute with a free scan. If it is, I'll build you a fast website that brings in leads.",
+  title = `Is your website <span class="high">losing you customers?</span>`,
+  sub = defaultSub,
   note = "Free site scan. No email required.",
   primaryLabel = "Score my site",
   primaryHref = "#audit",
@@ -38,7 +43,7 @@ const {
 
 <section class="hero section-card surface-paper">
   <h1 class="hero-title" set:html={title}></h1>
-  <p class="hero-sub">{sub}</p>
+  <p class="hero-sub" set:html={sub}></p>
 
   {scanInput ? (
     <>
@@ -97,9 +102,6 @@ const {
           </dd>
         </div>
       </dl>
-      <p class="hero-scans-note">
-        I scanned {SCAN_RESULTS.sampleSize} local business sites: {SCAN_RESULTS.under50} scored under 50, and {SCAN_RESULTS.noAnalytics} had no analytics at all.
-      </p>
     </div>
   )}
 </section>
@@ -113,7 +115,7 @@ const {
   .hero-sub {
     font-size: clamp(16px, 1.35vw, 19px); color: var(--color-ink-500);
     line-height: 1.5; max-width: 56ch; margin: 0 0 30px 0; font-weight: 500;
-    text-wrap: pretty;
+    text-wrap: balance;
   }
   .hero-actions { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 18px; align-items: center; }
   .hero-note {
@@ -183,10 +185,6 @@ const {
   .hero-bar-row--mine .hero-bar-name { color: var(--color-ink); }
   .hero-bar-row--mine .hero-bar-fill { background: var(--color-mint-500); }
   .hero-bar-row--mine .hero-bar-value { color: var(--color-mint-700); }
-  .hero-scans-note {
-    margin: 16px 0 0; font-size: 14px; line-height: 1.5;
-    color: var(--color-ink-500); font-weight: 500;
-  }
   @media (max-width: 720px) {
     .hero-bar-row { grid-template-columns: 1fr; }
   }

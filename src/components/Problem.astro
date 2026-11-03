@@ -3,7 +3,6 @@ import SectionHeader from "./ui/SectionHeader.astro";
 
 interface Card { title: string; body: string; }
 interface Props {
-  eyebrow?: string;
   subhead?: string;
   heading?: string;
   /** Checklist rows. Defaults to the home copy. */
@@ -11,7 +10,6 @@ interface Props {
 }
 
 const {
-  eyebrow = "Why it matters",
   subhead = "Most owners can't see it. Customers feel it every day.",
   heading = "Your current site might be quietly costing you customers.",
   cards = [
@@ -37,7 +35,7 @@ const {
 
 <section id="problem" class="problem-check section-card surface-paper-2">
   <div data-reveal>
-    <SectionHeader eyebrow={eyebrow} subhead={subhead}>
+    <SectionHeader subhead={subhead}>
       {heading}
     </SectionHeader>
   </div>

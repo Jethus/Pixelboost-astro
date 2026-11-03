@@ -3,14 +3,12 @@ import AuditIsland from "./Audit.tsx";
 import type { AuditRow } from "./Audit.tsx";
 
 interface Props {
-  eyebrow?: string;
   headline?: string;
   headingLevel?: "h1" | "h2";
   body?: string;
 }
 
 const {
-  eyebrow = "Free, no email required",
   headline = "Run a free scan of your site.",
   headingLevel = "h2",
   body = "Enter your URL and get a scorecard in seconds: what's working, what's broken, and what to fix first.",
@@ -47,7 +45,7 @@ const rows: AuditRow[] = [
 
 <AuditIsland
   client:visible
-  eyebrow={eyebrow}
+ 
   headline={headline}
   headingLevel={headingLevel}
   body={body}
@@ -77,22 +75,19 @@ const rows: AuditRow[] = [
     display: grid;
     grid-template-columns: 1fr 1.1fr;
     gap: clamp(32px, 4vw, 64px);
-    align-items: center;
-    margin-top: 32px;
+    align-items: start;
+    margin-top: clamp(28px, 3.5vw, 44px);
   }
   @media (max-width: 920px) {
     .audit-shell { grid-template-columns: 1fr; }
   }
 
   /* Left column */
-  .audit-eyebrow {
-    background: rgba(60,203,138,0.15);
-    color: var(--color-mint-300);
-  }
-
   .audit-headline {
     color: var(--color-paper);
-    margin: 0 0 16px 0;
+    margin: 0;
+    max-width: 22ch;
+    text-wrap: balance;
   }
 
   .audit-body {

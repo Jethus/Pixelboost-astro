@@ -48,7 +48,6 @@ export interface AuditRow {
 }
 
 export interface AuditContent {
-  eyebrow: string;
   headline: string;
   /** Heading tag for the headline. Use "h1" on the standalone audit page,
    *  "h2" when the audit section sits under another page's <h1> (e.g. home). */
@@ -93,7 +92,6 @@ const BAR_COLOR = {
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 export default function Audit({
-  eyebrow,
   headline,
   headingLevel = 'h2',
   body,
@@ -349,21 +347,21 @@ export default function Audit({
       id="audit"
       className="section-card audit-section"
     >
+      {/* Full-width head: the headline gets the whole card width instead of
+          being squeezed into the left column, so the form stays above the fold
+          and lines up with the report card below. */}
+      <div className="audit-head">
+        {headingLevel === 'h1' ? (
+          <h1 className="audit-headline">{headline}</h1>
+        ) : (
+          <h2 className="audit-headline">{headline}</h2>
+        )}
+      </div>
+
       <div className="audit-shell">
 
         {/* Left column */}
         <div>
-          <span className="audit-eyebrow eyebrow-chip">
-            <span className="eyebrow-dot"></span>
-            {eyebrow}
-          </span>
-
-          {headingLevel === 'h1' ? (
-            <h1 className="audit-headline">{headline}</h1>
-          ) : (
-            <h2 className="audit-headline">{headline}</h2>
-          )}
-
           <p className="audit-body">
             {body}
           </p>

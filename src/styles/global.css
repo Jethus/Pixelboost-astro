@@ -129,31 +129,6 @@
    Shared component utilities
    ———————————————————————————————————————————————————————————— */
 
-@utility eyebrow-chip {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  /* Non-auto width so a column-flex parent's align-items: stretch
-     can't blow the pill out to full container width. */
-  width: fit-content;
-  background: var(--color-mint-100);
-  color: var(--color-mint-700);
-  font-weight: 600;
-  font-size: 13px;
-  letter-spacing: 0.04em;
-  padding: 6px 14px;
-  border-radius: 9999px;
-  margin-bottom: 20px;
-}
-
-@utility eyebrow-dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: var(--color-mint-500);
-  display: inline-block;
-}
-
 @utility section-subhead {
   font-size: clamp(16px, 1.35vw, 19px);
   color: var(--color-ink-500);

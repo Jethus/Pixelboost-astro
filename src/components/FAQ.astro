@@ -67,7 +67,7 @@ const faqLd = {
 <script type="application/ld+json" set:html={JSON.stringify(faqLd)} />
 
 <section id="faq" class="section-card faq-section">
-  <SectionHeader eyebrow="FAQ" maxWidth="narrow">
+  <SectionHeader maxWidth="narrow">
     {heading}
   </SectionHeader>
 
@@ -115,6 +115,17 @@ const faqLd = {
     padding-bottom: 1px;
   }
   .faq-item[open] .faq-q::after { transform: rotate(45deg); }
+
+  /* Hover/focus: question turns mint and the +/x icon gets a mint disc, so
+     each row clearly reads as clickable. */
+  .faq-q { transition: color 0.15s ease; border-radius: 6px; }
+  .faq-q::after { border-radius: 9999px; transition: transform 0.2s ease, background-color 0.15s ease, color 0.15s ease; }
+  .faq-q:hover, .faq-q:focus-visible { color: var(--color-mint-700); }
+  .faq-q:hover::after, .faq-q:focus-visible::after { background: var(--color-mint-100); color: var(--color-mint-700); }
+  .faq-q:focus-visible { outline: 2px solid var(--color-mint-500); outline-offset: 4px; }
+  @media (prefers-reduced-motion: reduce) {
+    .faq-q, .faq-q::after { transition: none; }
+  }
 
   .faq-a {
     margin-top: 10px;
